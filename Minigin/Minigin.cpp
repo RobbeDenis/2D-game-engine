@@ -9,6 +9,7 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
+#include "ETime.h"
 
 SDL_Window* g_window{};
 
@@ -82,13 +83,20 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
+	auto& time = ETime::GetInstance();
+	
+	sceneManager.Loaded();
 
-	// todo: this update loop could use some work.
+	sceneManager.Start();
+	time.Start();
+
 	bool doContinue = true;
 	while (doContinue)
 	{
+		time.Update();
 		doContinue = input.ProcessInput();
 		sceneManager.Update();
 		renderer.Render();
+		sceneManager.LateUpdate();
 	}
 }
