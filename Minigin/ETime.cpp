@@ -15,7 +15,7 @@ void dae::ETime::Start()
 void dae::ETime::Update()
 {
 	m_CurruntTime = high_resolution_clock::now();
-	m_DeltaTime = duration_cast<milliseconds>(m_CurruntTime - m_LastTime).count();
+	m_DeltaTime = duration<float>(m_CurruntTime - m_LastTime).count();
 }
 
 float dae::ETime::GetDeltaTime() const

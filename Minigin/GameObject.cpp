@@ -5,7 +5,25 @@
 
 dae::GameObject::~GameObject() = default;
 
-void dae::GameObject::Update(){}
+void dae::GameObject::Loaded()
+{
+
+}
+
+void dae::GameObject::Start()
+{
+
+}
+
+void dae::GameObject::Update()
+{
+
+}
+
+void dae::GameObject::LateUpdate()
+{
+
+}
 
 void dae::GameObject::Render() const
 {
