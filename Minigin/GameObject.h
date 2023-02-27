@@ -1,15 +1,29 @@
 #pragma once
 #include <memory>
+#include <vector>
+#include <string>
+#include <concepts>
+#include <iostream>
 #include "Transform.h"
 
 namespace dae
 {
 	class Texture2D;
+	class Component;
+
+	template<typename T>
+	concept IsComponent = requires(T c)
+	{
+		{ c } -> std::convertible_to<Component>;
+	};
 
 	// todo: this should become final.
 	class GameObject 
 	{
 	public:
+		GameObject() = default;
+		virtual ~GameObject() = default;
+
 		virtual void Loaded();
 		virtual void Start();
 		virtual void Update();
@@ -19,8 +33,6 @@ namespace dae
 		void SetTexture(const std::string& filename);
 		void SetPosition(float x, float y);
 
-		GameObject() = default;
-		virtual ~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
@@ -30,5 +42,32 @@ namespace dae
 		Transform m_transform{};
 		// todo: mmm, every gameobject has a texture? Is that correct?
 		std::shared_ptr<Texture2D> m_texture{};
+		std::vector<std::shared_ptr<Component>> m_pComponents;
+
+	public:
+		template<IsComponent T>
+		std::shared_ptr<T> AddComponent()
+		{
+			std::shared_ptr<T> component = std::make_shared<T>(this);
+			m_pComponents.push_back(component);
+			return component;
+		}
+
+		template<IsComponent T>
+		std::shared_ptr<T> GetComponent() const
+		{
+			auto it = std::find_if(begin(m_pComponents), end(m_pComponents), [](std::shared_ptr<Component> c)
+				{
+					return dynamic_pointer_cast<T>(c);
+				});
+
+			if (it == end(m_pComponents))
+			{
+				std::cout << "Warning: std::shared_ptr<T> GetComponent() const, Component has not been found" << std::endl;
+				return nullptr;
+			}
+
+			return dynamic_pointer_cast<T>(*it);
+		}
 	};
 }
