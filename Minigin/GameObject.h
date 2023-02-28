@@ -72,6 +72,9 @@ namespace dae
 			return dynamic_pointer_cast<T>(*it);
 		}
 
+	private:
+		// private because components can only be destroyed by calling Destroy on the component itself
+		// this way components can only be safely destroyed
 		void RemoveComponent(std::shared_ptr<Component> component)
 		{
 			m_pComponents.erase(std::remove(begin(m_pComponents), end(m_pComponents), component), end(m_pComponents));
