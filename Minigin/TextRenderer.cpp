@@ -7,6 +7,7 @@ dae::TextRenderer::TextRenderer(GameObject* pGameObject)
 	: dae::RenderComponent(pGameObject)
 	, m_Dirty{ false }
 	, m_Color{ 255, 255, 255 }
+	, m_Text{ " " }
 {
 	m_pFont = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 }
