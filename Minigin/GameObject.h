@@ -23,7 +23,7 @@ namespace dae
 	{
 	public:
 		GameObject();
-		virtual ~GameObject() = default;
+		virtual ~GameObject();
 
 		virtual void Loaded();
 		virtual void Start();
@@ -34,8 +34,12 @@ namespace dae
 		void RemoveMarkedComponents();
 		void SetDirtyComponentDestroy();
 
+		void SetScene(Scene* scene);
 		void SetTexture(const std::string& filename);
 		void SetPosition(float x, float y);
+
+		Scene* GetScene() const;
+		Transform& GetTransform();
 
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
@@ -48,6 +52,7 @@ namespace dae
 		std::shared_ptr<Texture2D> m_texture{};
 
 		std::vector<std::shared_ptr<Component>> m_pComponents;
+		Scene* m_pScene;
 		bool m_DirtyComponentDestroy;
 
 	public:

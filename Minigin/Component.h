@@ -8,7 +8,7 @@ namespace dae
 	{
 	public:
 		Component(GameObject* pGameObject);
-		virtual ~Component() = default;
+		virtual ~Component();
 
 		void Destroy();
 		
@@ -16,6 +16,7 @@ namespace dae
 		virtual void Start() {};
 		virtual void Update() {};
 		virtual void LateUpdate() {};
+		virtual void OnDestroy() {};
 
 		bool IsMarkedForDestroy() const;
 

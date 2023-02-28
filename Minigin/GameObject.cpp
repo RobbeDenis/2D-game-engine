@@ -11,6 +11,11 @@ dae::GameObject::GameObject()
 {
 }
 
+dae::GameObject::~GameObject()
+{
+
+}
+
 void GameObject::Loaded()
 {
 	for (auto& c : m_pComponents)
@@ -68,6 +73,21 @@ void dae::GameObject::RemoveMarkedComponents()
 void dae::GameObject::SetDirtyComponentDestroy()
 {
 	m_DirtyComponentDestroy = true;
+}
+
+Scene* dae::GameObject::GetScene() const
+{
+	return m_pScene;
+}
+
+Transform& dae::GameObject::GetTransform()
+{
+	return m_transform;
+}
+
+void dae::GameObject::SetScene(Scene* scene)
+{
+	m_pScene = scene;
 }
 
 void GameObject::SetTexture(const std::string& filename)
