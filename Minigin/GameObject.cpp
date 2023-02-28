@@ -6,6 +6,11 @@
 
 using namespace dae;
 
+dae::GameObject::GameObject()
+	: m_DirtyComponentDestroy{ false }
+{
+}
+
 void GameObject::Loaded()
 {
 	for (auto& c : m_pComponents)
@@ -42,6 +47,27 @@ void GameObject::Render() const
 {
 	const auto& pos = m_transform.GetPosition();
 	Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
+}
+
+void dae::GameObject::RemoveMarkedComponents()
+{
+	if (!m_DirtyComponentDestroy)
+		return;
+
+	for (auto& c : m_pComponents)
+	{
+		if (c->IsMarkedForDestroy())
+		{
+			RemoveComponent(c);
+		}
+	}
+
+	m_DirtyComponentDestroy = false;
+}
+
+void dae::GameObject::SetDirtyComponentDestroy()
+{
+	m_DirtyComponentDestroy = true;
 }
 
 void GameObject::SetTexture(const std::string& filename)

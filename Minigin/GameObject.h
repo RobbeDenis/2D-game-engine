@@ -22,7 +22,7 @@ namespace dae
 	class GameObject 
 	{
 	public:
-		GameObject() = default;
+		GameObject();
 		virtual ~GameObject() = default;
 
 		virtual void Loaded();
@@ -30,6 +30,9 @@ namespace dae
 		virtual void Update();
 		virtual void LateUpdate();
 		virtual void Render() const;
+
+		void RemoveMarkedComponents();
+		void SetDirtyComponentDestroy();
 
 		void SetTexture(const std::string& filename);
 		void SetPosition(float x, float y);
@@ -45,6 +48,7 @@ namespace dae
 		std::shared_ptr<Texture2D> m_texture{};
 
 		std::vector<std::shared_ptr<Component>> m_pComponents;
+		bool m_DirtyComponentDestroy;
 
 	public:
 		template<IsComponent T>

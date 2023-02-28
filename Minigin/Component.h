@@ -17,10 +17,12 @@ namespace dae
 		virtual void Update() {};
 		virtual void LateUpdate() {};
 
+		bool IsMarkedForDestroy() const;
+
 	protected:
 		GameObject* m_pGameObject;
 
 	private:
-		bool m_MarkedForDestroy;
+		bool m_IsMarkedForDestroy;
 	};
 }
