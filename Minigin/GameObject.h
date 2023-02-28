@@ -10,6 +10,7 @@ namespace dae
 {
 	class Texture2D;
 	class Component;
+	class Scene;
 
 	template<typename T>
 	concept IsComponent = requires(T c)
@@ -42,6 +43,7 @@ namespace dae
 		Transform m_transform{};
 		// todo: mmm, every gameobject has a texture? Is that correct?
 		std::shared_ptr<Texture2D> m_texture{};
+
 		std::vector<std::shared_ptr<Component>> m_pComponents;
 
 	public:
@@ -68,6 +70,11 @@ namespace dae
 			}
 
 			return dynamic_pointer_cast<T>(*it);
+		}
+
+		void RemoveComponent(std::shared_ptr<Component> component)
+		{
+			m_pComponents.erase(std::remove(begin(m_pComponents), end(m_pComponents), component), end(m_pComponents));
 		}
 	};
 }
