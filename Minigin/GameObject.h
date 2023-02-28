@@ -1,14 +1,12 @@
 #pragma once
 #include <memory>
 #include <vector>
-#include <string>
 #include <concepts>
 #include <iostream>
 #include "Transform.h"
 
 namespace dae
 {
-	class Texture2D;
 	class Component;
 	class Scene;
 
@@ -18,8 +16,7 @@ namespace dae
 		{ c } -> std::convertible_to<Component>;
 	};
 
-	// todo: this should become final.
-	class GameObject 
+	class GameObject final
 	{
 	public:
 		GameObject();
@@ -29,14 +26,11 @@ namespace dae
 		virtual void Start();
 		virtual void Update();
 		virtual void LateUpdate();
-		virtual void Render() const;
 
 		void RemoveMarkedComponents();
 		void SetDirtyComponentDestroy();
 
 		void SetScene(Scene* scene);
-		void SetTexture(const std::string& filename);
-		void SetPosition(float x, float y);
 
 		Scene* GetScene() const;
 		Transform& GetTransform();
@@ -47,10 +41,7 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 	private:
-		Transform m_transform{};
-		// todo: mmm, every gameobject has a texture? Is that correct?
-		std::shared_ptr<Texture2D> m_texture{};
-
+		Transform m_Transform;
 		std::vector<std::shared_ptr<Component>> m_pComponents;
 		Scene* m_pScene;
 		bool m_DirtyComponentDestroy;

@@ -1,14 +1,14 @@
-#include <string>
 #include "GameObject.h"
-#include "ResourceManager.h"
-#include "Renderer.h"
 #include "Component.h"
 
 using namespace dae;
 
 dae::GameObject::GameObject()
-	: m_DirtyComponentDestroy{ false }
+	: m_Transform{ }
+	, m_pScene{ nullptr }
+	, m_DirtyComponentDestroy{ false }
 {
+
 }
 
 dae::GameObject::~GameObject()
@@ -48,12 +48,6 @@ void GameObject::LateUpdate()
 	}
 }
 
-void GameObject::Render() const
-{
-	const auto& pos = m_transform.GetPosition();
-	Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
-}
-
 void dae::GameObject::RemoveMarkedComponents()
 {
 	if (!m_DirtyComponentDestroy)
@@ -82,20 +76,10 @@ Scene* dae::GameObject::GetScene() const
 
 Transform& dae::GameObject::GetTransform()
 {
-	return m_transform;
+	return m_Transform;
 }
 
 void dae::GameObject::SetScene(Scene* scene)
 {
 	m_pScene = scene;
-}
-
-void GameObject::SetTexture(const std::string& filename)
-{
-	m_texture = ResourceManager::GetInstance().LoadTexture(filename);
-}
-
-void GameObject::SetPosition(float x, float y)
-{
-	m_transform.SetPosition(x, y, 0.0f);
 }
