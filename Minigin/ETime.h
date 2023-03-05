@@ -20,7 +20,7 @@ namespace dae
 		std::chrono::high_resolution_clock::time_point m_CurruntTime;
 		std::chrono::high_resolution_clock::time_point m_LastTime;
 		float m_DeltaTime;
-		float m_DesiredMs;
+		std::chrono::nanoseconds m_DesiredNs;
 		int m_DesiredFPS;
 	};
 }
