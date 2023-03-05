@@ -5,7 +5,7 @@
 dae::RenderComponent::RenderComponent(GameObject* pGameObject)
 	: dae::Component(pGameObject)
 {
-
+	
 }
 
 void dae::RenderComponent::Loaded()

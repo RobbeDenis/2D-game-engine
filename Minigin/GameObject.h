@@ -27,12 +27,21 @@ namespace dae
 		virtual void Update();
 		virtual void LateUpdate();
 
+		//std::shared_ptr<GameObject> GetChild(int index) const;
+		//std::shared_ptr<GameObject> GetChild(const std::string& label) const;
+		//std::shared_ptr<GameObject> AddChild();
+		//std::shared_ptr<GameObject> AddChild(const std::string& label);
+		//void AttachChild(std::shared_ptr<GameObject> child);
+		//void DestroyChild(int index);
+		//void DestroyChild(const std::string& label);
+		//void DestroyAllChildren();
+
 		void RemoveMarkedComponents();
 		void SetDirtyComponentDestroy();
 
 		void SetScene(Scene* scene);
-
 		Scene* GetScene() const;
+
 		Transform& GetTransform();
 
 		GameObject(const GameObject& other) = delete;
@@ -42,7 +51,10 @@ namespace dae
 
 	private:
 		Transform m_Transform;
+		std::string m_Label;
 		std::vector<std::shared_ptr<Component>> m_pComponents;
+		//std::vector<std::shared_ptr<GameObject>> m_pChildren;
+		//std::shared_ptr<GameObject> m_pParent;
 		Scene* m_pScene;
 		bool m_DirtyComponentDestroy;
 
@@ -58,18 +70,13 @@ namespace dae
 		template<IsComponent T>
 		std::shared_ptr<T> GetComponent() const
 		{
-			auto it = std::find_if(begin(m_pComponents), end(m_pComponents), [](std::shared_ptr<Component> c)
-				{
-					return dynamic_pointer_cast<T>(c);
-				});
-
-			if (it == end(m_pComponents))
+			for (auto& component : m_pComponents)
 			{
-				std::cout << "Warning: std::shared_ptr<T> GetComponent() const, Component has not been found" << std::endl;
-				return nullptr;
+				auto casted = std::dynamic_pointer_cast<T>(component);
+				if (casted)
+					return casted;
 			}
-
-			return dynamic_pointer_cast<T>(*it);
+			return nullptr;
 		}
 
 	private:
