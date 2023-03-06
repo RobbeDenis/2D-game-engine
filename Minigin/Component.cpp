@@ -9,7 +9,7 @@ dae::Component::Component(GameObject* pGameObject)
 
 dae::Component::~Component()
 {
-	OnDestroy();
+	
 }
 
 void dae::Component::Destroy()
