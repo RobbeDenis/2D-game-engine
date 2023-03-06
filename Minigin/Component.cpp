@@ -15,7 +15,7 @@ dae::Component::~Component()
 void dae::Component::Destroy()
 {
 	m_IsMarkedForDestroy = true;
-	m_pGameObject->SetDirtyComponentDestroy();
+	m_pGameObject->SetComponentsMarkedForDestroy();
 }
 
 bool dae::Component::IsMarkedForDestroy() const

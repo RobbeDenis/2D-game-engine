@@ -7,7 +7,7 @@ namespace dae
 	class Component
 	{
 	public:
-		Component(GameObject* pGameObject);
+		explicit Component(GameObject* pGameObject);
 		virtual ~Component();
 
 		void Destroy();
@@ -19,6 +19,13 @@ namespace dae
 		virtual void OnDestroy() {};
 
 		bool IsMarkedForDestroy() const;
+
+		Component() = delete;
+		Component(const Component& other) = delete;
+		Component(Component&& other) = delete;
+		Component& operator=(const Component& other) = delete;
+		Component& operator=(Component&& other) = delete;
+
 
 	protected:
 		GameObject* m_pGameObject;

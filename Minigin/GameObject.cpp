@@ -6,7 +6,7 @@ using namespace dae;
 dae::GameObject::GameObject()
 	: m_Transform{ }
 	, m_pScene{ nullptr }
-	, m_DirtyComponentDestroy{ false }
+	, m_HasComponentsMarkedForDestroy{ false }
 {
 
 }
@@ -50,7 +50,7 @@ void GameObject::LateUpdate()
 
 void dae::GameObject::RemoveMarkedComponents()
 {
-	if (!m_DirtyComponentDestroy)
+	if (!m_HasComponentsMarkedForDestroy)
 		return;
 
 	for (auto& c : m_pComponents)
@@ -61,12 +61,12 @@ void dae::GameObject::RemoveMarkedComponents()
 		}
 	}
 
-	m_DirtyComponentDestroy = false;
+	m_HasComponentsMarkedForDestroy = false;
 }
 
-void dae::GameObject::SetDirtyComponentDestroy()
+void dae::GameObject::SetComponentsMarkedForDestroy()
 {
-	m_DirtyComponentDestroy = true;
+	m_HasComponentsMarkedForDestroy = true;
 }
 
 Scene* dae::GameObject::GetScene() const

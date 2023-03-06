@@ -58,11 +58,6 @@ void Scene::Update()
 	{
 		object->Update();
 	}
-
-	for (auto& object : m_pObjects)
-	{
-		object->RemoveMarkedComponents();
-	}
 }
 
 void dae::Scene::LateUpdate()
@@ -70,6 +65,11 @@ void dae::Scene::LateUpdate()
 	for (auto& object : m_pObjects)
 	{
 		object->LateUpdate();
+	}
+
+	for (auto& object : m_pObjects)
+	{
+		object->RemoveMarkedComponents();
 	}
 }
 

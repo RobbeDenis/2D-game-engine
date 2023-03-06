@@ -9,11 +9,12 @@ namespace dae
 {
 	class Component;
 	class Scene;
+	class GameObject;
 
 	template<typename T>
-	concept IsComponent = requires(T c)
+	concept IsComponent = std::is_base_of_v<Component, T> && requires(GameObject* gameObject)
 	{
-		{ c } -> std::convertible_to<Component>;
+		new T(gameObject);
 	};
 
 	class GameObject final
@@ -37,7 +38,7 @@ namespace dae
 		//void DestroyAllChildren();
 
 		void RemoveMarkedComponents();
-		void SetDirtyComponentDestroy();
+		void SetComponentsMarkedForDestroy();
 
 		void SetScene(Scene* scene);
 		Scene* GetScene() const;
@@ -56,7 +57,7 @@ namespace dae
 		//std::vector<std::shared_ptr<GameObject>> m_pChildren;
 		//std::shared_ptr<GameObject> m_pParent;
 		Scene* m_pScene;
-		bool m_DirtyComponentDestroy;
+		bool m_HasComponentsMarkedForDestroy;
 
 	public:
 		template<IsComponent T>
@@ -80,8 +81,6 @@ namespace dae
 		}
 
 	private:
-		// private because components can only be destroyed by calling Destroy on the component itself
-		// this way components can only be safely destroyed
 		void RemoveComponent(std::shared_ptr<Component> component)
 		{
 			m_pComponents.erase(std::remove(begin(m_pComponents), end(m_pComponents), component), end(m_pComponents));
