@@ -74,34 +74,40 @@ void dae::GameObject::LateUpdate()
 	}
 }
 
-void dae::GameObject::SetWorldPosition(float x, float y)
-{
-	SetWorldPosition({ x, y, 0.f });
-}
-
 void dae::GameObject::SetLocalPosition(float x, float y)
 {
 	SetLocalPosition({ x, y, 0.f });
 }
 
-void dae::GameObject::SetWorldPosition(const glm::vec3& position)
-{
-	m_WorldPosition = position;
-}
-
 void dae::GameObject::SetLocalPosition(const glm::vec3& position)
 {
 	m_LocalPosition = position;
+	m_PositionIsDirty = true;
 }
 
-const glm::vec3 dae::GameObject::GetWorldPosition() const
+const glm::vec3 dae::GameObject::GetWorldPosition()
 {
-	return m_WorldPosition + m_LocalPosition;
+	if (m_PositionIsDirty)
+		UpdateWorldPosition();
+
+	return m_WorldPosition;
 }
 
 const glm::vec3 dae::GameObject::GetLocalPosition() const
 {
 	return m_LocalPosition;
+}
+
+void dae::GameObject::UpdateWorldPosition()
+{
+	if (m_PositionIsDirty)
+	{
+		if (m_pParent == nullptr)
+			m_WorldPosition = m_LocalPosition;
+		else
+			m_WorldPosition = m_pParent->GetWorldPosition() + m_LocalPosition;
+	}
+	m_PositionIsDirty = false;
 }
 
 void dae::GameObject::RemoveMarkedComponents()

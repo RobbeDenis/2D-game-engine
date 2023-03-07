@@ -31,11 +31,9 @@ namespace dae
 		virtual void Update();
 		virtual void LateUpdate();
 
-		void SetWorldPosition(float x, float y);
 		void SetLocalPosition(float x, float y);
-		void SetWorldPosition(const glm::vec3& position);
 		void SetLocalPosition(const glm::vec3& position);
-		const glm::vec3 GetWorldPosition() const;
+		const glm::vec3 GetWorldPosition();
 		const glm::vec3 GetLocalPosition() const;
 
 		//std::shared_ptr<GameObject> GetChild(int index) const;
@@ -60,6 +58,8 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 	private:
+		void UpdateWorldPosition();
+
 		std::string m_Label;
 		std::vector<std::shared_ptr<Component>> m_pComponents;
 		std::vector<std::shared_ptr<GameObject>> m_pChildren;
