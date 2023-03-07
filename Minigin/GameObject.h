@@ -3,7 +3,7 @@
 #include <vector>
 #include <concepts>
 #include <iostream>
-#include "Transform.h"
+#include <glm/glm.hpp>
 
 namespace dae
 {
@@ -21,6 +21,7 @@ namespace dae
 	{
 	public:
 		GameObject();
+		GameObject(std::string label);
 		virtual ~GameObject();
 
 		void Destroy();
@@ -30,10 +31,17 @@ namespace dae
 		virtual void Update();
 		virtual void LateUpdate();
 
+		void SetWorldPosition(float x, float y);
+		void SetLocalPosition(float x, float y);
+		void SetWorldPosition(const glm::vec3& position);
+		void SetLocalPosition(const glm::vec3& position);
+		const glm::vec3 GetWorldPosition() const;
+		const glm::vec3 GetLocalPosition() const;
+
 		//std::shared_ptr<GameObject> GetChild(int index) const;
 		//std::shared_ptr<GameObject> GetChild(const std::string& label) const;
-		//std::shared_ptr<GameObject> AddChild();
-		//std::shared_ptr<GameObject> AddChild(const std::string& label);
+		std::weak_ptr<GameObject> AddChild();
+		std::weak_ptr<GameObject> AddChild(const std::string& label);
 		//void AttachChild(std::shared_ptr<GameObject> child);
 		//void DestroyChild(int index);
 		//void DestroyChild(const std::string& label);
@@ -46,20 +54,20 @@ namespace dae
 		void SetScene(Scene* scene);
 		Scene* GetScene() const;
 
-		Transform& GetTransform();
-
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
 	private:
-		Transform m_Transform;
 		std::string m_Label;
 		std::vector<std::shared_ptr<Component>> m_pComponents;
-		//std::vector<std::shared_ptr<GameObject>> m_pChildren;
-		//std::shared_ptr<GameObject> m_pParent;
+		std::vector<std::shared_ptr<GameObject>> m_pChildren;
+		GameObject* m_pParent;
 		Scene* m_pScene;
+		glm::vec3 m_WorldPosition;
+		glm::vec3 m_LocalPosition;
+		bool m_PositionIsDirty;
 		bool m_IsMarkedForDestroy;
 		bool m_HasComponentsMarkedForDestroy;
 

@@ -1,11 +1,18 @@
 #include "GameObject.h"
 #include "Component.h"
 
-using namespace dae;
-
 dae::GameObject::GameObject()
-	: m_Transform{ }
+	: GameObject("")
+{
+
+}
+
+dae::GameObject::GameObject(std::string label)
+	: m_pParent{ nullptr }
 	, m_pScene{ nullptr }
+	, m_WorldPosition{ }
+	, m_LocalPosition{ }
+	, m_PositionIsDirty{ false }
 	, m_IsMarkedForDestroy{ false }
 	, m_HasComponentsMarkedForDestroy{ false }
 {
@@ -14,10 +21,20 @@ dae::GameObject::GameObject()
 
 dae::GameObject::~GameObject()
 {
-	for (auto& c : m_pComponents)
-	{
-		c->Loaded();
-	}
+
+}
+
+std::weak_ptr<dae::GameObject> dae::GameObject::AddChild()
+{
+	return AddChild("");
+}
+
+std::weak_ptr<dae::GameObject> dae::GameObject::AddChild(const std::string& label)
+{
+	std::shared_ptr<dae::GameObject> child = std::make_shared<dae::GameObject>(label);
+	child->m_pParent = this;
+	m_pChildren.push_back(child);
+	return child;
 }
 
 void dae::GameObject::Destroy()
@@ -25,7 +42,7 @@ void dae::GameObject::Destroy()
 	m_IsMarkedForDestroy = true;
 }
 
-void GameObject::Loaded()
+void dae::GameObject::Loaded()
 {
 	for (auto& c : m_pComponents)
 	{
@@ -33,7 +50,7 @@ void GameObject::Loaded()
 	}
 }
 
-void GameObject::Start()
+void dae::GameObject::Start()
 {
 	for (auto& c : m_pComponents)
 	{
@@ -41,7 +58,7 @@ void GameObject::Start()
 	}
 }
 
-void GameObject::Update()
+void dae::GameObject::Update()
 {
 	for (auto& c : m_pComponents)
 	{
@@ -49,12 +66,42 @@ void GameObject::Update()
 	}
 }
 
-void GameObject::LateUpdate()
+void dae::GameObject::LateUpdate()
 {
 	for (auto& c : m_pComponents)
 	{
 		c->LateUpdate();
 	}
+}
+
+void dae::GameObject::SetWorldPosition(float x, float y)
+{
+	SetWorldPosition({ x, y, 0.f });
+}
+
+void dae::GameObject::SetLocalPosition(float x, float y)
+{
+	SetLocalPosition({ x, y, 0.f });
+}
+
+void dae::GameObject::SetWorldPosition(const glm::vec3& position)
+{
+	m_WorldPosition = position;
+}
+
+void dae::GameObject::SetLocalPosition(const glm::vec3& position)
+{
+	m_LocalPosition = position;
+}
+
+const glm::vec3 dae::GameObject::GetWorldPosition() const
+{
+	return m_WorldPosition + m_LocalPosition;
+}
+
+const glm::vec3 dae::GameObject::GetLocalPosition() const
+{
+	return m_LocalPosition;
 }
 
 void dae::GameObject::RemoveMarkedComponents()
@@ -83,14 +130,9 @@ bool dae::GameObject::IsMarkedForDestroy() const
 	return m_IsMarkedForDestroy;
 }
 
-Scene* dae::GameObject::GetScene() const
+dae::Scene* dae::GameObject::GetScene() const
 {
 	return m_pScene;
-}
-
-Transform& dae::GameObject::GetTransform()
-{
-	return m_Transform;
 }
 
 void dae::GameObject::SetScene(Scene* scene)

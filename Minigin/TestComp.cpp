@@ -1,6 +1,6 @@
 #include "TestComp.h"
 
-dae::TestComp::TestComp(dae::GameObject* pGameObject)
+dae::TestComp::TestComp(GameObject* pGameObject)
 	: dae::Component(pGameObject)
 {
 
