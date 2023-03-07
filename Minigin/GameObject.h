@@ -36,21 +36,19 @@ namespace dae
 		const glm::vec3 GetWorldPosition();
 		const glm::vec3 GetLocalPosition() const;
 
-		//std::shared_ptr<GameObject> GetChild(int index) const;
-		//std::shared_ptr<GameObject> GetChild(const std::string& label) const;
+		std::weak_ptr<GameObject> GetChild(int index) const;
+		std::weak_ptr<GameObject> GetChild(const std::string& label) const;
 		std::weak_ptr<GameObject> AddChild();
 		std::weak_ptr<GameObject> AddChild(const std::string& label);
 		//void AttachChild(std::shared_ptr<GameObject> child);
-		//void DestroyChild(int index);
-		//void DestroyChild(const std::string& label);
-		//void DestroyAllChildren();
 
+		void RemoveMarkedChildren();
 		void RemoveMarkedComponents();
 		void SetComponentsMarkedForDestroy();
 		bool IsMarkedForDestroy() const;
 
 		void SetScene(Scene* scene);
-		Scene* GetScene() const;
+		Scene* GetScene();
 
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
@@ -58,6 +56,8 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 	private:
+		void RemoveChild(std::shared_ptr<GameObject> child);
+		void SetChildrenMarkedForDestroy();
 		void UpdateWorldPosition();
 
 		std::string m_Label;
@@ -69,6 +69,7 @@ namespace dae
 		glm::vec3 m_LocalPosition;
 		bool m_PositionIsDirty;
 		bool m_IsMarkedForDestroy;
+		bool m_HasChildrenMarkedForDestroy;
 		bool m_HasComponentsMarkedForDestroy;
 
 	public:

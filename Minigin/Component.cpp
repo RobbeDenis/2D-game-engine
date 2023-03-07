@@ -12,6 +12,11 @@ dae::Component::~Component()
 	
 }
 
+dae::GameObject* dae::Component::GetGameObject() const
+{
+	return m_pGameObject;
+}
+
 void dae::Component::Destroy()
 {
 	m_IsMarkedForDestroy = true;

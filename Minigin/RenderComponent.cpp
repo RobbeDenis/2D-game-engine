@@ -8,9 +8,14 @@ dae::RenderComponent::RenderComponent(GameObject* pGameObject)
 	
 }
 
+dae::RenderComponent::~RenderComponent()
+{
+	GetGameObject()->GetScene()->RemoveRenderComponent(this);
+}
+
 void dae::RenderComponent::Loaded()
 {
-	m_pGameObject->GetScene()->AddRenderComponent(this);
+	GetGameObject()->GetScene()->AddRenderComponent(this);
 }
 
 void dae::RenderComponent::Render() const
@@ -18,6 +23,6 @@ void dae::RenderComponent::Render() const
 	if (m_pTexture == nullptr)
 		return;
 
-	const auto& pos = m_pGameObject->GetWorldPosition();
+	const auto& pos = GetGameObject()->GetWorldPosition();
 	Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
 }

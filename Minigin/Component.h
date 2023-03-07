@@ -27,9 +27,10 @@ namespace dae
 
 
 	protected:
-		GameObject* m_pGameObject;
+		GameObject* GetGameObject() const;
 
 	private:
+		GameObject* m_pGameObject;
 		bool m_IsMarkedForDestroy;
 	};
 }

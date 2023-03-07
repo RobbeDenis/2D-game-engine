@@ -1,5 +1,6 @@
 #include "GameObject.h"
 #include "Component.h"
+#include "Scene.h"
 
 dae::GameObject::GameObject()
 	: GameObject("")
@@ -15,6 +16,7 @@ dae::GameObject::GameObject(const std::string& label)
 	, m_LocalPosition{ }
 	, m_PositionIsDirty{ false }
 	, m_IsMarkedForDestroy{ false }
+	, m_HasChildrenMarkedForDestroy{ false }
 	, m_HasComponentsMarkedForDestroy{ false }
 {
 
@@ -23,6 +25,27 @@ dae::GameObject::GameObject(const std::string& label)
 dae::GameObject::~GameObject()
 {
 
+}
+
+std::weak_ptr<dae::GameObject> dae::GameObject::GetChild(int index) const
+{
+	if (index >= m_pChildren.size())
+		return std::weak_ptr<dae::GameObject>();
+
+	return m_pChildren[index];
+}
+
+std::weak_ptr<dae::GameObject> dae::GameObject::GetChild(const std::string& label) const
+{
+	auto it = std::find_if(begin(m_pChildren), end(m_pChildren), [&label](auto& child)
+		{
+			return child->m_Label == label;
+		});
+
+	if (it == end(m_pChildren))
+		return std::weak_ptr<dae::GameObject>();
+
+	return *it;
 }
 
 std::weak_ptr<dae::GameObject> dae::GameObject::AddChild()
@@ -39,9 +62,25 @@ std::weak_ptr<dae::GameObject> dae::GameObject::AddChild(const std::string& labe
 	return child;
 }
 
+void dae::GameObject::RemoveChild(std::shared_ptr<GameObject> child)
+{
+	m_pChildren.erase(std::remove(begin(m_pChildren), end(m_pChildren), child), end(m_pChildren));
+}
+
 void dae::GameObject::Destroy()
 {
+	if (m_pParent != nullptr)
+		m_pParent->SetChildrenMarkedForDestroy();
+
 	m_IsMarkedForDestroy = true;
+}
+
+void dae::GameObject::SetChildrenMarkedForDestroy()
+{
+	if (m_pParent != nullptr)
+		m_pParent->SetChildrenMarkedForDestroy();
+
+	m_HasChildrenMarkedForDestroy = true;
 }
 
 void dae::GameObject::Loaded()
@@ -132,6 +171,28 @@ void dae::GameObject::UpdateWorldPosition()
 	m_PositionIsDirty = false;
 }
 
+void dae::GameObject::RemoveMarkedChildren()
+{
+	if (!m_HasChildrenMarkedForDestroy)
+		return;
+
+	m_pChildren.erase(std::remove_if(begin(m_pChildren), end(m_pChildren), [](auto& child)
+		{
+			if (child->IsMarkedForDestroy())
+			{
+				return true;
+			}
+			else if (child->m_HasChildrenMarkedForDestroy)
+			{
+				child->RemoveMarkedChildren();
+			}
+
+			return false;
+		}), end(m_pChildren));
+
+	m_HasChildrenMarkedForDestroy = false;
+}
+
 void dae::GameObject::RemoveMarkedComponents()
 {
 	if (m_HasComponentsMarkedForDestroy)
@@ -163,7 +224,7 @@ bool dae::GameObject::IsMarkedForDestroy() const
 	return m_IsMarkedForDestroy;
 }
 
-dae::Scene* dae::GameObject::GetScene() const
+dae::Scene* dae::GameObject::GetScene()
 {
 	if (m_pParent == nullptr)
 		return m_pScene;

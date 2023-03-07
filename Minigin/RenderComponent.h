@@ -4,11 +4,11 @@
 
 namespace dae
 {
-
 	class RenderComponent : public Component
 	{
 	public:
 		RenderComponent(GameObject* pGameObject);
+		~RenderComponent();
 
 		void Loaded() override;
 		void Render() const;

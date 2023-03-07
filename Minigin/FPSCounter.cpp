@@ -12,7 +12,7 @@ dae::FPSCounter::FPSCounter(GameObject* pGameObject)
 
 void dae::FPSCounter::Loaded()
 {
-	m_pText = m_pGameObject->GetComponent<dae::TextRenderer>();
+	m_pText = GetGameObject()->GetComponent<dae::TextRenderer>();
 }
 
 void dae::FPSCounter::Start()
