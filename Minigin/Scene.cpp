@@ -69,7 +69,10 @@ void dae::Scene::LateUpdate()
 
 	for (auto& object : m_pObjects)
 	{
-		object->RemoveMarkedComponents();
+		if (object->IsMarkedForDestroy())
+			Remove(object);
+		else
+			object->RemoveMarkedComponents();
 	}
 }
 
@@ -80,4 +83,3 @@ void Scene::Render() const
 		c->Render();
 	}
 }
-

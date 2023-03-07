@@ -6,6 +6,7 @@ using namespace dae;
 dae::GameObject::GameObject()
 	: m_Transform{ }
 	, m_pScene{ nullptr }
+	, m_IsMarkedForDestroy{ false }
 	, m_HasComponentsMarkedForDestroy{ false }
 {
 
@@ -17,6 +18,11 @@ dae::GameObject::~GameObject()
 	{
 		c->Loaded();
 	}
+}
+
+void dae::GameObject::Destroy()
+{
+	m_IsMarkedForDestroy = true;
 }
 
 void GameObject::Loaded()
@@ -70,6 +76,11 @@ void dae::GameObject::RemoveMarkedComponents()
 void dae::GameObject::SetComponentsMarkedForDestroy()
 {
 	m_HasComponentsMarkedForDestroy = true;
+}
+
+bool dae::GameObject::IsMarkedForDestroy() const
+{
+	return m_IsMarkedForDestroy;
 }
 
 Scene* dae::GameObject::GetScene() const

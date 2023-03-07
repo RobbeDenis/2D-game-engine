@@ -8,5 +8,5 @@ dae::TestComp::TestComp(dae::GameObject* pGameObject)
 
 void dae::TestComp::Start()
 {
-	Destroy();
+	m_pGameObject->Destroy();
 }

@@ -23,6 +23,8 @@ namespace dae
 		GameObject();
 		virtual ~GameObject();
 
+		void Destroy();
+
 		virtual void Loaded();
 		virtual void Start();
 		virtual void Update();
@@ -39,6 +41,7 @@ namespace dae
 
 		void RemoveMarkedComponents();
 		void SetComponentsMarkedForDestroy();
+		bool IsMarkedForDestroy() const;
 
 		void SetScene(Scene* scene);
 		Scene* GetScene() const;
@@ -57,6 +60,7 @@ namespace dae
 		//std::vector<std::shared_ptr<GameObject>> m_pChildren;
 		//std::shared_ptr<GameObject> m_pParent;
 		Scene* m_pScene;
+		bool m_IsMarkedForDestroy;
 		bool m_HasComponentsMarkedForDestroy;
 
 	public:
