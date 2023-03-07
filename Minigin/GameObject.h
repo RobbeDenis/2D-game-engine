@@ -21,7 +21,7 @@ namespace dae
 	{
 	public:
 		GameObject();
-		GameObject(std::string label);
+		GameObject(const std::string& label);
 		virtual ~GameObject();
 
 		void Destroy();

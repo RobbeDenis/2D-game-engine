@@ -7,8 +7,9 @@ dae::GameObject::GameObject()
 
 }
 
-dae::GameObject::GameObject(std::string label)
-	: m_pParent{ nullptr }
+dae::GameObject::GameObject(const std::string& label)
+	: m_Label{ label }
+	, m_pParent{ nullptr }
 	, m_pScene{ nullptr }
 	, m_WorldPosition{ }
 	, m_LocalPosition{ }
@@ -33,6 +34,7 @@ std::weak_ptr<dae::GameObject> dae::GameObject::AddChild(const std::string& labe
 {
 	std::shared_ptr<dae::GameObject> child = std::make_shared<dae::GameObject>(label);
 	child->m_pParent = this;
+	child->UpdateWorldPosition();
 	m_pChildren.push_back(child);
 	return child;
 }
@@ -48,6 +50,11 @@ void dae::GameObject::Loaded()
 	{
 		c->Loaded();
 	}
+
+	for (auto& child : m_pChildren)
+	{
+		child->Loaded();
+	}
 }
 
 void dae::GameObject::Start()
@@ -55,6 +62,11 @@ void dae::GameObject::Start()
 	for (auto& c : m_pComponents)
 	{
 		c->Start();
+	}
+
+	for (auto& child : m_pChildren)
+	{
+		child->Start();
 	}
 }
 
@@ -64,6 +76,11 @@ void dae::GameObject::Update()
 	{
 		c->Update();
 	}
+
+	for (auto& child : m_pChildren)
+	{
+		child->Update();
+	}
 }
 
 void dae::GameObject::LateUpdate()
@@ -71,6 +88,11 @@ void dae::GameObject::LateUpdate()
 	for (auto& c : m_pComponents)
 	{
 		c->LateUpdate();
+	}
+
+	for (auto& child : m_pChildren)
+	{
+		child->LateUpdate();
 	}
 }
 
@@ -112,18 +134,23 @@ void dae::GameObject::UpdateWorldPosition()
 
 void dae::GameObject::RemoveMarkedComponents()
 {
-	if (!m_HasComponentsMarkedForDestroy)
-		return;
-
-	for (auto& c : m_pComponents)
+	if (m_HasComponentsMarkedForDestroy)
 	{
-		if (c->IsMarkedForDestroy())
+		for (auto& c : m_pComponents)
 		{
-			RemoveComponent(c);
+			if (c->IsMarkedForDestroy())
+			{
+				RemoveComponent(c);
+			}
 		}
+
+		m_HasComponentsMarkedForDestroy = false;
 	}
 
-	m_HasComponentsMarkedForDestroy = false;
+	for (auto& child : m_pChildren)
+	{
+		child->RemoveMarkedComponents();
+	}
 }
 
 void dae::GameObject::SetComponentsMarkedForDestroy()
@@ -138,7 +165,10 @@ bool dae::GameObject::IsMarkedForDestroy() const
 
 dae::Scene* dae::GameObject::GetScene() const
 {
-	return m_pScene;
+	if (m_pParent == nullptr)
+		return m_pScene;
+
+	return m_pParent->GetScene();
 }
 
 void dae::GameObject::SetScene(Scene* scene)
