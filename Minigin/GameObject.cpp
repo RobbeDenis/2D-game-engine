@@ -27,7 +27,7 @@ dae::GameObject::~GameObject()
 
 }
 
-std::weak_ptr<dae::GameObject> dae::GameObject::GetChild(int index) const
+std::weak_ptr<dae::GameObject> dae::GameObject::GetChild(size_t index) const
 {
 	if (index >= m_pChildren.size())
 		return std::weak_ptr<dae::GameObject>();

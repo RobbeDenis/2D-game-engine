@@ -36,7 +36,7 @@ namespace dae
 		const glm::vec3 GetWorldPosition();
 		const glm::vec3 GetLocalPosition() const;
 
-		std::weak_ptr<GameObject> GetChild(int index) const;
+		std::weak_ptr<GameObject> GetChild(size_t index) const;
 		std::weak_ptr<GameObject> GetChild(const std::string& label) const;
 		std::weak_ptr<GameObject> AddChild();
 		std::weak_ptr<GameObject> AddChild(const std::string& label);
