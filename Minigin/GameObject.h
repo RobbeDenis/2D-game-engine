@@ -61,7 +61,7 @@ namespace dae
 
 	public:
 		template<IsComponent T>
-		std::shared_ptr<T> AddComponent()
+		std::weak_ptr<T> AddComponent()
 		{
 			std::shared_ptr<T> component = std::make_shared<T>(this);
 			m_pComponents.push_back(component);
@@ -69,7 +69,7 @@ namespace dae
 		}
 
 		template<IsComponent T>
-		std::shared_ptr<T> GetComponent() const
+		std::weak_ptr<T> GetComponent() const
 		{
 			for (auto& component : m_pComponents)
 			{
@@ -77,7 +77,7 @@ namespace dae
 				if (casted)
 					return casted;
 			}
-			return nullptr;
+			return std::weak_ptr<T>();
 		}
 
 	private:

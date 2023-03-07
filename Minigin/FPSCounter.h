@@ -17,7 +17,7 @@ namespace dae
 		void SetUpdateInterval(float interval);
 
 	private:
-		std::shared_ptr<TextRenderer> m_pText;
+		std::weak_ptr<TextRenderer> m_pText;
 		float m_UpdateInterval;
 		float m_CurruntUpdateInterval;
 	};

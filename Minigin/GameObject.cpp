@@ -13,7 +13,10 @@ dae::GameObject::GameObject()
 
 dae::GameObject::~GameObject()
 {
-
+	for (auto& c : m_pComponents)
+	{
+		c->Loaded();
+	}
 }
 
 void GameObject::Loaded()
