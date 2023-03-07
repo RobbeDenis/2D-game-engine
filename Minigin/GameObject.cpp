@@ -1,6 +1,5 @@
 #include "GameObject.h"
 #include "Component.h"
-#include "Scene.h"
 
 dae::GameObject::GameObject()
 	: GameObject("")
@@ -62,9 +61,55 @@ std::weak_ptr<dae::GameObject> dae::GameObject::AddChild(const std::string& labe
 	return child;
 }
 
-void dae::GameObject::RemoveChild(std::shared_ptr<GameObject> child)
+bool dae::GameObject::RemoveChild(std::shared_ptr<GameObject> child)
 {
-	m_pChildren.erase(std::remove(begin(m_pChildren), end(m_pChildren), child), end(m_pChildren));
+	auto it = std::remove(begin(m_pChildren), end(m_pChildren), child);
+
+	if (it == end(m_pChildren))
+		return false;
+
+	m_pChildren.erase(it, end(m_pChildren));
+	return true;
+}
+
+void dae::GameObject::DetachChild(std::weak_ptr<GameObject> child, bool addToScene)
+{
+	if (child.expired() || child.lock() == shared_from_this())
+		return;
+
+	std::shared_ptr<GameObject> unlocked = child.lock();
+
+	if (!RemoveChild(unlocked))
+		return;
+
+	unlocked->m_pParent = nullptr;
+
+	if (addToScene)
+	{
+		unlocked->SetLocalPosition(GetWorldPosition() + unlocked->GetLocalPosition());
+		GetScene()->Add(unlocked);
+	}
+}
+
+void dae::GameObject::AttachChild(std::weak_ptr<GameObject> child, bool keepWorldPosition)
+{
+	if (child.expired() || child.lock() == shared_from_this())
+		return;
+	
+	std::shared_ptr<GameObject> unlocked = child.lock();
+
+	if (keepWorldPosition)
+	{
+		unlocked->SetLocalPosition(unlocked->GetWorldPosition() - GetWorldPosition());
+	}
+
+	if (unlocked->m_pParent != nullptr)
+	{
+		unlocked->m_pParent->DetachChild(child, false);
+	}
+
+	unlocked->m_pParent = this;
+	m_pChildren.push_back(unlocked);
 }
 
 void dae::GameObject::Destroy()
@@ -169,6 +214,11 @@ void dae::GameObject::UpdateWorldPosition()
 			m_WorldPosition = m_pParent->GetWorldPosition() + m_LocalPosition;
 	}
 	m_PositionIsDirty = false;
+}
+
+size_t dae::GameObject::GetAmountOffChildren() const
+{
+	return m_pChildren.size();
 }
 
 void dae::GameObject::RemoveMarkedChildren()

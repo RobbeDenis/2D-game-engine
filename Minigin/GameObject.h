@@ -1,4 +1,5 @@
 #pragma once
+#include "Scene.h"
 #include <memory>
 #include <vector>
 #include <concepts>
@@ -8,7 +9,6 @@
 namespace dae
 {
 	class Component;
-	class Scene;
 	class GameObject;
 
 	template<typename T>
@@ -17,8 +17,9 @@ namespace dae
 		new T(gameObject);
 	};
 
-	class GameObject final
+	class GameObject final : public std::enable_shared_from_this<GameObject>
 	{
+		friend void Scene::Add(std::shared_ptr<GameObject> object);
 	public:
 		GameObject();
 		GameObject(const std::string& label);
@@ -40,14 +41,15 @@ namespace dae
 		std::weak_ptr<GameObject> GetChild(const std::string& label) const;
 		std::weak_ptr<GameObject> AddChild();
 		std::weak_ptr<GameObject> AddChild(const std::string& label);
-		//void AttachChild(std::shared_ptr<GameObject> child);
+		void AttachChild(std::weak_ptr<GameObject> child, bool keepWorldPosition = false);
+		void DetachChild(std::weak_ptr<GameObject> child, bool addToScene = true);
+		size_t GetAmountOffChildren() const;
 
 		void RemoveMarkedChildren();
 		void RemoveMarkedComponents();
 		void SetComponentsMarkedForDestroy();
 		bool IsMarkedForDestroy() const;
 
-		void SetScene(Scene* scene);
 		Scene* GetScene();
 
 		GameObject(const GameObject& other) = delete;
@@ -56,7 +58,8 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 	private:
-		void RemoveChild(std::shared_ptr<GameObject> child);
+		void SetScene(Scene* scene);
+		bool RemoveChild(std::shared_ptr<GameObject> child);
 		void SetChildrenMarkedForDestroy();
 		void UpdateWorldPosition();
 
