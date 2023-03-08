@@ -72,6 +72,9 @@
     <ClInclude Include="Singleton.h">
       <Filter>Singletons</Filter>
     </ClInclude>
+    <ClInclude Include="RotateParent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Texture2D.cpp">
@@ -124,6 +127,9 @@
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>Singletons</Filter>
+    </ClCompile>
+    <ClCompile Include="RotateParent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

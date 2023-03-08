@@ -56,7 +56,7 @@ std::weak_ptr<dae::GameObject> dae::GameObject::AddChild(const std::string& labe
 {
 	std::shared_ptr<dae::GameObject> child = std::make_shared<dae::GameObject>(label);
 	child->m_pParent = this;
-	child->UpdateWorldPosition();
+	child->m_PositionIsDirty = true;
 	m_pChildren.push_back(child);
 	return child;
 }
