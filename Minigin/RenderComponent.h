@@ -11,7 +11,7 @@ namespace dae
 		~RenderComponent();
 
 		void Loaded() override;
-		void Render() const;
+		virtual void Render() const;
 
 	protected:
 		std::shared_ptr<Texture2D> m_pTexture;
