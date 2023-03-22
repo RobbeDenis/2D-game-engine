@@ -33,7 +33,10 @@ void dae::ImGuiRenderer::Render() const
 	ImGui::NewFrame();
 
 	for (auto& DrawWindow : m_WindowFunctions)
-		DrawWindow();
+	{
+		if (DrawWindow)
+			DrawWindow();
+	}
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
@@ -47,18 +50,18 @@ void dae::ImGuiRenderer::AddWindowFunction(std::function<void()> function)
 	m_WindowFunctions.push_back(function);
 }
 
-void dae::ImGuiRenderer::RemoveWindowFunction(std::function<void()> function)
-{
-	if (function == nullptr)
-		return;
-
-	auto it = std::find_if(begin(m_WindowFunctions), end(m_WindowFunctions), [&](const std::function<void()>& f)
-		{
-			return f.target_type() == function.target_type();
-		});
-
-	if (it != end(m_WindowFunctions))
-	{
-		m_WindowFunctions.erase(it);
-	}
-}
+//void dae::ImGuiRenderer::RemoveWindowFunction(std::function<void()> function)
+//{
+//	if (function == nullptr)
+//		return;
+//
+//	auto it = std::find_if(begin(m_WindowFunctions), end(m_WindowFunctions), [&](const std::function<void()>& f)
+//		{
+//			return f.target_type() == function.target_type();
+//		});
+//
+//	if (it != end(m_WindowFunctions))
+//	{
+//		m_WindowFunctions.erase(it);
+//	}
+//}
