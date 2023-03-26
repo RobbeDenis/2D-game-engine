@@ -14,7 +14,8 @@ namespace dae
 		void Start();
 		void Update();
 		void LateUpdate();
-		void Render();
+		void Render() const;
+		void RenderImGui() const;
 
 		Scene& CreateScene(const std::string& name);
 

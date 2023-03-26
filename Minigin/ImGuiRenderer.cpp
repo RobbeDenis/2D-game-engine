@@ -1,8 +1,4 @@
 #include "ImGuiRenderer.h"
-#include <imgui.h>
-#include <backends/imgui_impl_opengl2.h>
-#include <backends/imgui_impl_sdl2.h>
-#include "Renderer.h"
 
 dae::ImGuiRenderer::ImGuiRenderer(GameObject* pGameObject)
 	: dae::RenderComponent(pGameObject)
@@ -12,34 +8,21 @@ dae::ImGuiRenderer::ImGuiRenderer(GameObject* pGameObject)
 
 dae::ImGuiRenderer::~ImGuiRenderer()
 {
-	ImGui_ImplOpenGL2_Shutdown();
-	ImGui_ImplSDL2_Shutdown();
-	ImGui::DestroyContext();
+	
 }
 
 void dae::ImGuiRenderer::Loaded()
 {
-	RenderComponent::Loaded();
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGui_ImplSDL2_InitForOpenGL(Renderer::GetInstance().GetSDLWindow(), SDL_GL_GetCurrentContext());
-	ImGui_ImplOpenGL2_Init();
+	GetGameObject()->GetScene()->AddImGuiComponent(this);
 }
 
 void dae::ImGuiRenderer::Render() const
 {
-	ImGui_ImplOpenGL2_NewFrame();
-	ImGui_ImplSDL2_NewFrame(Renderer::GetInstance().GetSDLWindow());
-	ImGui::NewFrame();
-
-	for (auto& DrawWindow : m_WindowFunctions)
+	for (const std::function<void()>& DrawWindow : m_WindowFunctions)
 	{
 		if (DrawWindow)
 			DrawWindow();
 	}
-
-	ImGui::Render();
-	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 }
 
 void dae::ImGuiRenderer::AddWindowFunction(std::function<void()> function)

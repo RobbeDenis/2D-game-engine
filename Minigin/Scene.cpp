@@ -34,6 +34,19 @@ void dae::Scene::RemoveRenderComponent(RenderComponent* pRenderComponent)
 	m_pRenderComponents.erase(std::remove(begin(m_pRenderComponents), end(m_pRenderComponents), pRenderComponent), end(m_pRenderComponents));
 }
 
+void dae::Scene::AddImGuiComponent(RenderComponent* pImGuiComponent)
+{
+	m_pImGuiComponents.push_back(pImGuiComponent);
+}
+
+void dae::Scene::RemoveImGuiComponent(RenderComponent* pImGuiComponent)
+{
+	if (m_pImGuiComponents.empty())
+		return;
+
+	m_pImGuiComponents.erase(std::remove(begin(m_pImGuiComponents), end(m_pImGuiComponents), pImGuiComponent), end(m_pImGuiComponents));
+}
+
 void Scene::RemoveAll()
 {
 	m_pObjects.clear();
@@ -87,6 +100,14 @@ void dae::Scene::LateUpdate()
 void Scene::Render() const
 {
 	for (const auto& c : m_pRenderComponents)
+	{
+		c->Render();
+	}
+}
+
+void dae::Scene::RenderImGui() const
+{
+	for (const auto& c : m_pImGuiComponents)
 	{
 		c->Render();
 	}
