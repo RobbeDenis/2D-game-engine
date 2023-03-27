@@ -35,6 +35,7 @@ dae::TrashTheCash::TrashTheCash(GameObject* gameObject)
     , m_Ex1Samples{10}
     , m_Ex2Samples{10}
     , m_OutlierPercentage{0.1f}
+    , m_pImGui{nullptr}
 {
 
 }
@@ -51,8 +52,8 @@ void dae::TrashTheCash::Loaded()
 
 void dae::TrashTheCash::Start()
 {
-    m_pImGui.lock()->AddWindowFunction([this]() { Exercise1Window(); });
-    m_pImGui.lock()->AddWindowFunction([this]() { Exercise2Window(); });
+    m_pImGui->AddWindowFunction([this]() { Exercise1Window(); });
+    m_pImGui->AddWindowFunction([this]() { Exercise2Window(); });
 }
 
 void dae::TrashTheCash::Exercise1Window()

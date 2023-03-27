@@ -64,7 +64,7 @@ namespace dae
 		void UpdateWorldPosition();
 
 		std::string m_Label;
-		std::vector<std::shared_ptr<Component>> m_pComponents;
+		std::vector<std::unique_ptr<Component>> m_pComponents;
 		std::vector<std::shared_ptr<GameObject>> m_pChildren;
 		GameObject* m_pParent;
 		Scene* m_pScene;
@@ -77,27 +77,27 @@ namespace dae
 
 	public:
 		template<IsComponent T>
-		std::weak_ptr<T> AddComponent()
+		T* AddComponent()
 		{
-			std::shared_ptr<T> component = std::make_shared<T>(this);
-			m_pComponents.push_back(component);
-			return component;
+			std::unique_ptr<T> component = std::make_unique<T>(this);
+			T* raw = component.get();
+			m_pComponents.push_back(std::move(component));
+			return raw;
 		}
 
 		template<IsComponent T>
-		std::weak_ptr<T> GetComponent() const
+		T* GetComponent() const
 		{
-			for (auto& component : m_pComponents)
+			for (const std::unique_ptr<Component>& component : m_pComponents)
 			{
-				auto casted = std::dynamic_pointer_cast<T>(component);
-				if (casted)
+				if (T* casted = static_cast<T*>(component.get()))
 					return casted;
 			}
-			return std::weak_ptr<T>();
+			return nullptr;
 		}
 
 	private:
-		void RemoveComponent(std::shared_ptr<Component> component)
+		void RemoveComponent(const std::unique_ptr<Component>& component)
 		{
 			m_pComponents.erase(std::remove(begin(m_pComponents), end(m_pComponents), component), end(m_pComponents));
 		}

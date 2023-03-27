@@ -24,7 +24,7 @@ namespace dae
 		std::vector<float> m_Ex1Data;
 		std::vector<float> m_Ex2Data;
 		std::vector<float> m_Ex2DataAlt;
-		std::weak_ptr<ImGuiRenderer> m_pImGui;
+		ImGuiRenderer* m_pImGui;
 		int m_Ex1Samples;
 		int m_Ex2Samples;
 		float m_OutlierPercentage;

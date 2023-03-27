@@ -17,7 +17,7 @@ void dae::FPSCounter::Loaded()
 
 void dae::FPSCounter::Start()
 {
-	m_pText.lock()->SetText("0 FPS");
+	m_pText->SetText("0 FPS");
 }
 
 void dae::FPSCounter::Update()
@@ -28,7 +28,7 @@ void dae::FPSCounter::Update()
 	if (m_CurruntUpdateInterval >= m_UpdateInterval)
 	{
 		int fps = int(1 / deltaTime);
-		m_pText.lock()->SetText(std::to_string(fps) + " FPS");
+		m_pText->SetText(std::to_string(fps) + " FPS");
 		m_CurruntUpdateInterval = 0.f;
 	}
 }
