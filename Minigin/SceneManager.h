@@ -3,10 +3,10 @@
 #include <string>
 #include <memory>
 #include "Singleton.h"
+#include "Scene.h"
 
 namespace dae
 {
-	class Scene;
 	class SceneManager final : public Singleton<SceneManager>
 	{
 	public:
@@ -17,11 +17,11 @@ namespace dae
 		void Render() const;
 		void RenderImGui() const;
 
-		Scene& CreateScene(const std::string& name);
+		Scene* CreateScene(const std::string& name);
 
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;
-		std::vector<std::shared_ptr<Scene>> m_pScenes;
+		std::vector<std::unique_ptr<Scene>> m_pScenes;
 	};
 }

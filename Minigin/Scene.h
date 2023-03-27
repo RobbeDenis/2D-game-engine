@@ -1,5 +1,7 @@
 #pragma once
-#include "SceneManager.h"
+#include <memory>
+#include <vector>
+#include <string>
 
 namespace dae
 {
@@ -8,8 +10,10 @@ namespace dae
 
 	class Scene final
 	{
-		friend Scene& SceneManager::CreateScene(const std::string& name);
 	public:
+		explicit Scene(const std::string& name);
+		~Scene() = default;
+
 		void Loaded();
 		void Start();
 		void Update();
@@ -25,15 +29,12 @@ namespace dae
 		void RemoveImGuiComponent(RenderComponent* pRenderComponent);
 		void RemoveAll();
 
-		~Scene();
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
 
 	private: 
-		explicit Scene(const std::string& name);
-
 		std::string m_Name;
 		std::vector<std::shared_ptr<GameObject>> m_pObjects;
 		std::vector<RenderComponent*> m_pRenderComponents;

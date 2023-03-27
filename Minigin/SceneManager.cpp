@@ -1,5 +1,4 @@
 #include "SceneManager.h"
-#include "Scene.h"
 
 void dae::SceneManager::Loaded()
 {
@@ -49,9 +48,10 @@ void dae::SceneManager::RenderImGui() const
 	}
 }
 
-dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
+dae::Scene* dae::SceneManager::CreateScene(const std::string& name)
 {
-	const auto& scene = std::shared_ptr<Scene>(new Scene(name));
-	m_pScenes.push_back(scene);
-	return *scene;
+	std::unique_ptr<Scene> scene = std::make_unique<Scene>(name);
+	Scene* raw = scene.get();
+	m_pScenes.push_back(std::move(scene));
+	return raw;
 }
