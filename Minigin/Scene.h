@@ -12,8 +12,8 @@ namespace dae
 	{
 		friend void GameObject::DetachChild(GameObject* child);
 	public:
-		explicit Scene(const std::string& name);
-		~Scene() = default;
+		explicit Scene(const std::string& name, unsigned int id);
+		~Scene();
 
 		void Loaded();
 		void Start();
@@ -30,6 +30,9 @@ namespace dae
 		void RemoveImGuiComponent(RenderComponent* pRenderComponent);
 		void RemoveAll();
 
+		const std::string& GetName() const { return m_Name;	};
+		unsigned int GetId() const { return m_Id;	};
+
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
 		Scene& operator=(const Scene& other) = delete;
@@ -39,12 +42,11 @@ namespace dae
 		void Add(std::unique_ptr<GameObject>& gameObject);
 		void Remove(const std::unique_ptr<GameObject>& gameObject);
 
+		unsigned int m_Id;
 		std::string m_Name;
 		std::vector<std::unique_ptr<GameObject>> m_pObjects;
 		std::vector<RenderComponent*> m_pRenderComponents;
 		std::vector<RenderComponent*> m_pImGuiComponents;
-
-		static unsigned int m_idCounter; 
 	};
 
 }

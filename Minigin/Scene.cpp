@@ -4,9 +4,15 @@
 
 using namespace dae;
 
-unsigned int Scene::m_idCounter = 0;
+Scene::Scene(const std::string& name, unsigned int id)
+	: m_Name{name}
+	, m_Id{id}
+{
+}
 
-Scene::Scene(const std::string& name) : m_Name(name) {}
+dae::Scene::~Scene()
+{
+}
 
 GameObject* dae::Scene::CreateGameObject()
 {
