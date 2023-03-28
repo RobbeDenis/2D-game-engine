@@ -1,4 +1,5 @@
 #include "SpriteRenderer.h"
+#include "GameObject.h"
 #include "ResourceManager.h"
 
 dae::SpriteRenderer::SpriteRenderer(GameObject* pGameObject)

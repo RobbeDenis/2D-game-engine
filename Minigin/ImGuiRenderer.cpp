@@ -1,4 +1,6 @@
 #include "ImGuiRenderer.h"
+#include "GameObject.h"
+#include "Scene.h"
 
 dae::ImGuiRenderer::ImGuiRenderer(GameObject* pGameObject)
 	: dae::RenderComponent(pGameObject)

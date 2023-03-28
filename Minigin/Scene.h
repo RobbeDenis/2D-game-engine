@@ -2,14 +2,15 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include "GameObject.h"
 
 namespace dae
 {
-	class GameObject;
 	class RenderComponent;
 
 	class Scene final
 	{
+		friend void GameObject::DetachChild(GameObject* child);
 	public:
 		explicit Scene(const std::string& name);
 		~Scene() = default;
@@ -21,8 +22,8 @@ namespace dae
 		void Render() const;
 		void RenderImGui() const;
 
-		void Add(std::shared_ptr<GameObject> object);
-		void Remove(std::shared_ptr<GameObject> object);
+		GameObject* CreateGameObject();
+		GameObject* CreateGameObject(const std::string& name);
 		void AddRenderComponent(RenderComponent* pRenderComponent);
 		void RemoveRenderComponent(RenderComponent* pRenderComponent);
 		void AddImGuiComponent(RenderComponent* pRenderComponent);
@@ -35,8 +36,11 @@ namespace dae
 		Scene& operator=(Scene&& other) = delete;
 
 	private: 
+		void Add(std::unique_ptr<GameObject>& gameObject);
+		void Remove(const std::unique_ptr<GameObject>& gameObject);
+
 		std::string m_Name;
-		std::vector<std::shared_ptr<GameObject>> m_pObjects;
+		std::vector<std::unique_ptr<GameObject>> m_pObjects;
 		std::vector<RenderComponent*> m_pRenderComponents;
 		std::vector<RenderComponent*> m_pImGuiComponents;
 

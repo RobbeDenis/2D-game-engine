@@ -1,4 +1,5 @@
 #include "TrashTheCash.h"
+#include "GameObject.h"
 #include "ImGuiRenderer.h"
 #include <chrono>
 #include <imgui.h>

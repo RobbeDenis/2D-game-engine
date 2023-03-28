@@ -1,14 +1,14 @@
 #pragma once
-#include "Scene.h"
 #include <memory>
 #include <vector>
 #include <concepts>
 #include <iostream>
 #include <glm/glm.hpp>
+#include "Component.h"
 
 namespace dae
 {
-	class Component;
+	class Scene;
 	class GameObject;
 
 	template<typename T>
@@ -17,9 +17,8 @@ namespace dae
 		new T(gameObject);
 	};
 
-	class GameObject final : public std::enable_shared_from_this<GameObject>
+	class GameObject final
 	{
-		friend void Scene::Add(std::shared_ptr<GameObject> object);
 	public:
 		GameObject();
 		GameObject(const std::string& label);
@@ -37,12 +36,12 @@ namespace dae
 		const glm::vec3 GetWorldPosition();
 		const glm::vec3 GetLocalPosition() const;
 
-		std::weak_ptr<GameObject> GetChild(size_t index) const;
-		std::weak_ptr<GameObject> GetChild(const std::string& label) const;
-		std::weak_ptr<GameObject> AddChild();
-		std::weak_ptr<GameObject> AddChild(const std::string& label);
-		void AttachChild(std::weak_ptr<GameObject> child, bool keepWorldPosition = false);
-		void DetachChild(std::weak_ptr<GameObject> child, bool addToScene = true);
+		GameObject* GetChild(size_t index) const;
+		GameObject* GetChild(const std::string& label) const;
+		GameObject* AddChild();
+		GameObject* AddChild(const std::string& label);
+		void AttachChild(GameObject* child, bool keepWorldPosition = false);
+		void DetachChild(GameObject* child);
 		size_t GetAmountOffChildren() const;
 
 		void RemoveMarkedChildren();
@@ -50,6 +49,7 @@ namespace dae
 		void SetComponentsMarkedForDestroy();
 		bool IsMarkedForDestroy() const;
 
+		void SetScene(Scene* scene);
 		Scene* GetScene();
 
 		GameObject(const GameObject& other) = delete;
@@ -58,14 +58,13 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 	private:
-		void SetScene(Scene* scene);
-		bool RemoveChild(std::shared_ptr<GameObject> child);
+		bool RemoveChild(GameObject* child);
 		void SetChildrenMarkedForDestroy();
 		void UpdateWorldPosition();
 
 		std::string m_Label;
 		std::vector<std::unique_ptr<Component>> m_pComponents;
-		std::vector<std::shared_ptr<GameObject>> m_pChildren;
+		std::vector<std::unique_ptr<GameObject>> m_pChildren;
 		GameObject* m_pParent;
 		Scene* m_pScene;
 		glm::vec3 m_WorldPosition;

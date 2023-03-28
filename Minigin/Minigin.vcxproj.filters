@@ -75,9 +75,6 @@
     <ClInclude Include="Singleton.h">
       <Filter>Singletons</Filter>
     </ClInclude>
-    <ClInclude Include="RotateParent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ImGuiRenderer.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -110,6 +107,9 @@
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.89.4\imgui_plot.h">
       <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="RotateParent.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

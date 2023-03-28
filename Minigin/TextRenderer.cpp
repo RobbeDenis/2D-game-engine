@@ -1,4 +1,5 @@
 #include "TextRenderer.h"
+#include "GameObject.h"
 #include "Font.h"
 #include "Renderer.h"
 #include "ResourceManager.h"

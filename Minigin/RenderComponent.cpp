@@ -1,4 +1,5 @@
 #include "RenderComponent.h"
+#include "GameObject.h"
 #include "Renderer.h"
 #include "Scene.h"
 

@@ -1,4 +1,5 @@
 #include "RotateParent.h"
+#include "GameObject.h"
 #include "ETime.h"
 
 dae::RotateParent::RotateParent(GameObject* pGameObject)

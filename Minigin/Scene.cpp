@@ -8,20 +8,38 @@ unsigned int Scene::m_idCounter = 0;
 
 Scene::Scene(const std::string& name) : m_Name(name) {}
 
-void Scene::Add(std::shared_ptr<GameObject> object)
+GameObject* dae::Scene::CreateGameObject()
 {
-	object->SetScene(this);
-	m_pObjects.emplace_back(std::move(object));
+	std::unique_ptr<GameObject> object = std::make_unique<GameObject>();
+	GameObject* raw = object.get();
+	raw->SetScene(this);
+	m_pObjects.push_back(std::move(object));
+	return raw;
+}
+
+GameObject* dae::Scene::CreateGameObject(const std::string& name)
+{
+	std::unique_ptr<GameObject> object = std::make_unique<GameObject>(name);
+	GameObject* raw = object.get();
+	raw->SetScene(this);
+	m_pObjects.push_back(std::move(object));
+	return raw;
+}
+
+void dae::Scene::Add(std::unique_ptr<GameObject>& gameObject)
+{
+	gameObject->SetScene(this);
+	m_pObjects.push_back(std::move(gameObject));
+}
+
+void Scene::Remove(const std::unique_ptr<GameObject>& gameObject)
+{
+	m_pObjects.erase(std::remove(m_pObjects.begin(), m_pObjects.end(), gameObject), m_pObjects.end());
 }
 
 void dae::Scene::AddRenderComponent(RenderComponent* pRenderComponent)
 {
 	m_pRenderComponents.push_back(pRenderComponent);
-}
-
-void Scene::Remove(std::shared_ptr<GameObject> object)
-{
-	m_pObjects.erase(std::remove(m_pObjects.begin(), m_pObjects.end(), object), m_pObjects.end());
 }
 
 void dae::Scene::RemoveRenderComponent(RenderComponent* pRenderComponent)

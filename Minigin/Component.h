@@ -1,9 +1,9 @@
 #pragma once
-#include "GameObject.h"
 #include <memory>
 
 namespace dae
 {
+	class GameObject;
 	class Component
 	{
 	public:

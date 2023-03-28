@@ -1,4 +1,5 @@
 #include "TestComp.h"
+#include "GameObject.h"
 
 dae::TestComp::TestComp(GameObject* pGameObject)
 	: dae::Component(pGameObject)
@@ -8,11 +9,11 @@ dae::TestComp::TestComp(GameObject* pGameObject)
 
 void dae::TestComp::Start()
 {
-	auto go = GetGameObject();
-	go->GetChild("left").lock()->Destroy();
-	go->GetChild(2).lock()->GetChild("2 child").lock()->Destroy();
-	go->GetChild(3).lock()->Destroy();
-	auto left = go->GetChild("left").lock()->GetChild("left child");
-	go->GetChild("left").lock()->DetachChild(left);
-	go->GetChild("2").lock()->AttachChild(go->GetChild(3).lock()->GetChild("3 child"), true);
+	GameObject* go = GetGameObject();
+	go->GetChild("left")->Destroy();
+	go->GetChild(2)->GetChild("2 child")->Destroy();
+	go->GetChild(3)->Destroy();
+	GameObject* left = go->GetChild("left")->GetChild("left child");
+	go->GetChild("left")->DetachChild(left);
+	go->GetChild("2")->AttachChild(go->GetChild(3)->GetChild("3 child"), true);
 }

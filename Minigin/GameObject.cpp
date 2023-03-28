@@ -1,5 +1,5 @@
 #include "GameObject.h"
-#include "Component.h"
+#include "Scene.h"
 
 dae::GameObject::GameObject()
 	: GameObject("")
@@ -26,15 +26,15 @@ dae::GameObject::~GameObject()
 
 }
 
-std::weak_ptr<dae::GameObject> dae::GameObject::GetChild(size_t index) const
+dae::GameObject* dae::GameObject::GetChild(size_t index) const
 {
 	if (index >= m_pChildren.size())
-		return std::weak_ptr<dae::GameObject>();
+		return nullptr;
 
-	return m_pChildren[index];
+	return m_pChildren[index].get();
 }
 
-std::weak_ptr<dae::GameObject> dae::GameObject::GetChild(const std::string& label) const
+dae::GameObject* dae::GameObject::GetChild(const std::string& label) const
 {
 	auto it = std::find_if(begin(m_pChildren), end(m_pChildren), [&label](auto& child)
 		{
@@ -42,74 +42,87 @@ std::weak_ptr<dae::GameObject> dae::GameObject::GetChild(const std::string& labe
 		});
 
 	if (it == end(m_pChildren))
-		return std::weak_ptr<dae::GameObject>();
+		return nullptr;
 
-	return *it;
+	return it->get();
 }
 
-std::weak_ptr<dae::GameObject> dae::GameObject::AddChild()
+dae::GameObject* dae::GameObject::AddChild()
 {
 	return AddChild("");
 }
 
-std::weak_ptr<dae::GameObject> dae::GameObject::AddChild(const std::string& label)
+dae::GameObject* dae::GameObject::AddChild(const std::string& label)
 {
-	std::shared_ptr<dae::GameObject> child = std::make_shared<dae::GameObject>(label);
+	std::unique_ptr<dae::GameObject> child = std::make_unique<dae::GameObject>(label);
 	child->m_pParent = this;
 	child->m_PositionIsDirty = true;
-	m_pChildren.push_back(child);
-	return child;
+	GameObject* raw = child.get();
+	m_pChildren.push_back(std::move(child));
+	return raw;
 }
 
-bool dae::GameObject::RemoveChild(std::shared_ptr<GameObject> child)
+bool dae::GameObject::RemoveChild(GameObject* child)
 {
-	auto it = std::remove(begin(m_pChildren), end(m_pChildren), child);
+	auto it = std::find_if(begin(m_pChildren), end(m_pChildren), [&](const std::unique_ptr<GameObject>& c)
+		{
+			return c.get() == child;
+		});
 
 	if (it == end(m_pChildren))
 		return false;
 
-	m_pChildren.erase(it, end(m_pChildren));
+	m_pChildren.erase(it);
 	return true;
 }
 
-void dae::GameObject::DetachChild(std::weak_ptr<GameObject> child, bool addToScene)
+void dae::GameObject::DetachChild(GameObject* child)
 {
-	if (child.expired() || child.lock() == shared_from_this())
+	if (child == nullptr || child == this)
 		return;
 
-	std::shared_ptr<GameObject> unlocked = child.lock();
+	auto it = std::find_if(begin(m_pChildren), end(m_pChildren), [&](const std::unique_ptr<GameObject>& c)
+		{
+			return c.get() == child;
+		});
 
-	if (!RemoveChild(unlocked))
+	if (it == end(m_pChildren))
 		return;
 
-	unlocked->m_pParent = nullptr;
+	child->m_pParent = nullptr;
+	child->SetLocalPosition(GetWorldPosition() + child->GetLocalPosition());
 
-	if (addToScene)
-	{
-		unlocked->SetLocalPosition(GetWorldPosition() + unlocked->GetLocalPosition());
-		GetScene()->Add(unlocked);
-	}
+	GetScene()->Add(*it);
+	m_pChildren.erase(it);
 }
 
-void dae::GameObject::AttachChild(std::weak_ptr<GameObject> child, bool keepWorldPosition)
+void dae::GameObject::AttachChild(GameObject* child, bool keepWorldPosition)
 {
-	if (child.expired() || child.lock() == shared_from_this())
+	if (child == nullptr || child == this)
 		return;
 	
-	std::shared_ptr<GameObject> unlocked = child.lock();
-
 	if (keepWorldPosition)
 	{
-		unlocked->SetLocalPosition(unlocked->GetWorldPosition() - GetWorldPosition());
+		child->SetLocalPosition(child->GetWorldPosition() - GetWorldPosition());
 	}
 
-	if (unlocked->m_pParent != nullptr)
+	if (child->m_pParent == nullptr)
 	{
-		unlocked->m_pParent->DetachChild(child, false);
+		throw std::runtime_error("Attempting to add child with no parent, consider using AddChild() instead");
 	}
 
-	unlocked->m_pParent = this;
-	m_pChildren.push_back(unlocked);
+	GameObject* parent = child->m_pParent;
+	auto it = std::find_if(begin(parent->m_pChildren), end(parent->m_pChildren), [&](const std::unique_ptr<GameObject>& c)
+		{
+			return c.get() == child;
+		});
+	if (it == end(parent->m_pChildren))
+		throw std::runtime_error("Child was not found in parent");
+
+	m_pChildren.push_back(std::move(*it));
+	parent->m_pChildren.erase(it);
+
+	child->m_pParent = this;
 }
 
 void dae::GameObject::Destroy()

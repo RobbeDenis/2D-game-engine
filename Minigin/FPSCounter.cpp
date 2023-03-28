@@ -1,4 +1,5 @@
 #include "FPSCounter.h"
+#include "GameObject.h"
 #include "TextRenderer.h"
 #include "ETime.h"
 

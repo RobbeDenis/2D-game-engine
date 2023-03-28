@@ -1,6 +1,7 @@
 #pragma once
 #include "RenderComponent.h"
 #include <SDL_ttf.h>
+#include <string>
 
 namespace dae
 {
