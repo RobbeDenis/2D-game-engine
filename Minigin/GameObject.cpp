@@ -201,7 +201,7 @@ void dae::GameObject::SetLocalPosition(float x, float y)
 void dae::GameObject::SetLocalPosition(const glm::vec3& position)
 {
 	m_LocalPosition = position;
-	m_PositionIsDirty = true;
+	SetDirty();
 }
 
 const glm::vec3 dae::GameObject::GetWorldPosition()
@@ -227,6 +227,16 @@ void dae::GameObject::UpdateWorldPosition()
 			m_WorldPosition = m_pParent->GetWorldPosition() + m_LocalPosition;
 	}
 	m_PositionIsDirty = false;
+}
+
+void dae::GameObject::SetDirty()
+{
+	m_PositionIsDirty = true;
+
+	for (auto& c : m_pChildren)
+	{
+		c->SetDirty();
+	}
 }
 
 size_t dae::GameObject::GetAmountOffChildren() const

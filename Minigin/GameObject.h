@@ -61,6 +61,7 @@ namespace dae
 		bool RemoveChild(GameObject* child);
 		void SetChildrenMarkedForDestroy();
 		void UpdateWorldPosition();
+		void SetDirty();
 
 		std::string m_Label;
 		std::vector<std::unique_ptr<Component>> m_pComponents;
