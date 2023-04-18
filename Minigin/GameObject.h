@@ -12,7 +12,7 @@ namespace dae
 	class GameObject;
 
 	template<typename T>
-	concept IsComponent = std::is_base_of_v<Component, T> && requires(GameObject* gameObject)
+	concept IsComponent = std::is_base_of_v<Component, T>&& requires(GameObject* gameObject)
 	{
 		new T(gameObject);
 	};

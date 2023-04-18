@@ -7,6 +7,7 @@ dae::FPSCounter::FPSCounter(GameObject* pGameObject)
 	: dae::Component(pGameObject)
 	, m_UpdateInterval{ 0.6f }
 	, m_CurruntUpdateInterval{ 0.f }
+	, m_pText{ nullptr }
 {
 
 }

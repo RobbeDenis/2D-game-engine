@@ -5,6 +5,25 @@
 #include "Movement.h"
 #include "TestCharacter.h"
 
+
+class TestEvent : public dae::Command
+{
+public:
+	explicit TestEvent(dae::TestCharacter* character, unsigned event)
+		: Character{ character }
+		, Event{ event } {}
+
+	void Execute() override
+	{
+		Character->TestEvent(Event);
+	}
+
+private:
+	dae::TestCharacter* Character;
+	unsigned Event;
+};
+
+
 class TestKill : public dae::Command
 {
 public:

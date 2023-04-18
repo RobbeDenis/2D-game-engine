@@ -1,15 +1,25 @@
 #include "TestCharacter.h"
 #include <iostream>
+#include "GameEvents.h"
 
 dae::TestCharacter::TestCharacter(GameObject* gameObject)
 	: dae::Component(gameObject)
+	, dae::Subject()
+	, m_MaxLives{ 1 }
 	, m_Lives{ 1 }
 {
 }
 
+void dae::TestCharacter::Start()
+{
+	m_Lives = m_MaxLives;
+	Notify(this, GameEvents::PlayerStart);
+}
+
 void dae::TestCharacter::SetMaxLives(int lives)
 {
-	m_Lives = lives;
+	m_MaxLives = lives;
+	m_Lives = m_MaxLives;
 }
 
 void dae::TestCharacter::Kill()
@@ -18,12 +28,20 @@ void dae::TestCharacter::Kill()
 		return;
 
 	--m_Lives;
-	// Die
-	std::cout << "Died " << m_Lives << " lives left\n";
+	Notify(this, GameEvents::PlayerDied);
 
 	if (m_Lives <= 0)
 	{
-		// Game over
-		std::cout << "Out of lives\n";
+		Notify(this, GameEvents::PlayerOutOffLives);
 	}
+}
+
+int dae::TestCharacter::GetLives() const
+{
+	return m_Lives;
+}
+
+void dae::TestCharacter::TestEvent(unsigned event)
+{
+	Notify(this, event);
 }

@@ -28,6 +28,12 @@
     <Filter Include="_Test_delete_later">
       <UniqueIdentifier>{04b7927f-54a2-4640-89fd-4d4cb56e40a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Observer">
+      <UniqueIdentifier>{679a9ddd-462b-46d9-8199-ce1017a5fd77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Game">
+      <UniqueIdentifier>{27c2f46f-7cef-4e99-9bc7-33ce225737f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Texture2D.h">
@@ -138,6 +144,21 @@
     <ClInclude Include="TestCharacter.h">
       <Filter>_Test_delete_later</Filter>
     </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="Subject.h">
+      <Filter>Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="LivesDisplay.h">
+      <Filter>_Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEvents.h">
+      <Filter>_Game</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreDisplay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Texture2D.cpp">
@@ -232,6 +253,15 @@
     </ClCompile>
     <ClCompile Include="TestCharacter.cpp">
       <Filter>_Test_delete_later</Filter>
+    </ClCompile>
+    <ClCompile Include="Subject.cpp">
+      <Filter>Observer</Filter>
+    </ClCompile>
+    <ClCompile Include="LivesDisplay.cpp">
+      <Filter>_Game</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreDisplay.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
