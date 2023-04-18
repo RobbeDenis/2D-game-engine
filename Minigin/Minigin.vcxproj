@@ -207,6 +207,7 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SpriteRenderer.h" />
+    <ClInclude Include="TestCharacter.h" />
     <ClInclude Include="TestCommands.h" />
     <ClInclude Include="TestComp.h" />
     <ClInclude Include="TextRenderer.h" />
@@ -240,6 +241,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
+    <ClCompile Include="TestCharacter.cpp" />
     <ClCompile Include="TestComp.cpp" />
     <ClCompile Include="TextRenderer.cpp" />
     <ClCompile Include="Texture2D.cpp" />

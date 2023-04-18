@@ -135,6 +135,9 @@
     <ClInclude Include="Movement.h">
       <Filter>_Test_delete_later</Filter>
     </ClInclude>
+    <ClInclude Include="TestCharacter.h">
+      <Filter>_Test_delete_later</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Texture2D.cpp">
@@ -225,6 +228,9 @@
       <Filter>_Test_delete_later</Filter>
     </ClCompile>
     <ClCompile Include="Movement.cpp">
+      <Filter>_Test_delete_later</Filter>
+    </ClCompile>
+    <ClCompile Include="TestCharacter.cpp">
       <Filter>_Test_delete_later</Filter>
     </ClCompile>
   </ItemGroup>
