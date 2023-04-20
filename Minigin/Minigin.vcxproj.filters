@@ -34,6 +34,9 @@
     <Filter Include="_Game">
       <UniqueIdentifier>{27c2f46f-7cef-4e99-9bc7-33ce225737f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Steam">
+      <UniqueIdentifier>{f285b876-bf9d-4fa1-99be-a27076c83b6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Texture2D.h">
@@ -159,6 +162,9 @@
     <ClInclude Include="ScoreDisplay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CSteamAchievements.h">
+      <Filter>Steam</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Texture2D.cpp">
@@ -262,6 +268,9 @@
     </ClCompile>
     <ClCompile Include="ScoreDisplay.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CSteamAchievements.cpp">
+      <Filter>Steam</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

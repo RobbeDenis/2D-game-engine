@@ -14,11 +14,6 @@ namespace dae
 		void AddObserver(Observer* observer);
 		void RemoveObserver(Observer* observer);
 
-		Subject(const Subject& other) = delete;
-		Subject(Subject&& other) = delete;
-		Subject& operator=(const Subject& other) = delete;
-		Subject& operator=(Subject&& other) = delete;
-
 	protected:
 		void Notify(Component* component, unsigned event);
 
