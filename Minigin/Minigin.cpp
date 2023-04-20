@@ -4,7 +4,6 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
-#include <steam_api.h>
 #include "Minigin.h"
 #include "InputManager.h"
 #include "SceneManager.h"
@@ -99,7 +98,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		sceneManager.Update();
 		renderer.Render();
 		sceneManager.LateUpdate();
-		SteamAPI_RunCallbacks();
 		time.Sleep();
 	}
 }

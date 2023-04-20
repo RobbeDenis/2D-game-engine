@@ -1,7 +1,6 @@
 #pragma once
 #include "Component.h"
 #include "Observer.h"
-#include "CSteamAchievements.h"
 
 namespace dae
 {
@@ -18,7 +17,6 @@ namespace dae
 		void UpdateScore();
 
 		TextRenderer* m_pText;
-		CSteamAchievements* m_SteamAchievements;
 		unsigned m_Score;
 		int m_GhostKilled;
 	};
