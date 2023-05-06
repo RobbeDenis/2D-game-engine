@@ -25,14 +25,8 @@
     <Filter Include="Input">
       <UniqueIdentifier>{1f293382-473b-4ea2-8c9d-ad31c6297344}</UniqueIdentifier>
     </Filter>
-    <Filter Include="_Test_delete_later">
-      <UniqueIdentifier>{04b7927f-54a2-4640-89fd-4d4cb56e40a1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Observer">
       <UniqueIdentifier>{679a9ddd-462b-46d9-8199-ce1017a5fd77}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="_Game">
-      <UniqueIdentifier>{27c2f46f-7cef-4e99-9bc7-33ce225737f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -126,38 +120,14 @@
     <ClInclude Include="Controller.h">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="TestComp.h">
-      <Filter>_Test_delete_later</Filter>
-    </ClInclude>
-    <ClInclude Include="TestCommands.h">
-      <Filter>_Test_delete_later</Filter>
-    </ClInclude>
     <ClInclude Include="Keyboard.h">
       <Filter>Input</Filter>
-    </ClInclude>
-    <ClInclude Include="RotateParent.h">
-      <Filter>_Test_delete_later</Filter>
-    </ClInclude>
-    <ClInclude Include="Movement.h">
-      <Filter>_Test_delete_later</Filter>
-    </ClInclude>
-    <ClInclude Include="TestCharacter.h">
-      <Filter>_Test_delete_later</Filter>
     </ClInclude>
     <ClInclude Include="Observer.h">
       <Filter>Observer</Filter>
     </ClInclude>
     <ClInclude Include="Subject.h">
       <Filter>Observer</Filter>
-    </ClInclude>
-    <ClInclude Include="LivesDisplay.h">
-      <Filter>_Game</Filter>
-    </ClInclude>
-    <ClInclude Include="GameEvents.h">
-      <Filter>_Game</Filter>
-    </ClInclude>
-    <ClInclude Include="ScoreDisplay.h">
-      <Filter>_Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -171,9 +141,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Font.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Minigin.cpp">
@@ -242,26 +209,8 @@
     <ClCompile Include="XBox360Controller.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="TestComp.cpp">
-      <Filter>_Test_delete_later</Filter>
-    </ClCompile>
-    <ClCompile Include="RotateParent.cpp">
-      <Filter>_Test_delete_later</Filter>
-    </ClCompile>
-    <ClCompile Include="Movement.cpp">
-      <Filter>_Test_delete_later</Filter>
-    </ClCompile>
-    <ClCompile Include="TestCharacter.cpp">
-      <Filter>_Test_delete_later</Filter>
-    </ClCompile>
     <ClCompile Include="Subject.cpp">
       <Filter>Observer</Filter>
-    </ClCompile>
-    <ClCompile Include="LivesDisplay.cpp">
-      <Filter>_Game</Filter>
-    </ClCompile>
-    <ClCompile Include="ScoreDisplay.cpp">
-      <Filter>_Game</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

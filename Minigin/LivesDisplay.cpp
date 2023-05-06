@@ -1,6 +1,6 @@
 #include "LivesDisplay.h"
-#include "GameObject.h"
-#include "TextRenderer.h"
+#include <GameObject.h>
+#include <TextRenderer.h>
 #include "GameEvents.h"
 #include "TestCharacter.h"
 

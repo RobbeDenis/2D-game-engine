@@ -1,8 +1,8 @@
 #include "ScoreDisplay.h"
-#include "GameEvents.h"
-#include "GameObject.h"
-#include "TextRenderer.h"
+#include <GameObject.h>
+#include <TextRenderer.h>
 #include <algorithm>
+#include "GameEvents.h"
 
 dae::ScoreDisplay::ScoreDisplay(GameObject* gameObject)
 	: dae::Component(gameObject)

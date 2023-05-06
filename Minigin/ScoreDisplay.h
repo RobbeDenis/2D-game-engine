@@ -1,6 +1,6 @@
 #pragma once
-#include "Component.h"
-#include "Observer.h"
+#include <Component.h>
+#include <Observer.h>
 
 namespace dae
 {
