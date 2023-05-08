@@ -25,6 +25,8 @@
     <ClCompile Include="..\Minigin\ScoreDisplay.cpp" />
     <ClCompile Include="..\Minigin\TestCharacter.cpp" />
     <ClCompile Include="..\Minigin\TestComp.cpp" />
+    <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="GridRenderer.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -36,6 +38,8 @@
     <ClInclude Include="..\Minigin\TestCharacter.h" />
     <ClInclude Include="..\Minigin\TestCommands.h" />
     <ClInclude Include="..\Minigin\TestComp.h" />
+    <ClInclude Include="Grid.h" />
+    <ClInclude Include="GridRenderer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

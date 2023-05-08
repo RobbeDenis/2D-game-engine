@@ -22,6 +22,9 @@
     <Filter Include="Components">
       <UniqueIdentifier>{618ad92b-4f67-49c0-b95b-98de2210aa3f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Grid">
+      <UniqueIdentifier>{dd0ac51e-3025-412b-946e-a825ed30304f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -44,6 +47,12 @@
     </ClCompile>
     <ClCompile Include="..\Minigin\RotateParent.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="GridRenderer.cpp">
+      <Filter>Grid</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +79,12 @@
     </ClInclude>
     <ClInclude Include="..\Minigin\RotateParent.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="GridRenderer.h">
+      <Filter>Grid</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

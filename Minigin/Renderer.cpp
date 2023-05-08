@@ -87,4 +87,10 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 }
 
+void dae::Renderer::RenderLine(int x1, int y1, int x2, int y2, const SDL_Color& color) const
+{
+	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
+	SDL_RenderDrawLine(GetSDLRenderer(), x1, y1, x2, y2);
+}
+
 inline SDL_Renderer* dae::Renderer::GetSDLRenderer() const { return m_renderer; }
