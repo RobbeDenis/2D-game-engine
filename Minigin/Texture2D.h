@@ -4,15 +4,12 @@
 struct SDL_Texture;
 namespace dae
 {
-	/**
-	 * Simple RAII wrapper for an SDL_Texture
-	 */
-	class Texture2D final
+	class Texture2D
 	{
 	public:
 		SDL_Texture* GetSDLTexture() const;
 		explicit Texture2D(SDL_Texture* texture);
-		~Texture2D();
+		virtual ~Texture2D();
 
 		glm::ivec2 GetSize() const;
 

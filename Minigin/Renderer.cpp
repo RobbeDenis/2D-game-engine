@@ -87,6 +87,34 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 }
 
+void dae::Renderer::RenderMaskedTexture(const Texture2D& texture, SDL_Texture* mask, SDL_Texture* target, float x, float y, int width, int height) const
+{
+	SDL_Rect dst{};
+	dst.x = static_cast<int>(x);
+	dst.y = static_cast<int>(y);
+	dst.w = width;
+	dst.h = height;
+
+	// Setting render target to m_pTarget
+	SDL_SetRenderTarget(GetSDLRenderer(), target);
+
+	// Clearing m_pTarget
+	SDL_SetRenderDrawColor(GetSDLRenderer(), 0, 0, 0, 0);
+	SDL_RenderClear(GetSDLRenderer());
+
+	// Render the black and white mask
+	SDL_RenderCopy(GetSDLRenderer(), mask, nullptr, nullptr);
+
+	// Set the texure's blendmode to multiply adn render
+	SDL_SetTextureBlendMode(texture.GetSDLTexture(), SDL_BLENDMODE_MUL);
+	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, nullptr);
+
+	SDL_SetRenderTarget(GetSDLRenderer(), nullptr);
+
+	// Setting render target back to default
+	SDL_RenderCopy(GetSDLRenderer(), target, nullptr, &dst);
+}
+
 void dae::Renderer::RenderLine(int x1, int y1, int x2, int y2, const SDL_Color& color) const
 {
 	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);

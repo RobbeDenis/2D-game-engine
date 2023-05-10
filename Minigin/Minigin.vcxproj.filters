@@ -28,18 +28,15 @@
     <Filter Include="Observer">
       <UniqueIdentifier>{679a9ddd-462b-46d9-8199-ce1017a5fd77}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Rendering">
+      <UniqueIdentifier>{fd1f4ce0-d9c4-426f-80ab-cbf46ca2c90c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Texture2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Font.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Minigin.h">
@@ -61,9 +58,6 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="ETime.h">
-      <Filter>Singletons</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
       <Filter>Singletons</Filter>
     </ClInclude>
     <ClInclude Include="ResourceManager.h">
@@ -129,18 +123,21 @@
     <ClInclude Include="Subject.h">
       <Filter>Observer</Filter>
     </ClInclude>
+    <ClInclude Include="Texture2D.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Texture2D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Font.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Minigin.cpp">
@@ -162,9 +159,6 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="ETime.cpp">
-      <Filter>Singletons</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
       <Filter>Singletons</Filter>
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
@@ -211,6 +205,15 @@
     </ClCompile>
     <ClCompile Include="Subject.cpp">
       <Filter>Observer</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture2D.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Rendering</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,5 +1,7 @@
 #pragma once
 #include <Component.h>
+#include <vector>
+#include <string>
 
 namespace pacman
 {
@@ -8,14 +10,17 @@ namespace pacman
 	public:
 		Grid(dae::GameObject* pGameObject);
 
-		void Initialize(unsigned colums, unsigned rows, unsigned cellSize);
+		void LoadFromFile(unsigned colums, unsigned rows, unsigned cellSize, const std::string& filename);
 		void Loaded() override;
 
 		unsigned GetColums() const { return m_Colums; }
 		unsigned GetRows() const { return m_Rows; }
 		unsigned GetCellSize() const { return m_CellSize; }
 
+		void PrintGrid() const;
+
 	private:
+		std::vector<std::vector<unsigned>> m_Cells;
 		unsigned m_Colums;
 		unsigned m_Rows;
 		unsigned m_CellSize;

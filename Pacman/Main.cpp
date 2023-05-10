@@ -31,7 +31,7 @@ void load();
 
 int main(int, char* []) 
 {
-	dae::Minigin engine{ "../Data/" };
+	dae::Minigin engine{ "../Data/", 640, 540 };
 	engine.Run(load);
 	return 0;
 }
@@ -47,33 +47,37 @@ void load()
 	// BACKGROUND
 	go = scene->CreateGameObject();
 	go->AddComponent<dae::SpriteRenderer>()->SetTexture("background.tga");
+	go->SetLocalPosition(0, 60);
 
-	go = scene->CreateGameObject();
-	go->AddComponent<dae::SpriteRenderer>()->SetTexture("logo.tga");
-	go->SetLocalPosition(216, 180);
+	//go = scene->CreateGameObject();
+	//go->AddComponent<dae::SpriteRenderer>()->SetTexture("logo.tga");
+	//go->SetLocalPosition(216, 180);
 
-	go = scene->CreateGameObject();
-	auto tr = go->AddComponent<dae::TextRenderer>();
-	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	tr->SetText("Programming 4 Assignment");
-	tr->SetFont(font);
-	go->SetLocalPosition(90, 0);
+	//go = scene->CreateGameObject();
+	//auto tr = go->AddComponent<dae::TextRenderer>();
+	//auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	//tr->SetText("Programming 4 Assignment");
+	//tr->SetFont(font);
+	//go->SetLocalPosition(90, 0);
 
 	// FPS
 	go = scene->CreateGameObject();
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
-	tr = go->AddComponent<dae::TextRenderer>();
-	tr->SetText("FPS");
-	tr->SetFont(font);
-	tr->SetColor({ 0, 255, 0 });
+	auto font2 = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
+	auto tr2 = go->AddComponent<dae::TextRenderer>();
+	tr2->SetText("FPS");
+	tr2->SetFont(font2);
+	tr2->SetColor({ 0, 255, 0 });
 	go->AddComponent<dae::FPSCounter>();
 
 	// Grid test
 	go = scene->CreateGameObject();
-	go->AddComponent<pacman::GridRenderer>();
+	auto gridRender = go->AddComponent<pacman::GridRenderer>();
+	gridRender->SetTexture("BlankLevel.png");
+	gridRender->EnableDebugGrid(true);
 	auto grid = go->AddComponent<pacman::Grid>();
-	grid->Initialize(15, 10, 32);
-	go->SetLocalPosition(30, 60);
+	grid->LoadFromFile(10, 10, 32, "TestLevel.txt");
+	grid->PrintGrid();
+	go->SetLocalPosition(30, 30);
 
 	//// DISPLAY
 	//SDL_Color yellow{ 252, 219, 3 };

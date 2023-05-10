@@ -41,6 +41,9 @@
     <ClInclude Include="Grid.h" />
     <ClInclude Include="GridRenderer.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\Data\TestLevel.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
