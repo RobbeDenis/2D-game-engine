@@ -3,7 +3,6 @@
 #include <string>
 
 struct SDL_Texture;
-class MaskedTexture2D;
 namespace pacman
 {
 	class Grid;
@@ -20,8 +19,11 @@ namespace pacman
 		void SetTexture(std::shared_ptr<dae::Texture2D> texture);
 		void SetTexture(const std::string& filename);
 		void EnableDebugGrid(bool enable);
+		void UpdateMask();
 
 	private:
+		void FillCell(unsigned char* pixels,int pitch, int gridX, int gridY, unsigned char value);
+
 		int m_Width;
 		int m_Height;
 		Grid* m_pGrid;

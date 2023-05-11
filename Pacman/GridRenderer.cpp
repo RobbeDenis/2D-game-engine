@@ -34,17 +34,7 @@ void pacman::GridRenderer::Start()
 	m_pTarget = SDL_CreateTexture(dae::Renderer::GetInstance().GetSDLRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, m_Width, m_Height);
 	m_pMask = SDL_CreateTexture(dae::Renderer::GetInstance().GetSDLRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, m_Width, m_Height);
 
-	unsigned char* pixels;
-	int pitch;
-
-	SDL_LockTexture(m_pMask, NULL, (void**)&pixels, &pitch);
-
-	for (int i = 0; i < pitch * (m_Height / 2); ++i)
-	{
-		pixels[i] = 255;
-	}
-
-	SDL_UnlockTexture(m_pMask);
+	UpdateMask();
 }
 
 void pacman::GridRenderer::Render() const
@@ -71,6 +61,50 @@ void pacman::GridRenderer::Render() const
 	{
 		const int y{ static_cast<int>(pos.y) + r * cellSize };
 		renderer.RenderLine(static_cast<int>(pos.x), y, static_cast<int>(pos.x) + m_Width, y);
+	}
+}
+
+void pacman::GridRenderer::UpdateMask()
+{
+	if (m_pGrid == nullptr)
+		throw std::runtime_error("m_pGrid is nullptr");
+
+
+	const int colums{ static_cast<int>(m_pGrid->GetColums()) };
+	const int rows{ static_cast<int>(m_pGrid->GetRows()) };
+
+	unsigned char* pixels;
+	int pitch;
+
+	SDL_LockTexture(m_pMask, NULL, (void**)&pixels, &pitch);
+
+	for (int x = 0; x < rows; ++x)
+	{
+		for (int y = 0; y < colums; ++y)
+		{
+			const unsigned char value = (m_pGrid->GetCellData(x, y) == CellType::Wall) * 255;
+			FillCell(pixels, pitch, x, y, value);
+		}
+	}
+
+	SDL_UnlockTexture(m_pMask);
+}
+
+void pacman::GridRenderer::FillCell(unsigned char* pixels, int pitch, int gridX, int gridY, unsigned char value)
+{
+	const int cellSize{ static_cast<int>(m_pGrid->GetCellSize()) };
+
+	for (int y = gridX * cellSize; y < (gridX + 1) * cellSize; ++y)
+	{
+		for (int x = gridY * cellSize; x < (gridY + 1) * cellSize; ++x)
+		{
+			const int byteWidth = 4;
+			const int index = y * pitch + x * byteWidth;
+			pixels[index] = value;
+			pixels[index + 1] = value;
+			pixels[index + 2] = value;
+			pixels[index + 3] = value;
+		}
 	}
 }
 

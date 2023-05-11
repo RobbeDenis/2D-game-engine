@@ -5,6 +5,12 @@
 
 namespace pacman
 {
+	enum CellType
+	{
+		Empty = 0,
+		Wall = 1
+	};
+
 	class Grid : public dae::Component
 	{
 	public:
@@ -13,6 +19,7 @@ namespace pacman
 		void LoadFromFile(unsigned colums, unsigned rows, unsigned cellSize, const std::string& filename);
 		void Loaded() override;
 
+		unsigned GetCellData(unsigned x, unsigned y) const { return m_Cells[x][y]; }
 		unsigned GetColums() const { return m_Colums; }
 		unsigned GetRows() const { return m_Rows; }
 		unsigned GetCellSize() const { return m_CellSize; }
