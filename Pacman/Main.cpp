@@ -85,7 +85,7 @@ void load()
 	// Character
 	go = scene->CreateGameObject();
 	auto sprite = go->AddComponent<dae::SpriteRenderer>();
-	sprite->SetTexture("RedGhost.png");
+	sprite->SetTexture("canucant.png");
 	auto character = go->AddComponent<pacman::Character>();
 	character->InitGridAgent(grid, { 5,1 });
 

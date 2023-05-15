@@ -70,9 +70,11 @@ void pacman::Grid::MoveAgentInDirection(GridAgent* pAgent, float speed, const gl
 	const glm::ivec2 pos{ pAgent->GetGridPosition() };
 	const Coordinate coordinate{ pAgent->GetCoordinate() };
 
+	speed; elapsed;
+
 	Coordinate target{ coordinate.x + newDirection.x, coordinate.y + newDirection.y };
 
-	if (m_Cells[target.x][target.y] == CellType::Wall)
+	if (m_Cells[target.y][target.x] == CellType::Wall)
 	{
 		glm::ivec2 newPos{ pos + newDirection * static_cast<int>(speed * elapsed) };
 		const glm::ivec2 maxPos{ CalculateCellPosition(coordinate) };
@@ -82,11 +84,13 @@ void pacman::Grid::MoveAgentInDirection(GridAgent* pAgent, float speed, const gl
 		if (newDirection.x > 0 && newPos.x > maxPos.x)
 			newPos.x = maxPos.x;
 
+		if (newDirection.y < 0 && newPos.y < maxPos.y)
+			newPos.y = maxPos.y;
+		if (newDirection.y > 0 && newPos.y > maxPos.y)
+			newPos.y = maxPos.y;
+
 		pAgent->SetGridPosition(newPos);
-
 		pAgent->SetCoordinate(GetCoordinateFromPosition(pAgent->GetGridPosition()));
-
-		//newPos.x = std::min(maxPos.x, std::max(std::min(newDirection.x, 1) * newPos.x, maxPos.x));
 
 		return;
 	}
@@ -101,8 +105,9 @@ pacman::Coordinate pacman::Grid::GetCoordinateFromPosition(const glm::ivec2& pos
 {
 	const glm::ivec2 gridPos{ static_cast<int>(GetGameObject()->GetWorldPosition().x), static_cast<int>(GetGameObject()->GetWorldPosition().y) };
 	const glm::ivec2 gridSpace{ position - gridPos };
-	//const Coordinate c{ (gridSpace.x + (m_CellSize / 2)) / m_CellSize, (gridSpace.y + (m_CellSize / 2)) / m_CellSize };
-	const Coordinate c{ (gridSpace.x ) / m_CellSize, (gridSpace.y ) / m_CellSize };
+	//const Coordinate c{}
+	const Coordinate c{ (gridSpace.x + (m_CellSize / 2)) / m_CellSize, (gridSpace.y + (m_CellSize / 2)) / m_CellSize };
+	//const Coordinate c{ ((gridSpace.x ) / m_CellSize), ((gridSpace.y ) / m_CellSize) };
 	return c;
 }
 
