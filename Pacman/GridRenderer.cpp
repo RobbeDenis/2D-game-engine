@@ -4,6 +4,7 @@
 #include <ResourceManager.h>
 #include <SDL.h>
 #include "Grid.h"
+#include "GridAgent.h"
 
 pacman::GridRenderer::GridRenderer(dae::GameObject* pGameObject)
 	: dae::RenderComponent(pGameObject)
@@ -13,6 +14,7 @@ pacman::GridRenderer::GridRenderer(dae::GameObject* pGameObject)
 	, m_pTarget{ nullptr }
 	, m_Width{ 0 }
 	, m_Height{ 0 }
+	, m_DebugAgentsEnabled{ false }
 {
 
 }
@@ -44,23 +46,46 @@ void pacman::GridRenderer::Render() const
 
 	renderer.RenderMaskedTexture(*m_pTexture, m_pMask, m_pTarget, pos.x, pos.y, m_Width, m_Height);
 
-	if (m_pGrid == nullptr || !m_DebugGridEnabled)
+	if (m_pGrid == nullptr)
 		return;
 
-	const int colums{ static_cast<int>(m_pGrid->GetColums()) };
-	const int rows{ static_cast<int>(m_pGrid->GetRows()) };
-	const int cellSize{ static_cast<int>(m_pGrid->GetCellSize()) };
-
-	for (int c{ 0 }; c <= colums; ++c)
+	if (m_DebugGridEnabled)
 	{
-		const int x{ static_cast<int>(pos.x) + c * cellSize };
-		renderer.RenderLine(x, static_cast<int>(pos.y), x, static_cast<int>(pos.y) + m_Height);
+		const int colums{ static_cast<int>(m_pGrid->GetColums()) };
+		const int rows{ static_cast<int>(m_pGrid->GetRows()) };
+		const int cellSize{ static_cast<int>(m_pGrid->GetCellSize()) };
+
+		for (int c{ 0 }; c <= colums; ++c)
+		{
+			const int x{ static_cast<int>(pos.x) + c * cellSize };
+			renderer.RenderLine(x, static_cast<int>(pos.y), x, static_cast<int>(pos.y) + m_Height);
+		}
+
+		for (int r{ 0 }; r <= rows; ++r)
+		{
+			const int y{ static_cast<int>(pos.y) + r * cellSize };
+			renderer.RenderLine(static_cast<int>(pos.x), y, static_cast<int>(pos.x) + m_Width, y);
+		}
 	}
 
-	for (int r{ 0 }; r <= rows; ++r)
+	if (m_DebugAgentsEnabled)
 	{
-		const int y{ static_cast<int>(pos.y) + r * cellSize };
-		renderer.RenderLine(static_cast<int>(pos.x), y, static_cast<int>(pos.x) + m_Width, y);
+		auto& agents{ m_pGrid->GetAgents() };
+		const int cellSize{ static_cast<int>(m_pGrid->GetCellSize()) };
+
+		for (const auto& agent : agents)
+		{
+			const Coordinate c{ agent->GetCoordinate() };
+			const int x{ static_cast<int>(pos.x) + cellSize * static_cast<int>(c.x) };
+			const int y{ static_cast<int>(pos.y) + cellSize * static_cast<int>(c.y) };
+
+			SDL_Color color{ 255,0,0 };
+
+			renderer.RenderLine(x, y, x + cellSize, y, color);
+			renderer.RenderLine(x, y, x , y + cellSize, color);
+			renderer.RenderLine(x + cellSize, y, x + cellSize, y + cellSize, color);
+			renderer.RenderLine(x, y + cellSize, x + cellSize, y + cellSize, color);
+		}
 	}
 }
 
@@ -128,4 +153,9 @@ void pacman::GridRenderer::SetTexture(const std::string& filename)
 void pacman::GridRenderer::EnableDebugGrid(bool enable)
 {
 	m_DebugGridEnabled = enable;
+}
+
+void pacman::GridRenderer::EnableDebugAgents(bool enable)
+{
+	m_DebugAgentsEnabled = enable;
 }

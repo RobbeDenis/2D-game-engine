@@ -54,6 +54,12 @@
     <ClCompile Include="GridRenderer.cpp">
       <Filter>Grid</Filter>
     </ClCompile>
+    <ClCompile Include="GridAgent.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Minigin\LivesDisplay.h">
@@ -85,6 +91,15 @@
     </ClInclude>
     <ClInclude Include="GridRenderer.h">
       <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="GridAgent.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PacmanCommands.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -26,6 +26,8 @@
 #include "ScoreDisplay.h"
 #include "Grid.h"
 #include "GridRenderer.h"
+#include "Character.h"
+#include "PacmanCommands.h"
 
 void load();
 
@@ -38,7 +40,7 @@ int main(int, char* [])
 
 void load()
 {
-	auto& input = dae::InputManager::GetInstance(); input;
+	auto& input = dae::InputManager::GetInstance();
 	auto& sceneManager = dae::SceneManager::GetInstance();
 
 	dae::Scene* scene = sceneManager.CreateScene("Demo");
@@ -74,10 +76,28 @@ void load()
 	auto gridRender = go->AddComponent<pacman::GridRenderer>();
 	gridRender->SetTexture("BlankLevel.png");
 	gridRender->EnableDebugGrid(true);
+	gridRender->EnableDebugAgents(true);
 	auto grid = go->AddComponent<pacman::Grid>();
 	grid->LoadFromFile(10, 10, 32, "TestLevel.txt");
 	grid->PrintGrid();
 	go->SetLocalPosition(30, 30);
+
+	// Character
+	go = scene->CreateGameObject();
+	auto sprite = go->AddComponent<dae::SpriteRenderer>();
+	sprite->SetTexture("RedGhost.png");
+	auto character = go->AddComponent<pacman::Character>();
+	character->InitGridAgent(grid, { 5,1 });
+
+	// Input
+	{
+		using namespace dae;
+
+		input.AddKeyboardCommand({ SDL_SCANCODE_W, ButtonState::Pressed }, std::make_shared<MoveCharacter>(0, -1, character));
+		input.AddKeyboardCommand({ SDL_SCANCODE_A, ButtonState::Pressed }, std::make_shared<MoveCharacter>(-1, 0, character));
+		input.AddKeyboardCommand({ SDL_SCANCODE_S, ButtonState::Pressed }, std::make_shared<MoveCharacter>(0, 1, character));
+		input.AddKeyboardCommand({ SDL_SCANCODE_D, ButtonState::Pressed }, std::make_shared<MoveCharacter>(1, 0, character));
+	}
 
 	//// DISPLAY
 	//SDL_Color yellow{ 252, 219, 3 };

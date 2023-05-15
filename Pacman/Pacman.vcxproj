@@ -25,7 +25,9 @@
     <ClCompile Include="..\Minigin\ScoreDisplay.cpp" />
     <ClCompile Include="..\Minigin\TestCharacter.cpp" />
     <ClCompile Include="..\Minigin\TestComp.cpp" />
+    <ClCompile Include="Character.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="GridAgent.cpp" />
     <ClCompile Include="GridRenderer.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
@@ -38,8 +40,11 @@
     <ClInclude Include="..\Minigin\TestCharacter.h" />
     <ClInclude Include="..\Minigin\TestCommands.h" />
     <ClInclude Include="..\Minigin\TestComp.h" />
+    <ClInclude Include="Character.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="GridAgent.h" />
     <ClInclude Include="GridRenderer.h" />
+    <ClInclude Include="PacmanCommands.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Data\TestLevel.txt" />

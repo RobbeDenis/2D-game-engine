@@ -19,6 +19,7 @@ namespace pacman
 		void SetTexture(std::shared_ptr<dae::Texture2D> texture);
 		void SetTexture(const std::string& filename);
 		void EnableDebugGrid(bool enable);
+		void EnableDebugAgents(bool enable);
 		void UpdateMask();
 
 	private:
@@ -30,5 +31,6 @@ namespace pacman
 		SDL_Texture* m_pMask;
 		SDL_Texture* m_pTarget;
 		bool m_DebugGridEnabled;
+		bool m_DebugAgentsEnabled;
 	};
 }

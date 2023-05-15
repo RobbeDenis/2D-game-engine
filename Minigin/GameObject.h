@@ -31,6 +31,7 @@ namespace dae
 		virtual void Update();
 		virtual void LateUpdate();
 
+		void SetLocalPosition(int x, int y);
 		void SetLocalPosition(float x, float y);
 		void SetLocalPosition(const glm::vec3& position);
 		const glm::vec3 GetWorldPosition();

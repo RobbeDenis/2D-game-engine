@@ -193,6 +193,11 @@ void dae::GameObject::LateUpdate()
 	}
 }
 
+void dae::GameObject::SetLocalPosition(int x, int y)
+{
+	SetLocalPosition({ static_cast<float>(x), static_cast<float>(y), 0.f });
+}
+
 void dae::GameObject::SetLocalPosition(float x, float y)
 {
 	SetLocalPosition({ x, y, 0.f });
