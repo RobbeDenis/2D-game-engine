@@ -41,11 +41,13 @@ namespace pacman
 
 	private:
 		glm::ivec2 CalculateCellPosition(const Coordinate& coordinate);
+		bool CanSnap(const glm::ivec2& pos);
 
 		std::vector<std::vector<unsigned>> m_Cells;
 		std::vector<std::unique_ptr<GridAgent>> m_pAgents;
 		unsigned m_Colums;
 		unsigned m_Rows;
 		unsigned m_CellSize;
+		unsigned m_Offset;
 	};
 }

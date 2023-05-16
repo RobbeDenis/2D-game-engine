@@ -25,6 +25,11 @@ void pacman::GridAgent::SetGridPosition(const glm::ivec2& position)
 	m_GridPosition = position;
 }
 
+void pacman::GridAgent::SetDirection(const glm::ivec2& direction)
+{
+	m_Direction = direction;
+}
+
 const glm::ivec2& pacman::GridAgent::GetGridPosition() const
 {
 	return m_GridPosition;

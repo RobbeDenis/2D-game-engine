@@ -18,6 +18,7 @@ namespace pacman
 		friend Grid;
 		void SetCoordinate(const Coordinate& coordinate);
 		void SetGridPosition(const glm::ivec2& position);
+		void SetDirection(const glm::ivec2& direction);
 
 		glm::ivec2 m_GridPosition;
 		glm::ivec2 m_Direction;
