@@ -28,6 +28,10 @@
 #include "GridRenderer.h"
 #include "Character.h"
 #include "PacmanCommands.h"
+#include "SoundSystemLocator.h"
+#include "LoggerSoundSystem.h"
+#include "SDLSoundSystem.h"
+#include "PacmanSounds.h"
 
 void load();
 
@@ -85,9 +89,21 @@ void load()
 	// Character
 	go = scene->CreateGameObject();
 	auto sprite = go->AddComponent<dae::SpriteRenderer>();
-	sprite->SetTexture("canucant.png");
+	sprite->SetTexture("pacman.png");
 	auto character = go->AddComponent<pacman::Character>();
 	character->InitGridAgent(grid, { 5,1 });
+
+	// Sound
+#if _DEBUG
+	dae::SoundSystemLocator::RegisterSoundSystem(std::make_unique<dae::LoggerSoundSystem>(std::make_unique<dae::SDLSoundSystem>()));
+#else
+	dae::SoundSystemLocator::RegisterSoundSystem(std::make_unique<dae::SDLSoundSystem>());
+#endif
+	
+	auto& ss{ dae::SoundSystemLocator::GetSoundSystem() };
+	ss.RegisterSound(PacmanSounds::Chomp, "pacman_chomp.wav");
+	ss.RegisterSound(PacmanSounds::EatFruit, "pacman_eatfruit.wav");
+	ss.RegisterSound(PacmanSounds::EatGhost, "pacman_eatghost.wav");
 
 	// Input
 	{
@@ -97,6 +113,10 @@ void load()
 		input.AddKeyboardCommand({ SDL_SCANCODE_A, ButtonState::Pressed }, std::make_shared<MoveCharacter>(-1, 0, character));
 		input.AddKeyboardCommand({ SDL_SCANCODE_S, ButtonState::Pressed }, std::make_shared<MoveCharacter>(0, 1, character));
 		input.AddKeyboardCommand({ SDL_SCANCODE_D, ButtonState::Pressed }, std::make_shared<MoveCharacter>(1, 0, character));
+
+		input.AddKeyboardCommand({ SDL_SCANCODE_1, ButtonState::Pressed }, std::make_shared<TestAudio>(PacmanSounds::Chomp, 0.2f));
+		input.AddKeyboardCommand({ SDL_SCANCODE_2, ButtonState::Pressed }, std::make_shared<TestAudio>(PacmanSounds::EatFruit, 0.5f));
+		input.AddKeyboardCommand({ SDL_SCANCODE_3, ButtonState::Pressed }, std::make_shared<TestAudio>(PacmanSounds::EatGhost, 0.8f));
 	}
 
 	//// DISPLAY

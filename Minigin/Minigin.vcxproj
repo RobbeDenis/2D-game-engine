@@ -225,6 +225,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="InputUtils.h" />
     <ClInclude Include="Keyboard.h" />
+    <ClInclude Include="LoggerSoundSystem.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="RenderComponent.h" />
@@ -232,7 +233,9 @@
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SDLSoundSystem.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SoundSystemLocator.h" />
     <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="Subject.h" />
     <ClInclude Include="TextRenderer.h" />
@@ -262,6 +265,8 @@
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="SDLSoundSystem.cpp" />
+    <ClCompile Include="SoundSystemLocator.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="Subject.cpp" />
     <ClCompile Include="TextRenderer.cpp" />

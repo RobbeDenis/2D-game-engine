@@ -4,7 +4,25 @@
 #include <string>
 #include "Movement.h"
 #include "TestCharacter.h"
+#include <SoundSystemLocator.h>
 
+
+class TestAudio : public dae::Command
+{
+public:
+	explicit TestAudio(dae::sound_id id, float volume)
+		: ID{ id } 
+		, Volume{ volume } {}
+
+	void Execute() override
+	{
+		dae::SoundSystemLocator::GetSoundSystem().Play(ID, Volume);
+	}
+
+private:
+	dae::sound_id ID;
+	float Volume;
+};
 
 class TestEvent : public dae::Command
 {

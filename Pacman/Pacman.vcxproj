@@ -45,6 +45,7 @@
     <ClInclude Include="GridAgent.h" />
     <ClInclude Include="GridRenderer.h" />
     <ClInclude Include="PacmanCommands.h" />
+    <ClInclude Include="PacmanSounds.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Data\TestLevel.txt" />
