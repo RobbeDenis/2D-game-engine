@@ -17,8 +17,14 @@ pacman::GridRenderer::GridRenderer(dae::GameObject* pGameObject)
 	, m_DebugAgentsEnabled{ false }
 	, m_pDotMask{ nullptr }
 	, m_pDotTarget{ nullptr }
+	, m_pPowerTexture{ nullptr }
 {
-
+	m_pTexture = dae::ResourceManager::GetInstance().LoadTexture("BlankLevel.png");
+	m_pPowerTexture = dae::ResourceManager::GetInstance().LoadTexture("power.png");
+	m_pDotTexture = dae::ResourceManager::GetInstance().LoadTexture("dots.png");
+	m_pCherryTexture = dae::ResourceManager::GetInstance().LoadTexture("cherry.png");
+	m_pStrawberryTexture = dae::ResourceManager::GetInstance().LoadTexture("strawberry.png");
+	m_pMelonTexture = dae::ResourceManager::GetInstance().LoadTexture("melon.png");
 }
 
 pacman::GridRenderer::~GridRenderer()
@@ -54,6 +60,8 @@ void pacman::GridRenderer::Render() const
 
 	renderer.RenderMaskedTexture(*m_pTexture, m_pWallMask, m_pWallTarget, pos.x, pos.y, m_Width, m_Height);
 	renderer.RenderMaskedTexture(*m_pDotTexture, m_pDotMask, m_pDotTarget, pos.x, pos.y, m_Width, m_Height);
+	RenderItems();
+
 
 	if (m_pGrid == nullptr)
 		return;
@@ -94,6 +102,49 @@ void pacman::GridRenderer::Render() const
 			renderer.RenderLine(x, y, x , y + cellSize, color);
 			renderer.RenderLine(x + cellSize, y, x + cellSize, y + cellSize, color);
 			renderer.RenderLine(x, y + cellSize, x + cellSize, y + cellSize, color);
+		}
+	}
+}
+
+void pacman::GridRenderer::RenderItems() const
+{
+	auto& renderer = dae::Renderer::GetInstance();
+	const unsigned colums{ m_pGrid->GetColums() };
+	const unsigned rows{ m_pGrid->GetRows() };
+
+	for (unsigned c{ 0 }; c < colums; ++c)
+	{
+		for (unsigned r{ 0 }; r < rows; ++r)
+		{
+			switch (m_pGrid->GetCellData(r, c))
+			{	
+				case CellType::Power:
+				{
+					const glm::ivec2 pos{ m_pGrid->CalculateCellPosition({c, r}) };
+					renderer.RenderTexture(*m_pPowerTexture, static_cast<float>(pos.x), static_cast<float>(pos.y));
+					break;
+				}
+				case CellType::Cherry:
+				{
+					const glm::ivec2 pos{ m_pGrid->CalculateCellPosition({c, r}) };
+					renderer.RenderTexture(*m_pCherryTexture, static_cast<float>(pos.x), static_cast<float>(pos.y));
+					break;
+				}
+				case CellType::Strawberry:
+				{
+					const glm::ivec2 pos{ m_pGrid->CalculateCellPosition({c, r}) };
+					renderer.RenderTexture(*m_pStrawberryTexture, static_cast<float>(pos.x), static_cast<float>(pos.y));
+					break;
+				}
+				case CellType::Melon:
+				{
+					const glm::ivec2 pos{ m_pGrid->CalculateCellPosition({c, r}) };
+					renderer.RenderTexture(*m_pMelonTexture, static_cast<float>(pos.x), static_cast<float>(pos.y));
+					break;
+				}
+				default:
+					break;
+			}
 		}
 	}
 }
@@ -148,21 +199,6 @@ void pacman::GridRenderer::SetGrid(Grid* pGrid)
 	if (pGrid == nullptr)
 		throw std::runtime_error("pGrid is nullptr");
 	m_pGrid = pGrid;
-}
-
-void pacman::GridRenderer::SetTexture(std::shared_ptr<dae::Texture2D> texture)
-{
-	m_pTexture = texture;
-}
-
-void pacman::GridRenderer::SetTexture(const std::string& filename)
-{
-	m_pTexture = dae::ResourceManager::GetInstance().LoadTexture(filename);
-}
-
-void pacman::GridRenderer::SetDotTexture(const std::string& filename)
-{
-	m_pDotTexture = dae::ResourceManager::GetInstance().LoadTexture(filename);
 }
 
 void pacman::GridRenderer::EnableDebugGrid(bool enable)

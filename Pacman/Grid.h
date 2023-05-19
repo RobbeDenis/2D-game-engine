@@ -17,7 +17,10 @@ namespace pacman
 		Empty = 0,
 		Wall = 1,
 		Dot = 2,
-		Power = 3
+		Power = 3,
+		Cherry = 4,
+		Strawberry = 5,
+		Melon = 6
 	};
 
 	class GridAgent;
@@ -32,8 +35,9 @@ namespace pacman
 		GridAgent* CreateAgent(const Coordinate& coordinate);
 		void MoveAgentInDirection(GridAgent* pAgent, float speed, const glm::ivec2& newDirection);
 		Coordinate GetCoordinateFromPosition(const glm::ivec2& position);
+		glm::ivec2 CalculateCellPosition(const Coordinate& coordinate);
 
-		unsigned GetCellData(unsigned x, unsigned y) const { return m_Cells[x][y]; }
+		unsigned GetCellData(unsigned r, unsigned c) const { return m_Cells[r][c]; }
 		unsigned GetColums() const { return m_Colums; }
 		unsigned GetRows() const { return m_Rows; }
 		unsigned GetCellSize() const { return m_CellSize; }
@@ -42,7 +46,6 @@ namespace pacman
 		const auto& GetAgents() const { return m_pAgents; }
 
 	private:
-		glm::ivec2 CalculateCellPosition(const Coordinate& coordinate);
 		bool CanTurn(const glm::ivec2& pos, const glm::ivec2& sumDir);
 
 		std::vector<std::vector<unsigned>> m_Cells;

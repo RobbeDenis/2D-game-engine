@@ -71,8 +71,6 @@ void load()
 	// Grid test
 	go = scene->CreateGameObject();
 	auto gridRender = go->AddComponent<pacman::GridRenderer>();
-	gridRender->SetTexture("BlankLevel.png");
-	gridRender->SetDotTexture("dots.png");
 	gridRender->EnableDebugGrid(false);
 	gridRender->EnableDebugAgents(true);
 	auto grid = go->AddComponent<pacman::Grid>();
