@@ -9,20 +9,24 @@
 pacman::GridRenderer::GridRenderer(dae::GameObject* pGameObject)
 	: dae::RenderComponent(pGameObject)
 	, m_pGrid{ nullptr }
-	, m_pMask{ nullptr }
+	, m_pWallMask{ nullptr }
 	, m_DebugGridEnabled{ false }
-	, m_pTarget{ nullptr }
+	, m_pWallTarget{ nullptr }
 	, m_Width{ 0 }
 	, m_Height{ 0 }
 	, m_DebugAgentsEnabled{ false }
+	, m_pDotMask{ nullptr }
+	, m_pDotTarget{ nullptr }
 {
 
 }
 
 pacman::GridRenderer::~GridRenderer()
 {
-	SDL_DestroyTexture(m_pMask);
-	SDL_DestroyTexture(m_pTarget);
+	SDL_DestroyTexture(m_pWallMask);
+	SDL_DestroyTexture(m_pWallTarget);
+	SDL_DestroyTexture(m_pDotMask);
+	SDL_DestroyTexture(m_pDotTarget);
 }
 
 void pacman::GridRenderer::Start()
@@ -33,10 +37,14 @@ void pacman::GridRenderer::Start()
 	m_Width = static_cast<int>(m_pGrid->GetCellSize() * m_pGrid->GetColums());
 	m_Height = static_cast<int>(m_pGrid->GetCellSize() * m_pGrid->GetRows());
 
-	m_pTarget = SDL_CreateTexture(dae::Renderer::GetInstance().GetSDLRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, m_Width, m_Height);
-	m_pMask = SDL_CreateTexture(dae::Renderer::GetInstance().GetSDLRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, m_Width, m_Height);
+	m_pWallTarget = SDL_CreateTexture(dae::Renderer::GetInstance().GetSDLRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, m_Width, m_Height);
+	m_pWallMask = SDL_CreateTexture(dae::Renderer::GetInstance().GetSDLRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, m_Width, m_Height);
 
-	UpdateMask();
+	m_pDotTarget = SDL_CreateTexture(dae::Renderer::GetInstance().GetSDLRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, m_Width, m_Height);
+	m_pDotMask = SDL_CreateTexture(dae::Renderer::GetInstance().GetSDLRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, m_Width, m_Height);
+
+	UpdateMask(m_pWallMask, CellType::Wall);
+	UpdateMask(m_pDotMask, CellType::Dot);
 }
 
 void pacman::GridRenderer::Render() const
@@ -44,7 +52,8 @@ void pacman::GridRenderer::Render() const
 	const auto& pos = GetGameObject()->GetWorldPosition();
 	auto& renderer = dae::Renderer::GetInstance();
 
-	renderer.RenderMaskedTexture(*m_pTexture, m_pMask, m_pTarget, pos.x, pos.y, m_Width, m_Height);
+	renderer.RenderMaskedTexture(*m_pTexture, m_pWallMask, m_pWallTarget, pos.x, pos.y, m_Width, m_Height);
+	renderer.RenderMaskedTexture(*m_pDotTexture, m_pDotMask, m_pDotTarget, pos.x, pos.y, m_Width, m_Height);
 
 	if (m_pGrid == nullptr)
 		return;
@@ -89,7 +98,7 @@ void pacman::GridRenderer::Render() const
 	}
 }
 
-void pacman::GridRenderer::UpdateMask()
+void pacman::GridRenderer::UpdateMask(SDL_Texture* pMask, unsigned type)
 {
 	if (m_pGrid == nullptr)
 		throw std::runtime_error("m_pGrid is nullptr");
@@ -101,18 +110,19 @@ void pacman::GridRenderer::UpdateMask()
 	unsigned char* pixels;
 	int pitch;
 
-	SDL_LockTexture(m_pMask, NULL, (void**)&pixels, &pitch);
+	SDL_LockTexture(pMask, NULL, (void**)&pixels, &pitch);
 
 	for (int x = 0; x < rows; ++x)
 	{
 		for (int y = 0; y < colums; ++y)
 		{
-			const unsigned char value = (m_pGrid->GetCellData(x, y) == CellType::Wall) * 255;
+			const int full = 255;
+			const unsigned char value = (m_pGrid->GetCellData(x, y) == type) * full;
 			FillCell(pixels, pitch, x, y, value);
 		}
 	}
 
-	SDL_UnlockTexture(m_pMask);
+	SDL_UnlockTexture(pMask);
 }
 
 void pacman::GridRenderer::FillCell(unsigned char* pixels, int pitch, int gridX, int gridY, unsigned char value)
@@ -148,6 +158,11 @@ void pacman::GridRenderer::SetTexture(std::shared_ptr<dae::Texture2D> texture)
 void pacman::GridRenderer::SetTexture(const std::string& filename)
 {
 	m_pTexture = dae::ResourceManager::GetInstance().LoadTexture(filename);
+}
+
+void pacman::GridRenderer::SetDotTexture(const std::string& filename)
+{
+	m_pDotTexture = dae::ResourceManager::GetInstance().LoadTexture(filename);
 }
 
 void pacman::GridRenderer::EnableDebugGrid(bool enable)

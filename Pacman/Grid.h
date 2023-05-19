@@ -15,7 +15,9 @@ namespace pacman
 	enum CellType
 	{
 		Empty = 0,
-		Wall = 1
+		Wall = 1,
+		Dot = 2,
+		Power = 3
 	};
 
 	class GridAgent;

@@ -4,7 +4,7 @@ pacman::GridAgent::GridAgent(Grid* pGrid)
 	: m_pGrid{ pGrid }
 	, m_Coordinate{  }
 	, m_GridPosition{  }
-	, m_MovementSpeed{ 150.f }
+	, m_MovementSpeed{ 70.f }
 	, m_Direction{  }
 {
 

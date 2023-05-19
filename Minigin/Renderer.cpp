@@ -95,23 +95,19 @@ void dae::Renderer::RenderMaskedTexture(const Texture2D& texture, SDL_Texture* m
 	dst.w = width;
 	dst.h = height;
 
-	// Setting render target to m_pTarget
 	SDL_SetRenderTarget(GetSDLRenderer(), target);
 
-	// Clearing m_pTarget
 	SDL_SetRenderDrawColor(GetSDLRenderer(), 0, 0, 0, 0);
 	SDL_RenderClear(GetSDLRenderer());
 
-	// Render the black and white mask
 	SDL_RenderCopy(GetSDLRenderer(), mask, nullptr, nullptr);
 
-	// Set the texure's blendmode to multiply adn render
 	SDL_SetTextureBlendMode(texture.GetSDLTexture(), SDL_BLENDMODE_MUL);
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, nullptr);
 
 	SDL_SetRenderTarget(GetSDLRenderer(), nullptr);
 
-	// Setting render target back to default
+	SDL_SetTextureBlendMode(target, SDL_BLENDMODE_BLEND);
 	SDL_RenderCopy(GetSDLRenderer(), target, nullptr, &dst);
 }
 
