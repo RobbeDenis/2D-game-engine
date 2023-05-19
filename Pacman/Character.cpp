@@ -26,8 +26,6 @@ void pacman::Character::Move(int x, int y)
 {
 	m_Direction.x = x;
 	m_Direction.y = y;
-
-	std::cout << x << ", " << y << "\n";
 }
 
 void pacman::Character::InitGridAgent(Grid* pGrid, const Coordinate& coordinate)

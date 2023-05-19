@@ -12,7 +12,7 @@ pacman::Grid::Grid(dae::GameObject* pGameObject)
 	, m_Rows{ 0 }
 	, m_CellSize{ 0 }
 	, m_Cells{ }
-	, m_Offset{ 0 }
+	, m_Offset{ 1 }
 {
 }
 
@@ -76,9 +76,18 @@ void pacman::Grid::MoveAgentInDirection(GridAgent* pAgent, float speed, const gl
 
 	if (m_Cells[target.y][target.x] == CellType::Wall)
 	{
+		target = { coordinate.x + prevDirection.x, coordinate.y + prevDirection.y };
+		glm::ivec2 newPos{ pos + prevDirection * static_cast<int>(speed * elapsed) };
+
+		if (m_Cells[target.y][target.x] != CellType::Wall)
+		{
+			pAgent->SetGridPosition(newPos);
+			pAgent->SetCoordinate(GetCoordinateFromPosition(pAgent->GetGridPosition()));
+			return;
+		}
+
 		if (prevDirection == newDirection)
 		{
-			glm::ivec2 newPos{ pos + newDirection * static_cast<int>(speed * elapsed) };
 			const glm::ivec2 maxPos{ CalculateCellPosition(coordinate) };
 
 			if (newDirection.x < 0 && newPos.x < maxPos.x)
@@ -93,28 +102,24 @@ void pacman::Grid::MoveAgentInDirection(GridAgent* pAgent, float speed, const gl
 
 			pAgent->SetGridPosition(newPos);
 			pAgent->SetCoordinate(GetCoordinateFromPosition(pAgent->GetGridPosition()));
-			pAgent->SetDirection(newDirection);
-			return;
 		}
-		else
-		{
-			const glm::ivec2 newPos{ pos + prevDirection * static_cast<int>(speed * elapsed) };
-			pAgent->SetGridPosition(newPos);
-			pAgent->SetCoordinate(GetCoordinateFromPosition(pAgent->GetGridPosition()));
-			return;
-		}
+
+		return;
 	}
-	if (!CanSnap(pos - gridPos))
+
+	if (CanTurn(pos - gridPos, prevDirection + newDirection))
+	{
+		const glm::ivec2 newPos{ pos + newDirection * static_cast<int>(speed * elapsed) };
+		pAgent->SetGridPosition(newPos);
+		pAgent->SetCoordinate(GetCoordinateFromPosition(pAgent->GetGridPosition()));
+		pAgent->SetDirection(newDirection);
+	}
+	else
 	{
 		const glm::ivec2 newPos{ pos + prevDirection * static_cast<int>(speed * elapsed) };
 		pAgent->SetGridPosition(newPos);
 		pAgent->SetCoordinate(GetCoordinateFromPosition(pAgent->GetGridPosition()));
-		return;
 	}
-	const glm::ivec2 newPos{ pos + newDirection * static_cast<int>(speed * elapsed) };
-	pAgent->SetGridPosition(newPos);
-	pAgent->SetCoordinate(GetCoordinateFromPosition(pAgent->GetGridPosition()));
-	pAgent->SetDirection(newDirection);
 }
 
 pacman::Coordinate pacman::Grid::GetCoordinateFromPosition(const glm::ivec2& position)
@@ -131,9 +136,9 @@ glm::ivec2 pacman::Grid::CalculateCellPosition(const Coordinate& coordinate)
 	return { gridPos.x + coordinate.x * m_CellSize, gridPos.y + coordinate.y * m_CellSize };
 }
 
-bool pacman::Grid::CanSnap(const glm::ivec2& pos)
+bool pacman::Grid::CanTurn(const glm::ivec2& pos, const glm::ivec2& sumDir)
 {
-	return (pos.x % m_CellSize <= m_Offset) && (pos.y % m_CellSize <= m_Offset);
+	return (sumDir.x == 0 && sumDir.y == 0) || (pos.x % m_CellSize <= m_Offset) && (pos.y % m_CellSize <= m_Offset);
 }
 
 void pacman::Grid::PrintGrid() const

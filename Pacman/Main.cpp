@@ -59,12 +59,33 @@ void load()
 	//go->AddComponent<dae::SpriteRenderer>()->SetTexture("logo.tga");
 	//go->SetLocalPosition(216, 180);
 
-	//go = scene->CreateGameObject();
-	//auto tr = go->AddComponent<dae::TextRenderer>();
-	//auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	//tr->SetText("Programming 4 Assignment");
-	//tr->SetFont(font);
-	//go->SetLocalPosition(90, 0);
+	go = scene->CreateGameObject();
+	auto tr = go->AddComponent<dae::TextRenderer>();
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
+	tr->SetText("SOUND INPUTS");
+	tr->SetFont(font);
+	go->SetLocalPosition(65, 0);
+
+	go = scene->CreateGameObject();
+	tr = go->AddComponent<dae::TextRenderer>();
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
+	tr->SetText("1: Chomp");
+	tr->SetFont(font);
+	go->SetLocalPosition(65, 30);
+
+	go = scene->CreateGameObject();
+	tr = go->AddComponent<dae::TextRenderer>();
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
+	tr->SetText("2: EatFruit");
+	tr->SetFont(font);
+	go->SetLocalPosition(65, 55);
+
+	go = scene->CreateGameObject();
+	tr = go->AddComponent<dae::TextRenderer>();
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
+	tr->SetText("3: EatGhost");
+	tr->SetFont(font);
+	go->SetLocalPosition(65, 80);
 
 	// FPS
 	go = scene->CreateGameObject();
@@ -84,7 +105,7 @@ void load()
 	auto grid = go->AddComponent<pacman::Grid>();
 	grid->LoadFromFile(10, 10, 32, "TestLevel.txt");
 	grid->PrintGrid();
-	go->SetLocalPosition(30, 30);
+	go->SetLocalPosition(120, 120);
 
 	// Character
 	go = scene->CreateGameObject();
@@ -115,8 +136,8 @@ void load()
 		input.AddKeyboardCommand({ SDL_SCANCODE_D, ButtonState::Pressed }, std::make_shared<MoveCharacter>(1, 0, character));
 
 		input.AddKeyboardCommand({ SDL_SCANCODE_1, ButtonState::Pressed }, std::make_shared<TestAudio>(PacmanSounds::Chomp, 0.2f));
-		input.AddKeyboardCommand({ SDL_SCANCODE_2, ButtonState::Pressed }, std::make_shared<TestAudio>(PacmanSounds::EatFruit, 0.5f));
-		input.AddKeyboardCommand({ SDL_SCANCODE_3, ButtonState::Pressed }, std::make_shared<TestAudio>(PacmanSounds::EatGhost, 0.8f));
+		input.AddKeyboardCommand({ SDL_SCANCODE_2, ButtonState::Pressed }, std::make_shared<TestAudio>(PacmanSounds::EatFruit, 0.3f));
+		input.AddKeyboardCommand({ SDL_SCANCODE_3, ButtonState::Pressed }, std::make_shared<TestAudio>(PacmanSounds::EatGhost, 0.5f));
 	}
 
 	//// DISPLAY
