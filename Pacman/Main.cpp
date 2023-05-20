@@ -87,6 +87,21 @@ void load()
 	auto character = go->AddComponent<pacman::Pacman>();
 	character->InitGridAgent(grid, { 5,1 });
 
+	// ScoreDisplay
+	go = scene->CreateGameObject();
+	auto tr = go->AddComponent<dae::TextRenderer>();
+	tr->SetFont(dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 22));
+	tr->SetColor({ 255, 255, 255 });
+	tr->SetText("1UP");
+	go->SetLocalPosition(75,10);
+	go = go->AddChild();
+	tr = go->AddComponent<dae::TextRenderer>();
+	tr->SetFont(dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 19));
+	tr->SetColor({ 255, 255, 255 });
+	auto scoreDisplay = go->AddComponent<pacman::ScoreDisplay>();
+	character->AddObserver(scoreDisplay);
+	go->SetLocalPosition(20, 19);
+
 	// Sound
 //#if _DEBUG
 //	dae::SoundSystemLocator::RegisterSoundSystem(std::make_unique<dae::LoggerSoundSystem>(std::make_unique<dae::SDLSoundSystem>()));
@@ -153,13 +168,6 @@ void load()
 	//tr->SetColor(yellow);
 	//tr->SetText("Q: dot, W: energized, E: ghost, R: cherry");
 	//go->SetLocalPosition({ 200, 350, 0 });
-
-	//go = scene->CreateGameObject();
-	//tr = go->AddComponent<dae::TextRenderer>();
-	//tr->SetFont(dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 25));
-	//tr->SetColor(yellow);
-	//auto scoreDisplayP1 = go->AddComponent<dae::ScoreDisplay>();
-	//go->SetLocalPosition({ 30, 350, 0 });
 
 	//go = scene->CreateGameObject();
 	//tr = go->AddComponent<dae::TextRenderer>();

@@ -1,6 +1,7 @@
 #include "Pacman.h"
 #include "GridAgent.h"
 #include <iostream>
+#include "PacmanEvents.h"
 
 pacman::Pacman::Pacman(dae::GameObject* pGameObject)
 	: Character(pGameObject)
@@ -15,19 +16,19 @@ void pacman::Pacman::Update()
 	switch (m_pAgent->Pickup())
 	{
 	case CellType::Dot:
-		std::cout << "Dot\n";
+		Notify(PEvents::CDot);
 		break;
 	case CellType::Power:
-		std::cout << "Power\n";
+		Notify(PEvents::CPower);
 		break;
 	case CellType::Cherry:
-		std::cout << "Cherry\n";
+		Notify(PEvents::CFruit);
 		break;
 	case CellType::Strawberry:
-		std::cout << "Strawberry\n";
+		Notify(PEvents::CFruit);
 		break;
 	case CellType::Melon:
-		std::cout << "Melon\n";
+		Notify(PEvents::CFruit);
 		break;
 	default:
 		break;

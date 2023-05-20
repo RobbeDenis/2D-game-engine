@@ -22,7 +22,6 @@
     <ClCompile Include="..\Minigin\LivesDisplay.cpp" />
     <ClCompile Include="..\Minigin\Movement.cpp" />
     <ClCompile Include="..\Minigin\RotateParent.cpp" />
-    <ClCompile Include="..\Minigin\ScoreDisplay.cpp" />
     <ClCompile Include="..\Minigin\TestCharacter.cpp" />
     <ClCompile Include="..\Minigin\TestComp.cpp" />
     <ClCompile Include="Character.cpp" />
@@ -31,13 +30,13 @@
     <ClCompile Include="GridRenderer.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Pacman.cpp" />
+    <ClCompile Include="ScoreDisplay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Minigin\GameEvents.h" />
     <ClInclude Include="..\Minigin\LivesDisplay.h" />
     <ClInclude Include="..\Minigin\Movement.h" />
     <ClInclude Include="..\Minigin\RotateParent.h" />
-    <ClInclude Include="..\Minigin\ScoreDisplay.h" />
     <ClInclude Include="..\Minigin\TestCharacter.h" />
     <ClInclude Include="..\Minigin\TestCommands.h" />
     <ClInclude Include="..\Minigin\TestComp.h" />
@@ -49,6 +48,7 @@
     <ClInclude Include="PacmanCommands.h" />
     <ClInclude Include="PacmanEvents.h" />
     <ClInclude Include="PacmanSounds.h" />
+    <ClInclude Include="ScoreDisplay.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Data\TestLevel.txt" />

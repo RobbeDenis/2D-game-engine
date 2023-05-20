@@ -33,9 +33,6 @@
     <ClCompile Include="..\Minigin\LivesDisplay.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\Minigin\ScoreDisplay.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
     <ClCompile Include="..\Minigin\TestCharacter.cpp">
       <Filter>Test</Filter>
     </ClCompile>
@@ -63,12 +60,12 @@
     <ClCompile Include="Pacman.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="ScoreDisplay.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Minigin\LivesDisplay.h">
-      <Filter>UI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Minigin\ScoreDisplay.h">
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="..\Minigin\GameEvents.h">
@@ -112,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="PacmanEvents.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreDisplay.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
