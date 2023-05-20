@@ -60,6 +60,9 @@
     <ClCompile Include="Character.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Pacman.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Minigin\LivesDisplay.h">
@@ -102,6 +105,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PacmanSounds.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pacman.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PacmanEvents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

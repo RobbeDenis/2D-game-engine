@@ -16,6 +16,7 @@ namespace dae
 
 	protected:
 		void Notify(Component* component, unsigned event);
+		void Notify(unsigned event);
 
 	private:
 		std::vector<Observer*> m_pObservers;

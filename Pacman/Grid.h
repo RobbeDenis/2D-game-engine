@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include <string>
+#include <Subject.h>
 
 namespace pacman
 {
@@ -24,7 +25,7 @@ namespace pacman
 	};
 
 	class GridAgent;
-	class Grid : public dae::Component
+	class Grid : public dae::Component, public dae::Subject
 	{
 	public:
 		Grid(dae::GameObject* pGameObject);
@@ -37,13 +38,15 @@ namespace pacman
 		Coordinate GetCoordinateFromPosition(const glm::ivec2& position);
 		glm::ivec2 CalculateCellPosition(const Coordinate& coordinate);
 
+		unsigned Pickup(const Coordinate& c);
+
 		unsigned GetCellData(unsigned r, unsigned c) const { return m_Cells[r][c]; }
 		unsigned GetColums() const { return m_Colums; }
 		unsigned GetRows() const { return m_Rows; }
 		unsigned GetCellSize() const { return m_CellSize; }
+		const auto& GetAgents() const { return m_pAgents; }
 
 		void PrintGrid() const;
-		const auto& GetAgents() const { return m_pAgents; }
 
 	private:
 		bool CanTurn(const glm::ivec2& pos, const glm::ivec2& sumDir);

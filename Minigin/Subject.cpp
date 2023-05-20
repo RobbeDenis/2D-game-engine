@@ -38,3 +38,11 @@ void dae::Subject::Notify(Component* component, unsigned event)
 		observer->OnNotify(component, event);
 	}
 }
+
+void dae::Subject::Notify(unsigned event)
+{
+	for (Observer* observer : m_pObservers)
+	{
+		observer->OnNotify(event);
+	}
+}

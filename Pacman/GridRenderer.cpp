@@ -5,6 +5,7 @@
 #include <SDL.h>
 #include "Grid.h"
 #include "GridAgent.h"
+#include "PacmanEvents.h"
 
 pacman::GridRenderer::GridRenderer(dae::GameObject* pGameObject)
 	: dae::RenderComponent(pGameObject)
@@ -55,16 +56,15 @@ void pacman::GridRenderer::Start()
 
 void pacman::GridRenderer::Render() const
 {
+	if (m_pGrid == nullptr)
+		return;
+
 	const auto& pos = GetGameObject()->GetWorldPosition();
 	auto& renderer = dae::Renderer::GetInstance();
 
 	renderer.RenderMaskedTexture(*m_pTexture, m_pWallMask, m_pWallTarget, pos.x, pos.y, m_Width, m_Height);
 	renderer.RenderMaskedTexture(*m_pDotTexture, m_pDotMask, m_pDotTarget, pos.x, pos.y, m_Width, m_Height);
 	RenderItems();
-
-
-	if (m_pGrid == nullptr)
-		return;
 
 	if (m_DebugGridEnabled)
 	{
@@ -158,8 +158,8 @@ void pacman::GridRenderer::UpdateMask(SDL_Texture* pMask, unsigned type)
 	const int colums{ static_cast<int>(m_pGrid->GetColums()) };
 	const int rows{ static_cast<int>(m_pGrid->GetRows()) };
 
-	unsigned char* pixels;
-	int pitch;
+	unsigned char* pixels{ };
+	int pitch{ };
 
 	SDL_LockTexture(pMask, NULL, (void**)&pixels, &pitch);
 
@@ -209,4 +209,21 @@ void pacman::GridRenderer::EnableDebugGrid(bool enable)
 void pacman::GridRenderer::EnableDebugAgents(bool enable)
 {
 	m_DebugAgentsEnabled = enable;
+}
+
+void pacman::GridRenderer::OnNotify(Component*, unsigned event)
+{
+	OnNotify(event);
+}
+
+void pacman::GridRenderer::OnNotify(unsigned event)
+{
+	switch (event)
+	{
+	case PEvents::GridItemsChanged:
+		UpdateMask(m_pDotMask, CellType::Dot);
+		break;
+	default:
+		break;
+	}
 }

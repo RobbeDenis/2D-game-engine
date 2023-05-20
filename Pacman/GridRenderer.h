@@ -1,12 +1,13 @@
 #pragma once
 #include <RenderComponent.h>
 #include <string>
+#include <Observer.h>
 
 struct SDL_Texture;
 namespace pacman
 {
 	class Grid;
-	class GridRenderer : public dae::RenderComponent
+	class GridRenderer : public dae::RenderComponent, public dae::Observer
 	{
 	public:
 		GridRenderer(dae::GameObject* pGameObject);
@@ -18,6 +19,9 @@ namespace pacman
 		void SetGrid(Grid* pGrid);
 		void EnableDebugGrid(bool enable);
 		void EnableDebugAgents(bool enable);
+
+		void OnNotify(Component* component, unsigned event);
+		void OnNotify(unsigned event);
 
 	private:
 		void RenderItems() const;

@@ -44,3 +44,8 @@ const glm::ivec2& pacman::GridAgent::GetDirection() const
 {
 	return m_Direction;
 }
+
+unsigned pacman::GridAgent::Pickup()
+{
+	return m_pGrid->Pickup(m_Coordinate);
+}

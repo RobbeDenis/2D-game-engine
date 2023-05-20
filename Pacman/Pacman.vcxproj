@@ -30,6 +30,7 @@
     <ClCompile Include="GridAgent.cpp" />
     <ClCompile Include="GridRenderer.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Pacman.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Minigin\GameEvents.h" />
@@ -44,7 +45,9 @@
     <ClInclude Include="Grid.h" />
     <ClInclude Include="GridAgent.h" />
     <ClInclude Include="GridRenderer.h" />
+    <ClInclude Include="Pacman.h" />
     <ClInclude Include="PacmanCommands.h" />
+    <ClInclude Include="PacmanEvents.h" />
     <ClInclude Include="PacmanSounds.h" />
   </ItemGroup>
   <ItemGroup>

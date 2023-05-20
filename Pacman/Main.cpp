@@ -32,6 +32,7 @@
 #include "LoggerSoundSystem.h"
 #include "SDLSoundSystem.h"
 #include "PacmanSounds.h"
+#include "Pacman.h"
 
 void load();
 
@@ -76,13 +77,14 @@ void load()
 	auto grid = go->AddComponent<pacman::Grid>();
 	grid->LoadFromFile(28, 29, 16, "TestLevel.txt");
 	grid->PrintGrid();
+	grid->AddObserver(gridRender);
 	go->SetLocalPosition(60, 60);
 
 	// Character
 	go = scene->CreateGameObject();
 	auto sprite = go->AddComponent<dae::SpriteRenderer>();
 	sprite->SetTexture("pacman.png");
-	auto character = go->AddComponent<pacman::Character>();
+	auto character = go->AddComponent<pacman::Pacman>();
 	character->InitGridAgent(grid, { 5,1 });
 
 	// Sound

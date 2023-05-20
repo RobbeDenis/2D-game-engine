@@ -5,6 +5,7 @@
 #include <ResourceManager.h>
 #include "GridAgent.h"
 #include <ETime.h>
+#include "PacmanEvents.h"
 
 pacman::Grid::Grid(dae::GameObject* pGameObject)
 	: dae::Component(pGameObject)
@@ -149,4 +150,17 @@ void pacman::Grid::PrintGrid() const
 			std::cout << m_Cells[r][c] << " ";
 		std::cout << "\n";
 	}
+}
+
+unsigned pacman::Grid::Pickup(const Coordinate& c)
+{
+	unsigned type{ m_Cells[c.y][c.x] };
+
+	if (type == CellType::Empty || type == CellType::Wall)
+		return type;
+
+	m_Cells[c.y][c.x] = CellType::Empty;
+	Notify(PEvents::GridItemsChanged);
+
+	return type;
 }

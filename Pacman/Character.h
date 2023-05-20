@@ -11,13 +11,13 @@ namespace pacman
 	public:
 		Character(dae::GameObject* pGameObject);
 
-		void Loaded() override;
-		void Update() override;
+		virtual void Loaded() override;
+		virtual void Update() override;
 
-		void Move(int x, int y);
+		virtual void Move(int x, int y);
 		void InitGridAgent(Grid* pGrid, const Coordinate& coordinate);
 
-	private:
+	protected:
 		glm::ivec2 m_Direction;
 		GridAgent* m_pAgent;
 	};
