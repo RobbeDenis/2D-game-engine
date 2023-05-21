@@ -237,6 +237,7 @@
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SoundSystemLocator.h" />
     <ClInclude Include="SpriteRenderer.h" />
+    <ClInclude Include="StateMachine.h" />
     <ClInclude Include="Subject.h" />
     <ClInclude Include="TextRenderer.h" />
     <ClInclude Include="Texture2D.h" />
@@ -268,6 +269,7 @@
     <ClCompile Include="SDLSoundSystem.cpp" />
     <ClCompile Include="SoundSystemLocator.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
+    <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="Subject.cpp" />
     <ClCompile Include="TextRenderer.cpp" />
     <ClCompile Include="Texture2D.cpp" />

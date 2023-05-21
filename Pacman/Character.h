@@ -1,13 +1,13 @@
 #pragma once
 #include <Component.h>
+#include <StateMachine.h>
 #include "Grid.h"
-#include "StateMachine.h"
 
 namespace pacman
 {
 	class Grid;
 	class GridAgent;
-	class Character : public dae::Component, public pacman::StateMachine
+	class Character : public dae::Component, public dae::StateMachine
 	{
 	public:
 		Character(dae::GameObject* pGameObject);

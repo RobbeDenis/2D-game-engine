@@ -4,7 +4,6 @@
 #include "PacmanEvents.h"
 #include <GameObject.h>
 
-
 pacman::Pacman::Pacman(dae::GameObject* pGameObject)
 	: Character(pGameObject)
 {
@@ -15,8 +14,16 @@ void pacman::Pacman::Loaded()
 {
 	Character::Loaded();
 
-	AddState(State::Walking, {}, [this]() { UpdateWalking(); }, [this]() { ExitWalking(); });
-	AddState(State::Dead, [this]() { EnterDead(); }, [this]() { UpdateDead(); }, {});
+	AddState(State::Walking,
+		{},
+		std::bind(&Pacman::UpdateWalking, this),
+		std::bind(&Pacman::ExitWalking, this));
+
+	AddState(State::Dead,
+		std::bind(&Pacman::EnterDead, this),
+		std::bind(&Pacman::UpdateDead, this),
+		{});
+
 	SetState(State::Walking);
 }
 

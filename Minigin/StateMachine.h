@@ -2,7 +2,7 @@
 #include <unordered_map>
 #include <functional>
 
-namespace pacman
+namespace dae
 {
 	class StateMachine
 	{
