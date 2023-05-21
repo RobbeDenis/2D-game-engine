@@ -63,6 +63,9 @@
     <ClCompile Include="ScoreDisplay.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Minigin\LivesDisplay.h">
@@ -112,6 +115,9 @@
     </ClInclude>
     <ClInclude Include="ScoreDisplay.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

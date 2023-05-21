@@ -14,7 +14,6 @@ namespace dae
 		void Render() const override;
 
 		void AddWindowFunction(std::function<void()> function);
-		//void RemoveWindowFunction(std::function<void()> function);
 
 	private:
 		std::vector<std::function<void()>> m_WindowFunctions;

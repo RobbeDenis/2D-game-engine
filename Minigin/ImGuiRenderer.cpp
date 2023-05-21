@@ -34,19 +34,3 @@ void dae::ImGuiRenderer::AddWindowFunction(std::function<void()> function)
 
 	m_WindowFunctions.push_back(function);
 }
-
-//void dae::ImGuiRenderer::RemoveWindowFunction(std::function<void()> function)
-//{
-//	if (function == nullptr)
-//		return;
-//
-//	auto it = std::find_if(begin(m_WindowFunctions), end(m_WindowFunctions), [&](const std::function<void()>& f)
-//		{
-//			return f.target_type() == function.target_type();
-//		});
-//
-//	if (it != end(m_WindowFunctions))
-//	{
-//		m_WindowFunctions.erase(it);
-//	}
-//}

@@ -31,6 +31,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Pacman.cpp" />
     <ClCompile Include="ScoreDisplay.cpp" />
+    <ClCompile Include="StateMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Minigin\GameEvents.h" />
@@ -49,6 +50,7 @@
     <ClInclude Include="PacmanEvents.h" />
     <ClInclude Include="PacmanSounds.h" />
     <ClInclude Include="ScoreDisplay.h" />
+    <ClInclude Include="StateMachine.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Data\TestLevel.txt" />

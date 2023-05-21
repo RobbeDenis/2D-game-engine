@@ -8,10 +8,18 @@ namespace pacman
 	{
 	public:
 		Pacman(dae::GameObject* pGameObject);
-
-		void Update() override;
+		void Loaded() override;
 
 	private:
+		enum State
+		{
+			Walking = 0,
+			Dead = 1
+		};
 
+		void UpdateWalking();
+		void ExitWalking();
+		void EnterDead();
+		void UpdateDead();
 	};
 }

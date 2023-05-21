@@ -4,8 +4,9 @@
 
 pacman::Character::Character(dae::GameObject* pGameObject)
 	: dae::Component(pGameObject)
+	, StateMachine()
 	, m_pAgent{ nullptr }
-	, m_Direction{  }
+	, m_Direction{ }
 {
 }
 
@@ -17,9 +18,7 @@ void pacman::Character::Loaded()
 
 void pacman::Character::Update()
 {
-	m_pAgent->MoveDirection(m_Direction);
-	const glm::ivec2 newPos{ m_pAgent->GetGridPosition() };
-	GetGameObject()->SetLocalPosition(newPos.x, newPos.y);
+	UpdateState();
 }
 
 void pacman::Character::Move(int x, int y)

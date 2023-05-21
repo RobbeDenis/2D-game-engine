@@ -2,6 +2,8 @@
 #include "GridAgent.h"
 #include <iostream>
 #include "PacmanEvents.h"
+#include <GameObject.h>
+
 
 pacman::Pacman::Pacman(dae::GameObject* pGameObject)
 	: Character(pGameObject)
@@ -9,9 +11,20 @@ pacman::Pacman::Pacman(dae::GameObject* pGameObject)
 
 }
 
-void pacman::Pacman::Update()
+void pacman::Pacman::Loaded()
 {
-	Character::Update();
+	Character::Loaded();
+
+	AddState(State::Walking, {}, [this]() { UpdateWalking(); }, [this]() { ExitWalking(); });
+	AddState(State::Dead, [this]() { EnterDead(); }, [this]() { UpdateDead(); }, {});
+	SetState(State::Walking);
+}
+
+void pacman::Pacman::UpdateWalking()
+{
+	m_pAgent->MoveDirection(m_Direction);
+	const glm::ivec2 newPos{ m_pAgent->GetGridPosition() };
+	GetGameObject()->SetLocalPosition(newPos.x, newPos.y);
 
 	switch (m_pAgent->Pickup())
 	{
@@ -29,8 +42,24 @@ void pacman::Pacman::Update()
 		break;
 	case CellType::Melon:
 		Notify(PEvents::CFruit);
+		SetState(State::Dead);
 		break;
 	default:
 		break;
 	}
+}
+
+void pacman::Pacman::EnterDead()
+{
+	std::cout << "Entered Dead\n";
+}
+
+void pacman::Pacman::ExitWalking()
+{
+	std::cout << "Exit Walking\n";
+}
+
+void pacman::Pacman::UpdateDead()
+{
+	
 }
