@@ -11,6 +11,11 @@ namespace pacman
 	{
 		unsigned x;
 		unsigned y;
+
+		bool operator==(const Coordinate& c)
+		{
+			return x == c.x && y == c.y;
+		}
 	};
 
 	enum CellType

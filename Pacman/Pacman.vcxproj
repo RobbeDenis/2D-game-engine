@@ -30,6 +30,7 @@
     <ClCompile Include="GridRenderer.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Pacman.cpp" />
+    <ClCompile Include="RandomGhost.cpp" />
     <ClCompile Include="ScoreDisplay.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +49,7 @@
     <ClInclude Include="PacmanCommands.h" />
     <ClInclude Include="PacmanEvents.h" />
     <ClInclude Include="PacmanSounds.h" />
+    <ClInclude Include="RandomGhost.h" />
     <ClInclude Include="ScoreDisplay.h" />
   </ItemGroup>
   <ItemGroup>

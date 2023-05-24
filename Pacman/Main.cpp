@@ -33,6 +33,7 @@
 #include "SDLSoundSystem.h"
 #include "PacmanSounds.h"
 #include "Pacman.h"
+#include "RandomGhost.h"
 
 void load();
 
@@ -101,6 +102,13 @@ void load()
 	auto scoreDisplay = go->AddComponent<pacman::ScoreDisplay>();
 	character->AddObserver(scoreDisplay);
 	go->SetLocalPosition(20, 19);
+
+	// Ghost
+	go = scene->CreateGameObject();
+	sprite = go->AddComponent<dae::SpriteRenderer>();
+	sprite->SetTexture("RedGhost.png");
+	auto ghost = go->AddComponent<pacman::RandomGhost>();
+	ghost->InitGridAgent(grid, { 5,1 });
 
 	// Sound
 //#if _DEBUG

@@ -49,3 +49,8 @@ unsigned pacman::GridAgent::Pickup()
 {
 	return m_pGrid->Pickup(m_Coordinate);
 }
+
+unsigned pacman::GridAgent::LookAt(const Coordinate& c) const
+{
+	return m_pGrid->GetCellData(c.y, c.x);
+}

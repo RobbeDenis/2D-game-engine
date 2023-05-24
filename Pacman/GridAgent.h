@@ -13,6 +13,7 @@ namespace pacman
 		const glm::ivec2& GetDirection() const;
 		const Coordinate& GetCoordinate() const;
 		unsigned Pickup();
+		unsigned LookAt(const Coordinate& c) const;
 
 	private:
 		friend Grid;
