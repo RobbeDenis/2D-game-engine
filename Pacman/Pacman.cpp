@@ -30,7 +30,8 @@ void pacman::Pacman::Loaded()
 	if (m_pCollider == nullptr)
 		throw std::runtime_error("Collider was not found");
 
-	m_pCollider->SetDimensions(16, 16);
+	m_pCollider->SetDimensions(12, 12);
+	m_pCollider->SetOffset(2, 2);
 }
 
 void pacman::Pacman::UpdateWalking()
@@ -83,12 +84,12 @@ void pacman::Pacman::HandleCollisions()
 {
 	const auto& colliders{ m_pCollider->GetColliders() };
 
-	for (const dae::Collider* c : colliders)
+	for (dae::Collider* const c : colliders)
 	{
 		if (c == m_pCollider)
 			continue;
 
-		if (c->GetTag() == "ghost")
+		if (c->GetTag() == "ghost" && m_pCollider->IsOverlappingWith(c))
 		{
 			std::cout << "Ghost Hit\n";
 		}

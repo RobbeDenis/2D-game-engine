@@ -6,8 +6,9 @@ dae::Collider::Collider(GameObject* pGameObject)
 	: Component(pGameObject)
 	, m_Rect{ }
 	, m_Tag{ "none"}
-	, m_Dirty{ true }
+	, m_Offset{ }
 {
+	
 }
 
 dae::Collider::~Collider()
@@ -23,24 +24,15 @@ void dae::Collider::Loaded()
 
 bool dae::Collider::IsOverlappingWith(Collider* other)
 {
-	SDL_Rect otherRect{ other->GetRect() };
-	SDL_Rect thisRect{ GetRect() };
+	SDL_Rect intersection;
+	return SDL_IntersectRect(&GetRect(), &other->GetRect(), &intersection);
 
-	return (thisRect.x > otherRect.x + otherRect.w ||
-		thisRect.x + thisRect.w < otherRect.x ||
-		thisRect.y > otherRect.y + otherRect.h ||
-		thisRect.y + thisRect.h < otherRect.y);
 }
 
 const SDL_Rect& dae::Collider::GetRect()
 {
-	if (m_Dirty)
-	{
-		m_Rect.x = static_cast<int>(GetGameObject()->GetWorldPosition().x);
-		m_Rect.y = static_cast<int>(GetGameObject()->GetWorldPosition().y);
-		m_Dirty = false;
-	}
-
+	m_Rect.x = static_cast<int>(GetGameObject()->GetWorldPosition().x) + m_Offset.x;
+	m_Rect.y = static_cast<int>(GetGameObject()->GetWorldPosition().y) + m_Offset.y;
 	return m_Rect;
 }
 
@@ -52,7 +44,6 @@ void dae::Collider::SetDimensions(int w, int h)
 void dae::Collider::SetDimensions(const SDL_Rect& rect)
 {
 	m_Rect = rect;
-	m_Dirty = true;
 }
 
 void dae::Collider::SetTag(const std::string& tag)
@@ -68,4 +59,10 @@ const std::vector<dae::Collider*>& dae::Collider::GetColliders()
 const std::string& dae::Collider::GetTag() const
 {
 	return m_Tag;
+}
+
+void dae::Collider::SetOffset(int x, int y)
+{
+	m_Offset.x = x;
+	m_Offset.y = y;
 }

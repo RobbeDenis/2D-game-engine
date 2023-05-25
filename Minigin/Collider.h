@@ -3,6 +3,7 @@
 #include <SDL_rect.h>
 #include <string>
 #include <functional>
+#include <glm/vec2.hpp>
 
 namespace dae
 {
@@ -16,6 +17,7 @@ namespace dae
 		void SetDimensions(const SDL_Rect& rect);
 		void SetDimensions(int w, int h);
 		void SetTag(const std::string& tag);
+		void SetOffset(int x, int y);
 
 		bool IsOverlappingWith(Collider* other);
 		const std::string& GetTag() const;
@@ -26,6 +28,6 @@ namespace dae
 
 		std::string m_Tag;
 		SDL_Rect m_Rect;
-		bool m_Dirty;
+		glm::ivec2 m_Offset;
 	};
 }

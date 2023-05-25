@@ -125,6 +125,10 @@ void pacman::RandomGhost::UpdateDirection()
 			int randomIndex = GetRandomInt(0, static_cast<unsigned>(checkedDirections.size() - 1));
 			m_Direction = checkedDirections[randomIndex];
 		}
+		else
+		{
+			m_Direction = -m_Direction;
+		}
 	}
 
 	m_PrevCoordinate = m_pAgent->GetCoordinate();

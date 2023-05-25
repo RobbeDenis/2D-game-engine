@@ -15,6 +15,7 @@ void pacman::Ghost::Loaded()
 	if (!m_pCollider)
 		throw std::runtime_error("Collider was not found");
 
-	m_pCollider->SetDimensions(16, 16);
+	m_pCollider->SetDimensions(12, 12);
+	m_pCollider->SetOffset(2, 2);
 	m_pCollider->SetTag("ghost");
 }

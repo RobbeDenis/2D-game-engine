@@ -111,14 +111,14 @@ void load()
 	sprite = go->AddComponent<dae::SpriteRenderer>();
 	sprite->SetTexture("red.png");
 	auto red = go->AddComponent<pacman::RandomGhost>();
-	red->InitGridAgent(grid, { 5,1 });
+	red->InitGridAgent(grid, { 11,14 });
 	go->AddComponent<dae::Collider>();
 
 	go = scene->CreateGameObject();
 	sprite = go->AddComponent<dae::SpriteRenderer>();
 	sprite->SetTexture("blue.png");
 	auto blue = go->AddComponent<pacman::ChaseGhost>();
-	blue->InitGridAgent(grid, { 8,1 });
+	blue->InitGridAgent(grid, { 12,14 });
 	blue->SetTarget(player);
 	blue->SetChaseAxis(true, true);
 	go->AddComponent<dae::Collider>();
@@ -127,7 +127,7 @@ void load()
 	sprite = go->AddComponent<dae::SpriteRenderer>();
 	sprite->SetTexture("orange.png");
 	auto orange = go->AddComponent<pacman::ChaseGhost>();
-	orange->InitGridAgent(grid, { 8,1 });
+	orange->InitGridAgent(grid, { 14,14 });
 	orange->SetTarget(player);
 	orange->SetChaseAxis(true, false);
 	go->AddComponent<dae::Collider>();
@@ -136,7 +136,7 @@ void load()
 	sprite = go->AddComponent<dae::SpriteRenderer>();
 	sprite->SetTexture("pink.png");
 	auto pink = go->AddComponent<pacman::ChaseGhost>();
-	pink->InitGridAgent(grid, { 8,1 });
+	pink->InitGridAgent(grid, { 15,14 });
 	pink->SetTarget(player);
 	pink->SetChaseAxis(false, true);
 	go->AddComponent<dae::Collider>();
