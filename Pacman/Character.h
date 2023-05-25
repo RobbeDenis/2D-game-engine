@@ -2,6 +2,7 @@
 #include <Component.h>
 #include <StateMachine.h>
 #include "Grid.h"
+#include "GridAgent.h"
 
 namespace pacman
 {

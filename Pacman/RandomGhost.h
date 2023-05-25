@@ -1,9 +1,9 @@
 #pragma once
-#include "Character.h"
+#include "Ghost.h"
 
 namespace pacman
 {
-	class RandomGhost final : public Character
+	class RandomGhost final : public Ghost
 	{
 	public:
 		RandomGhost(dae::GameObject* pGameObject);

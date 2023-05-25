@@ -1,17 +1,16 @@
 #include "RandomGhost.h"
-#include "GridAgent.h"
 #include <GameObject.h>
 #include <random>
 
 pacman::RandomGhost::RandomGhost(dae::GameObject* pGameObject)
-	: Character(pGameObject)
+	: Ghost(pGameObject)
 	, m_PrevCoordinate{ }
 {
 }
 
 void pacman::RandomGhost::Loaded()
 {
-	Character::Loaded();
+	Ghost::Loaded();
 
 	AddState(State::Start,
 		std::bind(&RandomGhost::EnterStart, this),

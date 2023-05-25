@@ -1,4 +1,5 @@
 #include "GridAgent.h"
+#include <iostream>
 
 pacman::GridAgent::GridAgent(Grid* pGrid)
 	: m_pGrid{ pGrid }

@@ -1,10 +1,9 @@
 #include "ChaseGhost.h"
-#include "GridAgent.h"
 #include <GameObject.h>
 #include <random>
 
 pacman::ChaseGhost::ChaseGhost(dae::GameObject* pGameObject)
-	: Character(pGameObject)
+	: Ghost(pGameObject)
 	, m_PrevCoordinate{ }
 	, m_pTarget{ nullptr }
 	, m_ChaseAxis{ 0, 0 }
@@ -14,7 +13,7 @@ pacman::ChaseGhost::ChaseGhost(dae::GameObject* pGameObject)
 
 void pacman::ChaseGhost::Loaded()
 {
-	Character::Loaded();
+	Ghost::Loaded();
 
 	AddState(State::Start,
 		{},
@@ -113,70 +112,11 @@ void pacman::ChaseGhost::UpdateDirection()
 			}
 		}
 
-	if (!checkedDirections.empty())
-	{
-		int randomIndex = GetRandomInt(0, static_cast<unsigned>(checkedDirections.size() - 1));
-		m_Direction = checkedDirections[randomIndex];
-	}
-
-		//const Coordinate c{ m_pAgent->GetCoordinate() };
-		//const glm::vec2 pos{ GetGameObject()->GetLocalPosition().x, GetGameObject()->GetLocalPosition().y };
-		//const glm::vec2 targetPos{ m_pTarget->GetLocalPosition().x, m_pTarget->GetLocalPosition().y };
-		//const glm::ivec2 toTarget{ static_cast<glm::ivec2>(glm::normalize(targetPos - pos)) * m_ChaseAxis };
-		//const glm::ivec2 zero{ 0, 0 };
-
-		//if (toTarget.x != 0 &&
-		//	m_pAgent->LookAt({ c.x + toTarget.x, c.y }) != CellType::Wall &&
-		//	m_Direction + glm::ivec2{ toTarget.x, 0 } != zero)
-		//{
-		//	const glm::ivec2 newDir{ toTarget.x, 0 };
-		//	m_Direction = newDir;
-		//}
-		//else if (toTarget.y != 0 &&
-		//	m_pAgent->LookAt({ c.x, c.y + toTarget.y }) != CellType::Wall &&
-		//	m_Direction + glm::ivec2{ 0, toTarget.y } != zero)
-		//{
-		//	const glm::ivec2 newDir{ 0, toTarget.y };
-		//	m_Direction = newDir;
-		//}
-		//else if (m_pAgent->LookAt({c.x + m_Direction.x, c.y + m_Direction.y}) == CellType::Wall)
-		//{
-		//	const glm::ivec2 up{ 0, 1 };
-		//	const glm::ivec2 down{ 0, -1 };
-		//	const glm::ivec2 left{ -1, 0 };
-		//	const glm::ivec2 right{ 1, 0 };
-		//	std::vector<glm::ivec2> checkedDirections;
-
-		//	if (m_pAgent->LookAt({ c.x + up.x, c.y + up.y }) != CellType::Wall)
-		//	{
-		//		if (m_Direction + up != zero)
-		//			checkedDirections.push_back(up);
-		//	}
-
-		//	if (m_pAgent->LookAt({ c.x + down.x, c.y + down.y }) != CellType::Wall)
-		//	{
-		//		if (m_Direction + down != zero)
-		//			checkedDirections.push_back(down);
-		//	}
-
-		//	if (m_pAgent->LookAt({ c.x + left.x, c.y + left.y }) != CellType::Wall)
-		//	{
-		//		if (m_Direction + left != zero)
-		//			checkedDirections.push_back(left);
-		//	}
-
-		//	if (m_pAgent->LookAt({ c.x + right.x, c.y + right.y }) != CellType::Wall)
-		//	{
-		//		if (m_Direction + right != zero)
-		//			checkedDirections.push_back(right);
-		//	}
-
-		//	if (!checkedDirections.empty())
-		//	{
-		//		int randomIndex = GetRandomInt(0, static_cast<unsigned>(checkedDirections.size() - 1));
-		//		m_Direction = checkedDirections[randomIndex];
-		//	}
-		//}
+		if (!checkedDirections.empty())
+		{
+			int randomIndex = GetRandomInt(0, static_cast<unsigned>(checkedDirections.size() - 1));
+			m_Direction = checkedDirections[randomIndex];
+		}
 	}
 
 	m_PrevCoordinate = m_pAgent->GetCoordinate();

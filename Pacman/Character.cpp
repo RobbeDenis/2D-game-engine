@@ -1,6 +1,5 @@
 #include "Character.h"
 #include "GameObject.h"
-#include "GridAgent.h"
 
 pacman::Character::Character(dae::GameObject* pGameObject)
 	: dae::Component(pGameObject)

@@ -91,7 +91,7 @@ namespace dae
 		{
 			for (const std::unique_ptr<Component>& component : m_pComponents)
 			{
-				if (T* casted = static_cast<T*>(component.get()))
+				if (T* casted = dynamic_cast<T*>(component.get()))
 					return casted;
 			}
 			return nullptr;

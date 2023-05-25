@@ -1,6 +1,7 @@
 #pragma once
 #include "Character.h"
 #include <Subject.h>
+#include <Collider.h>
 
 namespace pacman
 {
@@ -21,5 +22,9 @@ namespace pacman
 		void ExitWalking();
 		void EnterDead();
 		void UpdateDead();
+
+		void HandleCollisions();
+
+		dae::Collider* m_pCollider;
 	};
 }

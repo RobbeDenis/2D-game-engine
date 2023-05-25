@@ -1,11 +1,11 @@
 #include "Pacman.h"
-#include "GridAgent.h"
 #include <iostream>
 #include "PacmanEvents.h"
 #include <GameObject.h>
 
 pacman::Pacman::Pacman(dae::GameObject* pGameObject)
 	: Character(pGameObject)
+	, m_pCollider{ nullptr }
 {
 
 }
@@ -25,6 +25,12 @@ void pacman::Pacman::Loaded()
 		{});
 
 	SetState(State::Walking);
+
+	m_pCollider = GetGameObject()->GetComponent<dae::Collider>();
+	if (m_pCollider == nullptr)
+		throw std::runtime_error("Collider was not found");
+
+	m_pCollider->SetDimensions(16, 16);
 }
 
 void pacman::Pacman::UpdateWalking()
@@ -32,6 +38,8 @@ void pacman::Pacman::UpdateWalking()
 	m_pAgent->MoveDirection(m_Direction);
 	const glm::ivec2 newPos{ m_pAgent->GetGridPosition() };
 	GetGameObject()->SetLocalPosition(newPos.x, newPos.y);
+
+	HandleCollisions();
 
 	switch (m_pAgent->Pickup())
 	{
@@ -69,4 +77,20 @@ void pacman::Pacman::ExitWalking()
 void pacman::Pacman::UpdateDead()
 {
 	
+}
+
+void pacman::Pacman::HandleCollisions()
+{
+	const auto& colliders{ m_pCollider->GetColliders() };
+
+	for (const dae::Collider* c : colliders)
+	{
+		if (c == m_pCollider)
+			continue;
+
+		if (c->GetTag() == "ghost")
+		{
+			std::cout << "Ghost Hit\n";
+		}
+	}
 }

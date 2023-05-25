@@ -35,6 +35,7 @@
 #include "Pacman.h"
 #include "RandomGhost.h"
 #include "ChaseGhost.h"
+#include "Collider.h"
 
 void load();
 
@@ -47,7 +48,7 @@ int main(int, char* [])
 
 void load()
 {
-	auto& input = dae::InputManager::GetInstance();
+	auto& input = dae::InputManager::GetInstance(); input;
 	auto& sceneManager = dae::SceneManager::GetInstance();
 
 	dae::Scene* scene = sceneManager.CreateScene("Demo");
@@ -73,12 +74,12 @@ void load()
 
 	// Grid test
 	go = scene->CreateGameObject();
+	auto grid = go->AddComponent<pacman::Grid>();
+	grid->LoadFromFile(27, 29, 16, "TestLevel.txt");
+	grid->PrintGrid();
 	auto gridRender = go->AddComponent<pacman::GridRenderer>();
 	gridRender->EnableDebugGrid(false);
 	gridRender->EnableDebugAgents(false);
-	auto grid = go->AddComponent<pacman::Grid>();
-	grid->LoadFromFile(28, 29, 16, "TestLevel.txt");
-	grid->PrintGrid();
 	grid->AddObserver(gridRender);
 	go->SetLocalPosition(60, 60);
 
@@ -86,10 +87,11 @@ void load()
 	auto player = scene->CreateGameObject();
 	auto sprite = player->AddComponent<dae::SpriteRenderer>();
 	sprite->SetTexture("pacman.png");
-	auto character = player->AddComponent<pacman::Pacman>();
-	character->InitGridAgent(grid, { 5,1 });
+	auto pacman = player->AddComponent<pacman::Pacman>();
+	pacman->InitGridAgent(grid, { 5,1 });
+	player->AddComponent<dae::Collider>();
 
-	// ScoreDisplay
+	//ScoreDisplay
 	go = scene->CreateGameObject();
 	auto tr = go->AddComponent<dae::TextRenderer>();
 	tr->SetFont(dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 22));
@@ -101,39 +103,43 @@ void load()
 	tr->SetFont(dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 19));
 	tr->SetColor({ 255, 255, 255 });
 	auto scoreDisplay = go->AddComponent<pacman::ScoreDisplay>();
-	character->AddObserver(scoreDisplay);
+	pacman->AddObserver(scoreDisplay);
 	go->SetLocalPosition(20, 19);
 
-	// Ghost
+	//Ghost
 	go = scene->CreateGameObject();
 	sprite = go->AddComponent<dae::SpriteRenderer>();
 	sprite->SetTexture("red.png");
-	auto rndghost = go->AddComponent<pacman::RandomGhost>();
-	rndghost->InitGridAgent(grid, { 5,1 });
+	auto red = go->AddComponent<pacman::RandomGhost>();
+	red->InitGridAgent(grid, { 5,1 });
+	go->AddComponent<dae::Collider>();
 
 	go = scene->CreateGameObject();
 	sprite = go->AddComponent<dae::SpriteRenderer>();
 	sprite->SetTexture("blue.png");
-	auto ghost = go->AddComponent<pacman::ChaseGhost>();
-	ghost->InitGridAgent(grid, { 8,1 });
-	ghost->SetTarget(player);
-	ghost->SetChaseAxis(true, true);
+	auto blue = go->AddComponent<pacman::ChaseGhost>();
+	blue->InitGridAgent(grid, { 8,1 });
+	blue->SetTarget(player);
+	blue->SetChaseAxis(true, true);
+	go->AddComponent<dae::Collider>();
 
 	go = scene->CreateGameObject();
 	sprite = go->AddComponent<dae::SpriteRenderer>();
 	sprite->SetTexture("orange.png");
-	ghost = go->AddComponent<pacman::ChaseGhost>();
-	ghost->InitGridAgent(grid, { 8,1 });
-	ghost->SetTarget(player);
-	ghost->SetChaseAxis(true, false);
+	auto orange = go->AddComponent<pacman::ChaseGhost>();
+	orange->InitGridAgent(grid, { 8,1 });
+	orange->SetTarget(player);
+	orange->SetChaseAxis(true, false);
+	go->AddComponent<dae::Collider>();
 
 	go = scene->CreateGameObject();
 	sprite = go->AddComponent<dae::SpriteRenderer>();
 	sprite->SetTexture("pink.png");
-	ghost = go->AddComponent<pacman::ChaseGhost>();
-	ghost->InitGridAgent(grid, { 8,1 });
-	ghost->SetTarget(player);
-	ghost->SetChaseAxis(false, true);
+	auto pink = go->AddComponent<pacman::ChaseGhost>();
+	pink->InitGridAgent(grid, { 8,1 });
+	pink->SetTarget(player);
+	pink->SetChaseAxis(false, true);
+	go->AddComponent<dae::Collider>();
 
 	// Sound
 //#if _DEBUG
@@ -151,10 +157,10 @@ void load()
 	{
 		using namespace dae;
 
-		input.AddKeyboardCommand({ SDL_SCANCODE_W, ButtonState::Pressed }, std::make_shared<MoveCharacter>(0, -1, character));
-		input.AddKeyboardCommand({ SDL_SCANCODE_A, ButtonState::Pressed }, std::make_shared<MoveCharacter>(-1, 0, character));
-		input.AddKeyboardCommand({ SDL_SCANCODE_S, ButtonState::Pressed }, std::make_shared<MoveCharacter>(0, 1, character));
-		input.AddKeyboardCommand({ SDL_SCANCODE_D, ButtonState::Pressed }, std::make_shared<MoveCharacter>(1, 0, character));
+		input.AddKeyboardCommand({ SDL_SCANCODE_W, ButtonState::Pressed }, std::make_shared<MoveCharacter>(0, -1, pacman));
+		input.AddKeyboardCommand({ SDL_SCANCODE_A, ButtonState::Pressed }, std::make_shared<MoveCharacter>(-1, 0, pacman));
+		input.AddKeyboardCommand({ SDL_SCANCODE_S, ButtonState::Pressed }, std::make_shared<MoveCharacter>(0, 1, pacman));
+		input.AddKeyboardCommand({ SDL_SCANCODE_D, ButtonState::Pressed }, std::make_shared<MoveCharacter>(1, 0, pacman));
 
 		//input.AddKeyboardCommand({ SDL_SCANCODE_1, ButtonState::Pressed }, std::make_shared<TestAudio>(PacmanSounds::Chomp, 0.2f));
 		//input.AddKeyboardCommand({ SDL_SCANCODE_2, ButtonState::Pressed }, std::make_shared<TestAudio>(PacmanSounds::EatFruit, 0.3f));
