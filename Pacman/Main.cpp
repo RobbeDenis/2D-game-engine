@@ -75,7 +75,7 @@ void load()
 	go = scene->CreateGameObject();
 	auto gridRender = go->AddComponent<pacman::GridRenderer>();
 	gridRender->EnableDebugGrid(false);
-	gridRender->EnableDebugAgents(true);
+	gridRender->EnableDebugAgents(false);
 	auto grid = go->AddComponent<pacman::Grid>();
 	grid->LoadFromFile(28, 29, 16, "TestLevel.txt");
 	grid->PrintGrid();
@@ -107,13 +107,13 @@ void load()
 	// Ghost
 	go = scene->CreateGameObject();
 	sprite = go->AddComponent<dae::SpriteRenderer>();
-	sprite->SetTexture("RedGhost.png");
+	sprite->SetTexture("red.png");
 	auto rndghost = go->AddComponent<pacman::RandomGhost>();
 	rndghost->InitGridAgent(grid, { 5,1 });
 
 	go = scene->CreateGameObject();
 	sprite = go->AddComponent<dae::SpriteRenderer>();
-	sprite->SetTexture("CyanGhost.png");
+	sprite->SetTexture("blue.png");
 	auto ghost = go->AddComponent<pacman::ChaseGhost>();
 	ghost->InitGridAgent(grid, { 8,1 });
 	ghost->SetTarget(player);

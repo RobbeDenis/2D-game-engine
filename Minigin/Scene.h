@@ -7,7 +7,7 @@
 namespace dae
 {
 	class RenderComponent;
-
+	class Collider;
 	class Scene final
 	{
 		friend void GameObject::DetachChild(GameObject* child);
@@ -24,6 +24,9 @@ namespace dae
 
 		GameObject* CreateGameObject();
 		GameObject* CreateGameObject(const std::string& name);
+
+		void AddCollider(Collider* pCollider);
+		void RemoveCollider(Collider* pCollider);
 		void AddRenderComponent(RenderComponent* pRenderComponent);
 		void RemoveRenderComponent(RenderComponent* pRenderComponent);
 		void AddImGuiComponent(RenderComponent* pRenderComponent);
@@ -41,12 +44,15 @@ namespace dae
 	private: 
 		void Add(std::unique_ptr<GameObject>& gameObject);
 		void Remove(const std::unique_ptr<GameObject>& gameObject);
+		friend Collider;
+		std::vector<Collider*>& GetColliders();
 
 		unsigned int m_Id;
 		std::string m_Name;
 		std::vector<std::unique_ptr<GameObject>> m_pObjects;
 		std::vector<RenderComponent*> m_pRenderComponents;
 		std::vector<RenderComponent*> m_pImGuiComponents;
+		std::vector<Collider*> m_pColliders;
 	};
 
 }

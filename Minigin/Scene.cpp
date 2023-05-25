@@ -32,6 +32,19 @@ GameObject* dae::Scene::CreateGameObject(const std::string& name)
 	return raw;
 }
 
+void dae::Scene::AddCollider(Collider* pCollider)
+{
+	m_pColliders.push_back(pCollider);
+}
+
+void dae::Scene::RemoveCollider(Collider* pCollider)
+{
+	if (m_pColliders.empty())
+		return;
+
+	m_pColliders.erase(std::remove(begin(m_pColliders), end(m_pColliders), pCollider), end(m_pColliders));
+}
+
 void dae::Scene::Add(std::unique_ptr<GameObject>& gameObject)
 {
 	gameObject->SetScene(this);
@@ -41,6 +54,11 @@ void dae::Scene::Add(std::unique_ptr<GameObject>& gameObject)
 void Scene::Remove(const std::unique_ptr<GameObject>& gameObject)
 {
 	m_pObjects.erase(std::remove(m_pObjects.begin(), m_pObjects.end(), gameObject), m_pObjects.end());
+}
+
+std::vector<Collider*>& dae::Scene::GetColliders()
+{
+	return m_pColliders;
 }
 
 void dae::Scene::AddRenderComponent(RenderComponent* pRenderComponent)
