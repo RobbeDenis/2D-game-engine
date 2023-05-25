@@ -25,6 +25,7 @@
     <ClCompile Include="..\Minigin\TestCharacter.cpp" />
     <ClCompile Include="..\Minigin\TestComp.cpp" />
     <ClCompile Include="Character.cpp" />
+    <ClCompile Include="ChaseGhost.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="GridAgent.cpp" />
     <ClCompile Include="GridRenderer.cpp" />
@@ -42,6 +43,7 @@
     <ClInclude Include="..\Minigin\TestCommands.h" />
     <ClInclude Include="..\Minigin\TestComp.h" />
     <ClInclude Include="Character.h" />
+    <ClInclude Include="ChaseGhost.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="GridAgent.h" />
     <ClInclude Include="GridRenderer.h" />

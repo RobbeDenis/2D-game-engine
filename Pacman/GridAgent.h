@@ -14,6 +14,7 @@ namespace pacman
 		const Coordinate& GetCoordinate() const;
 		unsigned Pickup();
 		unsigned LookAt(const Coordinate& c) const;
+		Grid* GetGrid() const;
 
 	private:
 		friend Grid;

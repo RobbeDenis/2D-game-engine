@@ -34,6 +34,7 @@
 #include "PacmanSounds.h"
 #include "Pacman.h"
 #include "RandomGhost.h"
+#include "ChaseGhost.h"
 
 void load();
 
@@ -82,10 +83,10 @@ void load()
 	go->SetLocalPosition(60, 60);
 
 	// Character
-	go = scene->CreateGameObject();
-	auto sprite = go->AddComponent<dae::SpriteRenderer>();
+	auto player = scene->CreateGameObject();
+	auto sprite = player->AddComponent<dae::SpriteRenderer>();
 	sprite->SetTexture("pacman.png");
-	auto character = go->AddComponent<pacman::Pacman>();
+	auto character = player->AddComponent<pacman::Pacman>();
 	character->InitGridAgent(grid, { 5,1 });
 
 	// ScoreDisplay
@@ -107,8 +108,32 @@ void load()
 	go = scene->CreateGameObject();
 	sprite = go->AddComponent<dae::SpriteRenderer>();
 	sprite->SetTexture("RedGhost.png");
-	auto ghost = go->AddComponent<pacman::RandomGhost>();
-	ghost->InitGridAgent(grid, { 5,1 });
+	auto rndghost = go->AddComponent<pacman::RandomGhost>();
+	rndghost->InitGridAgent(grid, { 5,1 });
+
+	go = scene->CreateGameObject();
+	sprite = go->AddComponent<dae::SpriteRenderer>();
+	sprite->SetTexture("CyanGhost.png");
+	auto ghost = go->AddComponent<pacman::ChaseGhost>();
+	ghost->InitGridAgent(grid, { 8,1 });
+	ghost->SetTarget(player);
+	ghost->SetChaseAxis(true, true);
+
+	go = scene->CreateGameObject();
+	sprite = go->AddComponent<dae::SpriteRenderer>();
+	sprite->SetTexture("orange.png");
+	ghost = go->AddComponent<pacman::ChaseGhost>();
+	ghost->InitGridAgent(grid, { 8,1 });
+	ghost->SetTarget(player);
+	ghost->SetChaseAxis(true, false);
+
+	go = scene->CreateGameObject();
+	sprite = go->AddComponent<dae::SpriteRenderer>();
+	sprite->SetTexture("pink.png");
+	ghost = go->AddComponent<pacman::ChaseGhost>();
+	ghost->InitGridAgent(grid, { 8,1 });
+	ghost->SetTarget(player);
+	ghost->SetChaseAxis(false, true);
 
 	// Sound
 //#if _DEBUG

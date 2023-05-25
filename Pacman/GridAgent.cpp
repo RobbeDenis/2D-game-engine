@@ -54,3 +54,8 @@ unsigned pacman::GridAgent::LookAt(const Coordinate& c) const
 {
 	return m_pGrid->GetCellData(c.y, c.x);
 }
+
+pacman::Grid* pacman::GridAgent::GetGrid() const
+{
+	return m_pGrid;
+}

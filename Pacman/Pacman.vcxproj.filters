@@ -66,6 +66,9 @@
     <ClCompile Include="RandomGhost.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="ChaseGhost.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Minigin\LivesDisplay.h">
@@ -117,6 +120,9 @@
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="RandomGhost.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ChaseGhost.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
