@@ -30,9 +30,6 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Minigin\LivesDisplay.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
     <ClCompile Include="..\Minigin\TestCharacter.cpp">
       <Filter>Test</Filter>
     </ClCompile>
@@ -72,11 +69,14 @@
     <ClCompile Include="Ghost.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="LivesDisplay.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="LivesRender.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Minigin\LivesDisplay.h">
-      <Filter>UI</Filter>
-    </ClInclude>
     <ClInclude Include="..\Minigin\GameEvents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -130,6 +130,12 @@
     </ClInclude>
     <ClInclude Include="Ghost.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="LivesDisplay.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="LivesRender.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

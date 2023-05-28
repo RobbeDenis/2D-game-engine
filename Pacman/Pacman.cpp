@@ -2,10 +2,14 @@
 #include <iostream>
 #include "PacmanEvents.h"
 #include <GameObject.h>
+#include <ETime.h>
 
 pacman::Pacman::Pacman(dae::GameObject* pGameObject)
 	: Character(pGameObject)
 	, m_pCollider{ nullptr }
+	, m_SpawnPoint{ }
+	, m_MaxDeathTime{ 2 }
+	, m_DeathTime{ }
 {
 
 }
@@ -22,7 +26,7 @@ void pacman::Pacman::Loaded()
 	AddState(State::Dead,
 		std::bind(&Pacman::EnterDead, this),
 		std::bind(&Pacman::UpdateDead, this),
-		{});
+		std::bind(&Pacman::ExitDead, this));
 
 	SetState(State::Walking);
 
@@ -41,7 +45,39 @@ void pacman::Pacman::UpdateWalking()
 	GetGameObject()->SetLocalPosition(newPos.x, newPos.y);
 
 	HandleCollisions();
+	handlePickups();
+}
 
+void pacman::Pacman::ExitWalking()
+{
+	std::cout << "Exit Walking\n";
+}
+
+void pacman::Pacman::EnterDead()
+{
+	Notify(PEvents::PacmanDied);
+}
+
+void pacman::Pacman::UpdateDead()
+{
+	const float elapsed{ dae::ETime::GetInstance().GetDeltaTime() };
+	m_DeathTime += elapsed;
+
+	if (m_DeathTime >= m_MaxDeathTime)
+	{
+		SetState(State::Walking);
+	}
+}
+
+void pacman::Pacman::ExitDead()
+{
+	m_DeathTime = 0.f;
+	m_Direction = { 0,0 };
+	m_pAgent->Reset(m_SpawnPoint);
+}
+
+void pacman::Pacman::handlePickups()
+{
 	switch (m_pAgent->Pickup())
 	{
 	case CellType::Dot:
@@ -65,21 +101,6 @@ void pacman::Pacman::UpdateWalking()
 	}
 }
 
-void pacman::Pacman::EnterDead()
-{
-	std::cout << "Entered Dead\n";
-}
-
-void pacman::Pacman::ExitWalking()
-{
-	std::cout << "Exit Walking\n";
-}
-
-void pacman::Pacman::UpdateDead()
-{
-	
-}
-
 void pacman::Pacman::HandleCollisions()
 {
 	const auto& colliders{ m_pCollider->GetColliders() };
@@ -91,7 +112,13 @@ void pacman::Pacman::HandleCollisions()
 
 		if (c->GetTag() == "ghost" && m_pCollider->IsOverlappingWith(c))
 		{
-			std::cout << "Ghost Hit\n";
+			SetState(State::Dead);
 		}
 	}
+}
+
+void pacman::Pacman::InitGridAgent(Grid* pGrid, const Coordinate& coordinate)
+{
+	m_SpawnPoint = coordinate;
+	Character::InitGridAgent(pGrid, coordinate);
 }

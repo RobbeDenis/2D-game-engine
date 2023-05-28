@@ -8,6 +8,7 @@ namespace pacman
 	public:
 		GridAgent(Grid* pGrid);
 
+		void Reset(const Coordinate& coordinate);
 		void MoveDirection(const glm::ivec2& direction);
 		const glm::ivec2& GetGridPosition() const;
 		const glm::ivec2& GetDirection() const;

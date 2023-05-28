@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Minigin\LivesDisplay.cpp" />
     <ClCompile Include="..\Minigin\Movement.cpp" />
     <ClCompile Include="..\Minigin\RotateParent.cpp" />
     <ClCompile Include="..\Minigin\TestCharacter.cpp" />
@@ -30,6 +29,8 @@
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="GridAgent.cpp" />
     <ClCompile Include="GridRenderer.cpp" />
+    <ClCompile Include="LivesDisplay.cpp" />
+    <ClCompile Include="LivesRender.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Pacman.cpp" />
     <ClCompile Include="RandomGhost.cpp" />
@@ -37,7 +38,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Minigin\GameEvents.h" />
-    <ClInclude Include="..\Minigin\LivesDisplay.h" />
     <ClInclude Include="..\Minigin\Movement.h" />
     <ClInclude Include="..\Minigin\RotateParent.h" />
     <ClInclude Include="..\Minigin\TestCharacter.h" />
@@ -49,6 +49,8 @@
     <ClInclude Include="Grid.h" />
     <ClInclude Include="GridAgent.h" />
     <ClInclude Include="GridRenderer.h" />
+    <ClInclude Include="LivesDisplay.h" />
+    <ClInclude Include="LivesRender.h" />
     <ClInclude Include="Pacman.h" />
     <ClInclude Include="PacmanCommands.h" />
     <ClInclude Include="PacmanEvents.h" />

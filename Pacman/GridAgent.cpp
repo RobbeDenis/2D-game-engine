@@ -60,3 +60,10 @@ pacman::Grid* pacman::GridAgent::GetGrid() const
 {
 	return m_pGrid;
 }
+
+void pacman::GridAgent::Reset(const Coordinate& coordinate)
+{
+	SetCoordinate(coordinate);
+	SetGridPosition(m_pGrid->CalculateCellPosition(coordinate));
+	m_Direction = { 0,0 };
+}

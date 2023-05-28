@@ -21,7 +21,6 @@
 #include "XBox360Controller.h"
 #include "TestCommands.h"
 #include "TestCharacter.h"
-#include "LivesDisplay.h"
 #include "GameEvents.h"
 #include "ScoreDisplay.h"
 #include "Grid.h"
@@ -36,6 +35,8 @@
 #include "RandomGhost.h"
 #include "ChaseGhost.h"
 #include "Collider.h"
+#include "LivesRender.h"
+#include "LivesDisplay.h"
 
 void load();
 
@@ -105,6 +106,15 @@ void load()
 	auto scoreDisplay = go->AddComponent<pacman::ScoreDisplay>();
 	pacman->AddObserver(scoreDisplay);
 	go->SetLocalPosition(20, 19);
+
+	//LivesDisplay
+	go = scene->CreateGameObject();
+	auto lives = go->AddComponent<pacman::LivesDisplay>();
+	auto lr = go->AddComponent<pacman::LivesRender>();
+	lr->SetLivesDisplay(lives);
+	lr->SetTexture("pacman.png");
+	go->SetLocalPosition(20, 400);
+	pacman->AddObserver(lives);
 
 	//Ghost
 	go = scene->CreateGameObject();
