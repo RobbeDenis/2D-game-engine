@@ -9,18 +9,25 @@ namespace pacman
 		RandomGhost(dae::GameObject* pGameObject);
 		void Loaded() override;
 
+		void Scare() override;
+
 	private:
 		enum State
 		{
 			Start = 0,
 			Wander = 1,
-			Dead = 2
+			Run = 2,
+			Dead = 3
 		};
 
 		void EnterStart();
 		void UpdateStart();
 		void UpdateWander();
 		void UpdateDead();
+
+		void EnterRun();
+		void UpdateRun();
+		void ExitRun();
 
 		void UpdateDirection();
 		unsigned GetRandomInt(unsigned min, unsigned max);

@@ -10,6 +10,8 @@ namespace pacman
 		Ghost(dae::GameObject* pGameObject);
 		void Loaded() override;
 
+		virtual void Scare() = 0;
+
 	private:
 		dae::Collider* m_pCollider;
 	};

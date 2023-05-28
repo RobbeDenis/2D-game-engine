@@ -75,6 +75,9 @@
     <ClCompile Include="LivesRender.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="GameplayManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Minigin\GameEvents.h">
@@ -136,6 +139,12 @@
     </ClInclude>
     <ClInclude Include="LivesRender.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameplayManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateObjects.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

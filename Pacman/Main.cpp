@@ -6,7 +6,6 @@
 
 #include <Minigin.h>
 
-#include "SceneManager.h"
 #include "ResourceManager.h"
 #include "Scene.h"
 #include "Component.h"
@@ -23,7 +22,6 @@
 #include "TestCharacter.h"
 #include "GameEvents.h"
 #include "ScoreDisplay.h"
-#include "Grid.h"
 #include "GridRenderer.h"
 #include "Character.h"
 #include "PacmanCommands.h"
@@ -31,12 +29,11 @@
 #include "LoggerSoundSystem.h"
 #include "SDLSoundSystem.h"
 #include "PacmanSounds.h"
-#include "Pacman.h"
-#include "RandomGhost.h"
-#include "ChaseGhost.h"
-#include "Collider.h"
 #include "LivesRender.h"
 #include "LivesDisplay.h"
+
+#include "GameplayManager.h"
+#include "CreateObjects.h"
 
 void load();
 
@@ -55,15 +52,6 @@ void load()
 	dae::Scene* scene = sceneManager.CreateScene("Demo");
 	dae::GameObject* go;
 
-	// BACKGROUND
-	//go = scene->CreateGameObject();
-	//go->AddComponent<dae::SpriteRenderer>()->SetTexture("background.tga");
-	//go->SetLocalPosition(0, 60);
-
-	//go = scene->CreateGameObject();
-	//go->AddComponent<dae::SpriteRenderer>()->SetTexture("logo.tga");
-	//go->SetLocalPosition(216, 180);
-
 	// FPS
 	go = scene->CreateGameObject();
 	auto font2 = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
@@ -72,6 +60,10 @@ void load()
 	tr2->SetFont(font2);
 	tr2->SetColor({ 0, 255, 0 });
 	go->AddComponent<dae::FPSCounter>();
+
+	// Gameplay manager
+	go = scene->CreateGameObject();
+	auto gameplay = go->AddComponent<pacman::GameplayManager>();
 
 	// Grid test
 	go = scene->CreateGameObject();
@@ -84,14 +76,6 @@ void load()
 	grid->AddObserver(gridRender);
 	go->SetLocalPosition(60, 60);
 
-	// Character
-	auto player = scene->CreateGameObject();
-	auto sprite = player->AddComponent<dae::SpriteRenderer>();
-	sprite->SetTexture("pacman.png");
-	auto pacman = player->AddComponent<pacman::Pacman>();
-	pacman->InitGridAgent(grid, { 5,1 });
-	player->AddComponent<dae::Collider>();
-
 	//ScoreDisplay
 	go = scene->CreateGameObject();
 	auto tr = go->AddComponent<dae::TextRenderer>();
@@ -103,8 +87,7 @@ void load()
 	tr = go->AddComponent<dae::TextRenderer>();
 	tr->SetFont(dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 19));
 	tr->SetColor({ 255, 255, 255 });
-	auto scoreDisplay = go->AddComponent<pacman::ScoreDisplay>();
-	pacman->AddObserver(scoreDisplay);
+	auto score = go->AddComponent<pacman::ScoreDisplay>();
 	go->SetLocalPosition(20, 19);
 
 	//LivesDisplay
@@ -114,54 +97,19 @@ void load()
 	lr->SetLivesDisplay(lives);
 	lr->SetTexture("pacman.png");
 	go->SetLocalPosition(20, 400);
+
+	// Player
+	auto pacmanObj{ CreatePacman(scene, "pacman.png", grid, { 5,1 }) };
+	auto pacman{ pacmanObj->GetComponent<pacman::Pacman>() };
+	pacman->AddObserver(gameplay);
+	pacman->AddObserver(score);
 	pacman->AddObserver(lives);
 
-	//Ghost
-	go = scene->CreateGameObject();
-	sprite = go->AddComponent<dae::SpriteRenderer>();
-	sprite->SetTexture("red.png");
-	auto red = go->AddComponent<pacman::RandomGhost>();
-	red->InitGridAgent(grid, { 11,14 });
-	go->AddComponent<dae::Collider>();
-
-	go = scene->CreateGameObject();
-	sprite = go->AddComponent<dae::SpriteRenderer>();
-	sprite->SetTexture("blue.png");
-	auto blue = go->AddComponent<pacman::ChaseGhost>();
-	blue->InitGridAgent(grid, { 12,14 });
-	blue->SetTarget(player);
-	blue->SetChaseAxis(true, true);
-	go->AddComponent<dae::Collider>();
-
-	go = scene->CreateGameObject();
-	sprite = go->AddComponent<dae::SpriteRenderer>();
-	sprite->SetTexture("orange.png");
-	auto orange = go->AddComponent<pacman::ChaseGhost>();
-	orange->InitGridAgent(grid, { 14,14 });
-	orange->SetTarget(player);
-	orange->SetChaseAxis(true, false);
-	go->AddComponent<dae::Collider>();
-
-	go = scene->CreateGameObject();
-	sprite = go->AddComponent<dae::SpriteRenderer>();
-	sprite->SetTexture("pink.png");
-	auto pink = go->AddComponent<pacman::ChaseGhost>();
-	pink->InitGridAgent(grid, { 15,14 });
-	pink->SetTarget(player);
-	pink->SetChaseAxis(false, true);
-	go->AddComponent<dae::Collider>();
-
-	// Sound
-//#if _DEBUG
-//	dae::SoundSystemLocator::RegisterSoundSystem(std::make_unique<dae::LoggerSoundSystem>(std::make_unique<dae::SDLSoundSystem>()));
-//#else
-//	dae::SoundSystemLocator::RegisterSoundSystem(std::make_unique<dae::SDLSoundSystem>());
-//#endif
-//	
-//	auto& ss{ dae::SoundSystemLocator::GetSoundSystem() };
-//	ss.RegisterSound(PacmanSounds::Chomp, "pacman_chomp.wav");
-//	ss.RegisterSound(PacmanSounds::EatFruit, "pacman_eatfruit.wav");
-//	ss.RegisterSound(PacmanSounds::EatGhost, "pacman_eatghost.wav");
+	// Ghosts
+	gameplay->AddGhost(CreateRandomGhost(scene, "red.png", grid, { 11,14 }));
+	gameplay->AddGhost(CreateChaseGhost(scene, "blue.png", grid, { 12,14 }, pacmanObj, { 1,1 }));
+	gameplay->AddGhost(CreateChaseGhost(scene, "orange.png", grid, { 14,14 }, pacmanObj, { 1,0 }));
+	gameplay->AddGhost(CreateChaseGhost(scene, "pink.png", grid, { 15,14 }, pacmanObj, { 0,1 }));
 
 	// Input
 	{
@@ -171,95 +119,5 @@ void load()
 		input.AddKeyboardCommand({ SDL_SCANCODE_A, ButtonState::Pressed }, std::make_shared<MoveCharacter>(-1, 0, pacman));
 		input.AddKeyboardCommand({ SDL_SCANCODE_S, ButtonState::Pressed }, std::make_shared<MoveCharacter>(0, 1, pacman));
 		input.AddKeyboardCommand({ SDL_SCANCODE_D, ButtonState::Pressed }, std::make_shared<MoveCharacter>(1, 0, pacman));
-
-		//input.AddKeyboardCommand({ SDL_SCANCODE_1, ButtonState::Pressed }, std::make_shared<TestAudio>(PacmanSounds::Chomp, 0.2f));
-		//input.AddKeyboardCommand({ SDL_SCANCODE_2, ButtonState::Pressed }, std::make_shared<TestAudio>(PacmanSounds::EatFruit, 0.3f));
-		//input.AddKeyboardCommand({ SDL_SCANCODE_3, ButtonState::Pressed }, std::make_shared<TestAudio>(PacmanSounds::EatGhost, 0.5f));
 	}
-
-	//// DISPLAY
-	//SDL_Color yellow{ 252, 219, 3 };
-	//SDL_Color green{ 0, 217, 22 };
-
-	//// Lives display
-	//go = scene->CreateGameObject();
-	//tr = go->AddComponent<dae::TextRenderer>();
-	//tr->SetFont(dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 25));
-	//tr->SetColor(yellow);
-	//tr->SetText("Press 1");
-	//go->SetLocalPosition({ 200, 320, 0 });
-
-	//go = scene->CreateGameObject();
-	//tr = go->AddComponent<dae::TextRenderer>();
-	//tr->SetFont(dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 25));
-	//tr->SetColor(yellow);
-	//auto livesDisplayP1 = go->AddComponent<dae::LivesDisplay>();
-	//go->SetLocalPosition({ 30, 320, 0 });
-
-	//go = scene->CreateGameObject();
-	//tr = go->AddComponent<dae::TextRenderer>();
-	//tr->SetFont(dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 25));
-	//tr->SetColor(green);
-	//tr->SetText("Press 2");
-	//go->SetLocalPosition({ 200, 400, 0 });
-
-	//go = scene->CreateGameObject();
-	//tr = go->AddComponent<dae::TextRenderer>();
-	//tr->SetFont(dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 25));
-	//tr->SetColor(green);
-	//auto livesDisplayP2 = go->AddComponent<dae::LivesDisplay>();
-	//go->SetLocalPosition({ 30, 400, 0 });
-
-	//// Scores display
-	//go = scene->CreateGameObject();
-	//tr = go->AddComponent<dae::TextRenderer>();
-	//tr->SetFont(dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 25));
-	//tr->SetColor(yellow);
-	//tr->SetText("Q: dot, W: energized, E: ghost, R: cherry");
-	//go->SetLocalPosition({ 200, 350, 0 });
-
-	//go = scene->CreateGameObject();
-	//tr = go->AddComponent<dae::TextRenderer>();
-	//tr->SetFont(dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 25));
-	//tr->SetColor(green);
-	//tr->SetText("A: dot, S: energized, D: ghost, F: cherry");
-	//go->SetLocalPosition({ 200, 430, 0 });
-
-	//go = scene->CreateGameObject();
-	//tr = go->AddComponent<dae::TextRenderer>();
-	//tr->SetFont(dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 25));
-	//tr->SetColor(green);
-	//auto scoreDisplayP2 = go->AddComponent<dae::ScoreDisplay>();
-	//go->SetLocalPosition({ 30, 430, 0 });
-
-	//// CHARACTER
-	//go = scene->CreateGameObject();
-	//auto player1 = go->AddComponent<dae::TestCharacter>();
-	//player1->SetMaxLives(3);
-	//player1->AddObserver(livesDisplayP1);
-	//player1->AddObserver(scoreDisplayP1);
-
-	//go = scene->CreateGameObject();
-	//auto player2 = go->AddComponent<dae::TestCharacter>();
-	//player2->SetMaxLives(3);
-	//player2->AddObserver(livesDisplayP2);
-	//player2->AddObserver(scoreDisplayP2);
-
-	//// COMMANDS
-	//{
-	//	using namespace dae;
-
-	//	input.AddKeyboardCommand({ SDL_SCANCODE_1, ButtonState::Pressed }, std::make_shared<TestKill>(player1));
-	//	input.AddKeyboardCommand({ SDL_SCANCODE_2, ButtonState::Pressed }, std::make_shared<TestKill>(player2));
-
-	//	input.AddKeyboardCommand({ SDL_SCANCODE_Q, ButtonState::Pressed }, std::make_shared<TestEvent>(player1, GameEvents::DotCollected));
-	//	input.AddKeyboardCommand({ SDL_SCANCODE_W, ButtonState::Pressed }, std::make_shared<TestEvent>(player1, GameEvents::EnergizerCollected));
-	//	input.AddKeyboardCommand({ SDL_SCANCODE_E, ButtonState::Pressed }, std::make_shared<TestEvent>(player1, GameEvents::GhostKilled));
-	//	input.AddKeyboardCommand({ SDL_SCANCODE_R, ButtonState::Pressed }, std::make_shared<TestEvent>(player1, GameEvents::CherryCollected));
-
-	//	input.AddKeyboardCommand({ SDL_SCANCODE_A, ButtonState::Pressed }, std::make_shared<TestEvent>(player2, GameEvents::DotCollected));
-	//	input.AddKeyboardCommand({ SDL_SCANCODE_S, ButtonState::Pressed }, std::make_shared<TestEvent>(player2, GameEvents::EnergizerCollected));
-	//	input.AddKeyboardCommand({ SDL_SCANCODE_D, ButtonState::Pressed }, std::make_shared<TestEvent>(player2, GameEvents::GhostKilled));
-	//	input.AddKeyboardCommand({ SDL_SCANCODE_F, ButtonState::Pressed }, std::make_shared<TestEvent>(player2, GameEvents::CherryCollected));
-	//}
 }

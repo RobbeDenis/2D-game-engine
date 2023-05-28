@@ -22,6 +22,11 @@ void pacman::RandomGhost::Loaded()
 		std::bind(&RandomGhost::UpdateWander, this),
 		{});
 
+	AddState(State::Run,
+		std::bind(&RandomGhost::EnterRun, this),
+		std::bind(&RandomGhost::UpdateRun, this),
+		std::bind(&RandomGhost::ExitRun, this));
+
 	AddState(State::Dead, 
 		{}, 
 		std::bind(&RandomGhost::UpdateDead, this), 
@@ -140,4 +145,27 @@ unsigned pacman::RandomGhost::GetRandomInt(unsigned min, unsigned max)
 	static std::mt19937 gen(rd());
 	std::uniform_int_distribution dis(min, max);
 	return dis(gen);
+}
+
+void pacman::RandomGhost::Scare()
+{
+	SetState(State::Run);
+}
+
+void pacman::RandomGhost::EnterRun()
+{
+	m_Direction = -m_Direction;
+}
+
+void pacman::RandomGhost::UpdateRun()
+{
+	UpdateDirection();
+
+	m_pAgent->MoveDirection(m_Direction);
+	const glm::ivec2 newPos{ m_pAgent->GetGridPosition() };
+	GetGameObject()->SetLocalPosition(newPos.x, newPos.y);
+}
+
+void pacman::RandomGhost::ExitRun()
+{
 }

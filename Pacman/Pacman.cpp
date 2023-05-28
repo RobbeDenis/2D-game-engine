@@ -72,7 +72,7 @@ void pacman::Pacman::UpdateDead()
 void pacman::Pacman::ExitDead()
 {
 	m_DeathTime = 0.f;
-	m_Direction = { 0,0 };
+	m_Direction = { 0,0 }; 
 	m_pAgent->Reset(m_SpawnPoint);
 }
 
@@ -94,7 +94,6 @@ void pacman::Pacman::handlePickups()
 		break;
 	case CellType::Melon:
 		Notify(PEvents::CFruit);
-		SetState(State::Dead);
 		break;
 	default:
 		break;
