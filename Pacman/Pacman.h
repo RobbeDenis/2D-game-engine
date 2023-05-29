@@ -16,7 +16,8 @@ namespace pacman
 		enum State
 		{
 			Walking = 0,
-			Dead = 1
+			Dead = 1,
+			Energized = 2
 		};
 
 		void UpdateWalking();
@@ -25,7 +26,6 @@ namespace pacman
 		void UpdateDead();
 		void ExitDead();
 
-		void HandleCollisions();
 		void handlePickups();
 
 		dae::Collider* m_pCollider;

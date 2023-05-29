@@ -10,6 +10,8 @@ namespace pacman
 		void Loaded() override;
 
 		void Scare() override;
+		void Kill() override;
+		bool CanKill() const override;
 		void SetTarget(dae::GameObject* pTarget);
 		void SetChaseAxis(const glm::ivec2& axis);
 
@@ -24,8 +26,9 @@ namespace pacman
 		};
 
 		void UpdateStart();
-		void UpdateChase();
 		void UpdateDead();
+		void EnterChase();
+		void UpdateChase();
 
 		void EnterRun();
 		void UpdateRun();

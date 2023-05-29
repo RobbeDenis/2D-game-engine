@@ -3,6 +3,7 @@
 #include "PacmanEvents.h"
 #include <GameObject.h>
 #include <ETime.h>
+#include "Ghost.h"
 
 pacman::Pacman::Pacman(dae::GameObject* pGameObject)
 	: Character(pGameObject)
@@ -44,8 +45,25 @@ void pacman::Pacman::UpdateWalking()
 	const glm::ivec2 newPos{ m_pAgent->GetGridPosition() };
 	GetGameObject()->SetLocalPosition(newPos.x, newPos.y);
 
-	HandleCollisions();
 	handlePickups();
+
+	const auto& colliders{ m_pCollider->GetColliders() };
+
+	for (dae::Collider* const c : colliders)
+	{
+		if (c == m_pCollider)
+			continue;
+
+		if (c->GetTag() == "ghost" && m_pCollider->IsOverlappingWith(c))
+		{
+			Ghost* ghost = c->GetGameObject()->GetComponent<pacman::Ghost>();
+
+			if (ghost->CanKill())
+				ghost->Kill();
+			else
+				SetState(State::Dead);
+		}
+	}
 }
 
 void pacman::Pacman::ExitWalking()
@@ -97,22 +115,6 @@ void pacman::Pacman::handlePickups()
 		break;
 	default:
 		break;
-	}
-}
-
-void pacman::Pacman::HandleCollisions()
-{
-	const auto& colliders{ m_pCollider->GetColliders() };
-
-	for (dae::Collider* const c : colliders)
-	{
-		if (c == m_pCollider)
-			continue;
-
-		if (c->GetTag() == "ghost" && m_pCollider->IsOverlappingWith(c))
-		{
-			SetState(State::Dead);
-		}
 	}
 }
 

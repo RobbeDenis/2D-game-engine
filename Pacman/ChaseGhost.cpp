@@ -10,7 +10,7 @@ pacman::ChaseGhost::ChaseGhost(dae::GameObject* pGameObject)
 	, m_ChaseAxis{ 0, 0 }
 	, m_MaxRunTime{ 4 }
 	, m_RunTime{ 0 }
-	, m_MaxBlinkTime{ 1.5f }
+	, m_MaxBlinkTime{ 2.f }
 	, m_BlinkTime{ 0 }
 {
 }
@@ -25,7 +25,7 @@ void pacman::ChaseGhost::Loaded()
 		{});
 
 	AddState(State::Chase,
-		{},
+		std::bind(&ChaseGhost::EnterChase, this),
 		std::bind(&ChaseGhost::UpdateChase, this),
 		{});
 	
@@ -51,6 +51,11 @@ void pacman::ChaseGhost::UpdateStart()
 {
 	UpdateDirection();
 	SetState(State::Chase);
+}
+
+void pacman::ChaseGhost::EnterChase()
+{
+	std::cout << "Chase\n";
 }
 
 void pacman::ChaseGhost::UpdateChase()
@@ -169,6 +174,7 @@ void pacman::ChaseGhost::Scare()
 
 void pacman::ChaseGhost::EnterRun()
 {
+	std::cout << "Running\n";
 	m_Direction -= m_Direction;
 	m_PrevCoordinate = { 0,0 };
 	m_RunTime = 0;
@@ -192,6 +198,7 @@ void pacman::ChaseGhost::UpdateRun()
 
 void pacman::ChaseGhost::EnterBlink()
 {
+	std::cout << "Blinking\n";
 	m_BlinkTime = 0;
 }
 
@@ -285,4 +292,14 @@ void pacman::ChaseGhost::UpdateRunDirection()
 	}
 
 	m_PrevCoordinate = m_pAgent->GetCoordinate();
+}
+
+void pacman::ChaseGhost::Kill()
+{
+	std::cout << "Kill\n";
+}
+
+bool pacman::ChaseGhost::CanKill() const
+{
+	return GetState() == State::Run || GetState() == State::Blink;
 }

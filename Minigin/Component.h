@@ -25,8 +25,6 @@ namespace dae
 		Component& operator=(const Component& other) = delete;
 		Component& operator=(Component&& other) = delete;
 
-
-	protected:
 		GameObject* GetGameObject() const;
 
 	private:

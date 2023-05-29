@@ -1,10 +1,15 @@
 #include "RandomGhost.h"
 #include <GameObject.h>
 #include <random>
+#include <ETime.h>
 
 pacman::RandomGhost::RandomGhost(dae::GameObject* pGameObject)
 	: Ghost(pGameObject)
 	, m_PrevCoordinate{ }
+	, m_MaxRunTime{ 4 }
+	, m_RunTime{ 0 }
+	, m_MaxBlinkTime{ 2.f }
+	, m_BlinkTime{ 0 }
 {
 }
 
@@ -18,7 +23,7 @@ void pacman::RandomGhost::Loaded()
 		{});
 
 	AddState(State::Wander,
-		{}, 
+		std::bind(&RandomGhost::EnterWander, this),
 		std::bind(&RandomGhost::UpdateWander, this),
 		{});
 
@@ -26,6 +31,11 @@ void pacman::RandomGhost::Loaded()
 		std::bind(&RandomGhost::EnterRun, this),
 		std::bind(&RandomGhost::UpdateRun, this),
 		std::bind(&RandomGhost::ExitRun, this));
+
+	AddState(State::Blink,
+		std::bind(&RandomGhost::EnterBlink, this),
+		std::bind(&RandomGhost::UpdateBlink, this),
+		{});
 
 	AddState(State::Dead, 
 		{}, 
@@ -65,13 +75,18 @@ void pacman::RandomGhost::EnterStart()
 	}
 	else 
 	{
-		throw std::runtime_error("Ghost started at wrong posiiton");
+		throw std::runtime_error("Ghost started at wrong position");
 	}
 }
 
 void pacman::RandomGhost::UpdateStart()
 {
 	SetState(State::Wander);
+}
+
+void pacman::RandomGhost::EnterWander()
+{
+	std::cout << "Wander\n";
 }
 
 void pacman::RandomGhost::UpdateWander()
@@ -154,11 +169,21 @@ void pacman::RandomGhost::Scare()
 
 void pacman::RandomGhost::EnterRun()
 {
+	std::cout << "Running\n";
 	m_Direction = -m_Direction;
+	m_RunTime = 0.f;
 }
 
 void pacman::RandomGhost::UpdateRun()
 {
+	const float elapsed{ dae::ETime::GetInstance().GetDeltaTime() };
+
+	m_RunTime += elapsed;
+	if (m_RunTime >= m_MaxRunTime)
+	{
+		SetState(State::Blink);
+	}
+
 	UpdateDirection();
 
 	m_pAgent->MoveDirection(m_Direction);
@@ -168,4 +193,39 @@ void pacman::RandomGhost::UpdateRun()
 
 void pacman::RandomGhost::ExitRun()
 {
+
+}
+
+void pacman::RandomGhost::EnterBlink()
+{
+	std::cout << "Blinking\n";
+	m_BlinkTime = 0.f;
+}
+
+void pacman::RandomGhost::UpdateBlink()
+{
+	const float elapsed{ dae::ETime::GetInstance().GetDeltaTime() };
+
+	m_BlinkTime += elapsed;
+	if (m_BlinkTime >= m_MaxBlinkTime)
+	{
+		m_PrevCoordinate = { 0,0 };
+		SetState(State::Start);
+	}
+
+	UpdateDirection();
+
+	m_pAgent->MoveDirection(m_Direction);
+	const glm::ivec2 newPos{ m_pAgent->GetGridPosition() };
+	GetGameObject()->SetLocalPosition(newPos.x, newPos.y);
+}
+
+void pacman::RandomGhost::Kill()
+{
+	std::cout << "Kill\n";
+}
+
+bool pacman::RandomGhost::CanKill() const
+{
+	return GetState() == State::Run || GetState() == State::Blink;
 }
