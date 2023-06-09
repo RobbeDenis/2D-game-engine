@@ -45,7 +45,7 @@ namespace pacman
 
 		unsigned Pickup(const Coordinate& c);
 
-		unsigned GetCellData(unsigned r, unsigned c) const { return m_Cells[r][c]; }
+		unsigned GetCellData(unsigned r, unsigned c) const;
 		unsigned GetColums() const { return m_Colums; }
 		unsigned GetRows() const { return m_Rows; }
 		unsigned GetCellSize() const { return m_CellSize; }

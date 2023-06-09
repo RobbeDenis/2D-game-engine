@@ -36,6 +36,8 @@ void pacman::Pacman::Loaded()
 
 	m_pCollider->SetDimensions(12, 12);
 	m_pCollider->SetOffset(2, 2);
+
+	m_pAgent->SetMovementSpeed(150.f);
 }
 
 void pacman::Pacman::UpdateWalking()
@@ -57,10 +59,16 @@ void pacman::Pacman::UpdateWalking()
 		{
 			Ghost* ghost = c->GetGameObject()->GetComponent<pacman::Ghost>();
 
-			if (ghost->CanKill())
+			if (ghost->CanDie())
+			{
+				std::cout << "KILL\n";
 				ghost->Kill();
+			}
 			else
+			{
+				std::cout << "DIE\n";
 				SetState(State::Dead);
+			}
 		}
 	}
 }

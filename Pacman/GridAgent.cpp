@@ -61,6 +61,11 @@ pacman::Grid* pacman::GridAgent::GetGrid() const
 	return m_pGrid;
 }
 
+void pacman::GridAgent::SetMovementSpeed(float speed)
+{
+	m_MovementSpeed = speed;
+}
+
 void pacman::GridAgent::Reset(const Coordinate& coordinate)
 {
 	SetCoordinate(coordinate);

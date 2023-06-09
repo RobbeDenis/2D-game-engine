@@ -157,13 +157,21 @@ void pacman::Grid::PrintGrid() const
 
 unsigned pacman::Grid::Pickup(const Coordinate& c)
 {
-	unsigned type{ m_Cells[c.y][c.x] };
+	const Coordinate safeC{ std::clamp(c.x, 0U, m_Rows), std::clamp(c.y, 0U, m_Colums) };
+
+	unsigned type{ m_Cells[safeC.y][safeC.x] };
 
 	if (type == CellType::Empty || type == CellType::Wall)
 		return type;
 
-	m_Cells[c.y][c.x] = CellType::Empty;
+	m_Cells[safeC.y][safeC.x] = CellType::Empty;
 	Notify(PEvents::GridItemsChanged);
 
 	return type;
+}
+
+unsigned pacman::Grid::GetCellData(unsigned r, unsigned c) const 
+{ 
+	const Coordinate safeC{ std::clamp(r, 0U, m_Rows - 1), std::clamp(c, 0U, m_Colums - 1) };
+	return m_Cells[safeC.x][safeC.y];
 }

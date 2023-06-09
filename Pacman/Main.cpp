@@ -108,10 +108,10 @@ void load()
 	gamemode->AddPlayer(pman);
 
 	// Ghosts
-	gamemode->AddGhost(CreateChaseGhost(scene, "red.png", grid, { 12,14 }, pacmanObj, { 0,0 }));
-	gamemode->AddGhost(CreateChaseGhost(scene, "blue.png", grid, { 12,14 }, pacmanObj, { 1,1 }));
-	gamemode->AddGhost(CreateChaseGhost(scene, "orange.png", grid, { 14,14 }, pacmanObj, { 1,0 }));
-	gamemode->AddGhost(CreateChaseGhost(scene, "pink.png", grid, { 15,14 }, pacmanObj, { 0,1 }));
+	gamemode->AddGhost(CreateGhost(scene, "red.png", grid, { 12,14 }, pacmanObj, { 0,0 }));
+	gamemode->AddGhost(CreateGhost(scene, "blue.png", grid, { 12,14 }, pacmanObj, { 1,1 }));
+	gamemode->AddGhost(CreateGhost(scene, "orange.png", grid, { 14,14 }, pacmanObj, { 1,0 }));
+	gamemode->AddGhost(CreateGhost(scene, "pink.png", grid, { 15,14 }, pacmanObj, { 0,1 }));
 
 	// Input
 	{

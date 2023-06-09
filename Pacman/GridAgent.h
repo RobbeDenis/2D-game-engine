@@ -16,6 +16,7 @@ namespace pacman
 		unsigned Pickup();
 		unsigned LookAt(const Coordinate& c) const;
 		Grid* GetGrid() const;
+		void SetMovementSpeed(float speed);
 
 	private:
 		friend Grid;

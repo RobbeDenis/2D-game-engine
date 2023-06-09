@@ -24,7 +24,6 @@
     <ClCompile Include="..\Minigin\TestCharacter.cpp" />
     <ClCompile Include="..\Minigin\TestComp.cpp" />
     <ClCompile Include="Character.cpp" />
-    <ClCompile Include="ChaseGhost.cpp" />
     <ClCompile Include="Gamemode.cpp" />
     <ClCompile Include="GameplayManager.cpp" />
     <ClCompile Include="Ghost.cpp" />
@@ -35,7 +34,6 @@
     <ClCompile Include="LivesRender.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Pacman.cpp" />
-    <ClCompile Include="RandomGhost.cpp" />
     <ClCompile Include="ScoreDisplay.cpp" />
     <ClCompile Include="SinglePlayer.cpp" />
   </ItemGroup>
@@ -47,7 +45,6 @@
     <ClInclude Include="..\Minigin\TestCommands.h" />
     <ClInclude Include="..\Minigin\TestComp.h" />
     <ClInclude Include="Character.h" />
-    <ClInclude Include="ChaseGhost.h" />
     <ClInclude Include="CreateObjects.h" />
     <ClInclude Include="Gamemode.h" />
     <ClInclude Include="GameplayManager.h" />
@@ -61,7 +58,6 @@
     <ClInclude Include="PacmanCommands.h" />
     <ClInclude Include="PacmanEvents.h" />
     <ClInclude Include="PacmanSounds.h" />
-    <ClInclude Include="RandomGhost.h" />
     <ClInclude Include="ScoreDisplay.h" />
     <ClInclude Include="SinglePlayer.h" />
   </ItemGroup>

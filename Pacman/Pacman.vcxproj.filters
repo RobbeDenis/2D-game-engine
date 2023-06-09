@@ -63,12 +63,6 @@
     <ClCompile Include="ScoreDisplay.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="RandomGhost.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="ChaseGhost.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="Ghost.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -133,12 +127,6 @@
     </ClInclude>
     <ClInclude Include="ScoreDisplay.h">
       <Filter>UI</Filter>
-    </ClInclude>
-    <ClInclude Include="RandomGhost.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="ChaseGhost.h">
-      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Ghost.h">
       <Filter>Components</Filter>
