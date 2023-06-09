@@ -7,6 +7,11 @@
 #include "Grid.h"
 #include "Ghost.h"
 #include "Pacman.h"
+#include "FPSCounter.h"
+#include "GridRenderer.h"
+#include "ScoreDisplay.h"
+#include "LivesDisplay.h"
+#include "LivesRender.h"
 
 dae::GameObject* CreatePacman(dae::Scene* const scene, const std::string& texture, pacman::Grid* grid, const pacman::Coordinate& c)
 {
@@ -32,4 +37,60 @@ pacman::Ghost* CreateGhost(dae::Scene* const scene, const std::string& texture, 
 	go->AddComponent<dae::Collider>();
 
 	return ghost;
+}
+
+dae::FPSCounter* CreateFPS(dae::Scene* const scene)
+{
+	auto go{ scene->CreateGameObject() };
+	auto font2 = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
+	auto tr2 = go->AddComponent<dae::TextRenderer>();
+	tr2->SetText("FPS");
+	tr2->SetFont(font2);
+	tr2->SetColor({ 0, 255, 0 });
+	return go->AddComponent<dae::FPSCounter>();
+}
+
+pacman::Grid* CreateGrid(dae::Scene* const scene, pacman::Gamemode* gamemode, int x, int y)
+{
+	auto go{ scene->CreateGameObject() };
+	auto grid = go->AddComponent<pacman::Grid>();
+	auto gridRender = go->AddComponent<pacman::GridRenderer>();
+	gamemode->AddObserver(gridRender);
+	grid->AddObserver(gridRender);
+	grid->AddObserver(gamemode);
+	go->SetLocalPosition(x, y);
+	gamemode->AssignGrid(grid);
+
+	return grid;
+}
+
+pacman::ScoreDisplay* CreateScoreDisplay(dae::Scene* const scene, const SDL_Color& color, int x, int y)
+{
+	auto go{ scene->CreateGameObject() };
+	auto tr = go->AddComponent<dae::TextRenderer>();
+	tr->SetFont(dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 22));
+	tr->SetColor(color);
+	tr->SetText("SCORE");
+	go->SetLocalPosition(x, y);
+	go = go->AddChild();
+	tr = go->AddComponent<dae::TextRenderer>();
+	tr->SetFont(dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 19));
+	tr->SetColor(color);
+	auto score = go->AddComponent<pacman::ScoreDisplay>();
+	go->SetLocalPosition(20, 19);
+
+	return score;
+}
+
+pacman::LivesDisplay* CreateLivesDisplay(dae::Scene* const scene, const std::string& texture, pacman::Gamemode* gamemode, int x, int y)
+{
+	auto go{ scene->CreateGameObject() };
+	auto lives = go->AddComponent<pacman::LivesDisplay>();
+	auto lr = go->AddComponent<pacman::LivesRender>();
+	lr->SetLivesDisplay(lives);
+	lr->SetTexture(texture);
+	go->SetLocalPosition(x, y);
+	lives->AddObserver(gamemode);
+
+	return lives;
 }

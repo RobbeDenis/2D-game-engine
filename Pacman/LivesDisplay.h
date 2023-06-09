@@ -1,10 +1,11 @@
 #pragma once
 #include <Component.h>
 #include <Observer.h>
+#include <Subject.h>
 
 namespace pacman
 {
-	class LivesDisplay : public dae::Component, public dae::Observer
+	class LivesDisplay final : public dae::Component, public dae::Observer, public dae::Subject
 	{
 	public:
 		LivesDisplay(dae::GameObject* gameObject);

@@ -1,4 +1,4 @@
-#include <SDL.h> // Try to pimpl this away later
+#include <SDL.h>
 #include "InputManager.h"
 #include <backends/imgui_impl_sdl2.h>
 #include <stdexcept>

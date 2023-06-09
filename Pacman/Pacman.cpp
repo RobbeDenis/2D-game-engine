@@ -60,15 +60,9 @@ void pacman::Pacman::UpdateWalking()
 			Ghost* ghost = c->GetGameObject()->GetComponent<pacman::Ghost>();
 
 			if (ghost->CanDie())
-			{
-				std::cout << "KILL\n";
 				ghost->Kill();
-			}
-			else
-			{
-				std::cout << "DIE\n";
+			else if(ghost->CanKill())
 				SetState(State::Dead);
-			}
 		}
 	}
 }

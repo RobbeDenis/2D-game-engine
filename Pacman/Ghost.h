@@ -27,6 +27,7 @@ namespace pacman
 		void SetChaseAxis(const glm::ivec2& axis);
 
 		bool CanDie() const;
+		bool CanKill() const;
 
 	private:
 

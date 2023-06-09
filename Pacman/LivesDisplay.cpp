@@ -28,6 +28,8 @@ void pacman::LivesDisplay::OnNotify(unsigned event)
 void pacman::LivesDisplay::PacmanDied()
 {
 	--m_Lives;
+	if (m_Lives < 0)
+		Notify(PEvents::PlayerOutOffLives);
 }
 
 int pacman::LivesDisplay::GetLives() const

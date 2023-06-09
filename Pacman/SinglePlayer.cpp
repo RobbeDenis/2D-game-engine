@@ -3,6 +3,7 @@
 #include "Ghost.h"
 #include <stdexcept>
 #include "PacmanEvents.h"
+#include <iostream>
 
 
 pacman::SinglePlayer::SinglePlayer(dae::GameObject* pGameObject)
@@ -37,4 +38,21 @@ void pacman::SinglePlayer::AddPlayer(Character* player)
 		throw std::runtime_error("player is nullptr");
 
 	m_pPlayer = player;
+}
+
+void pacman::SinglePlayer::OnNotify(unsigned event)
+{
+	Gamemode::OnNotify(event);
+
+	switch (event)
+	{
+	case PEvents::AllItemsCollected:
+		SkipLevel();
+		break;
+	case PEvents::PlayerOutOffLives:
+		std::cout << "GAMEOVER\n";
+		break;
+	default:
+		break;
+	}
 }

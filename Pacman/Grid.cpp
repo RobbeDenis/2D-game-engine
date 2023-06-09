@@ -167,7 +167,23 @@ unsigned pacman::Grid::Pickup(const Coordinate& c)
 	m_Cells[safeC.y][safeC.x] = CellType::Empty;
 	Notify(PEvents::GridItemsChanged);
 
+	if (CheckForWinCondition())
+		Notify(PEvents::AllItemsCollected);
+
 	return type;
+}
+
+bool pacman::Grid::CheckForWinCondition() const
+{
+	for (auto& col : m_Cells)
+	{
+		for (unsigned type : col)
+		{
+			if (type > Wall)
+				return false;
+		}
+	}
+	return true;
 }
 
 unsigned pacman::Grid::GetCellData(unsigned r, unsigned c) const 

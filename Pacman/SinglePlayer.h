@@ -12,6 +12,7 @@ namespace pacman
         void Loaded() override;
         void SkipLevel() override;
         void AddPlayer(Character* player);
+        void OnNotify(unsigned event) override;
 
     private:
         Character* m_pPlayer;

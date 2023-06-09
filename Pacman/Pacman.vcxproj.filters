@@ -72,14 +72,14 @@
     <ClCompile Include="LivesRender.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="GameplayManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Gamemode.cpp">
       <Filter>Gamemodes</Filter>
     </ClCompile>
     <ClCompile Include="SinglePlayer.cpp">
       <Filter>Gamemodes</Filter>
+    </ClCompile>
+    <ClCompile Include="CreateScenes.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -137,9 +137,6 @@
     <ClInclude Include="LivesRender.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="GameplayManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CreateObjects.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -148,6 +145,9 @@
     </ClInclude>
     <ClInclude Include="SinglePlayer.h">
       <Filter>Gamemodes</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateScenes.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

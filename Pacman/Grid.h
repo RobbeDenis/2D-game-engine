@@ -55,6 +55,7 @@ namespace pacman
 
 	private:
 		bool CanTurn(const glm::ivec2& pos, const glm::ivec2& sumDir);
+		bool CheckForWinCondition() const;
 
 		std::vector<std::vector<unsigned>> m_Cells;
 		std::vector<std::unique_ptr<GridAgent>> m_pAgents;

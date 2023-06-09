@@ -319,6 +319,11 @@ bool pacman::Ghost::CanDie() const
 	return GetState() == State::Run || GetState() == State::Blink;
 }
 
+bool pacman::Ghost::CanKill() const
+{
+	return GetState() == State::Chase;
+}
+
 void pacman::Ghost::Reset()
 {
 	SetState(State::Start);

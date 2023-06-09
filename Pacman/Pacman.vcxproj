@@ -24,8 +24,8 @@
     <ClCompile Include="..\Minigin\TestCharacter.cpp" />
     <ClCompile Include="..\Minigin\TestComp.cpp" />
     <ClCompile Include="Character.cpp" />
+    <ClCompile Include="CreateScenes.cpp" />
     <ClCompile Include="Gamemode.cpp" />
-    <ClCompile Include="GameplayManager.cpp" />
     <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="GridAgent.cpp" />
@@ -46,8 +46,8 @@
     <ClInclude Include="..\Minigin\TestComp.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="CreateObjects.h" />
+    <ClInclude Include="CreateScenes.h" />
     <ClInclude Include="Gamemode.h" />
-    <ClInclude Include="GameplayManager.h" />
     <ClInclude Include="Ghost.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="GridAgent.h" />
