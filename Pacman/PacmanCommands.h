@@ -1,6 +1,7 @@
 #pragma once
 #include <InputUtils.h>
 #include "Character.h"
+#include "Gamemode.h"
 
 class MoveCharacter : public dae::Command
 {
@@ -19,4 +20,19 @@ private:
 	pacman::Character* Character;
 	int XDirection = 0;
 	int YDirection = 0;
+};
+
+class SkipLevel : public dae::Command
+{
+public:
+	explicit SkipLevel(pacman::Gamemode* gm)
+		: m_pGamemode{gm}{}
+
+	void Execute() override
+	{
+		m_pGamemode->SkipLevel();
+	}
+
+private:
+	pacman::Gamemode* m_pGamemode;
 };

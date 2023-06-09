@@ -7,5 +7,7 @@ enum PEvents
 	CPower = 2,
 	CFruit = 3,
 	GhostKilled = 4,
-	PacmanDied = 5
+	PacmanDied = 5,
+	LevelLoaded = 6,
+	PlayerStart = 7
 };

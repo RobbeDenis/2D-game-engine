@@ -9,20 +9,24 @@
 
 pacman::Grid::Grid(dae::GameObject* pGameObject)
 	: dae::Component(pGameObject)
-	, m_Colums{ 0 }
-	, m_Rows{ 0 }
-	, m_CellSize{ 0 }
+	, m_Colums{ 27 }
+	, m_Rows{ 29 }
+	, m_CellSize{ 16 }
 	, m_Cells{ }
 	, m_Offset{ 1 }
 {
+	for (unsigned r{ 0 }; r < m_Rows; ++r)
+	{
+		m_Cells.push_back({});
+		for (unsigned c{ 0 }; c < m_Colums; ++c)
+		{
+			m_Cells[r].push_back(Empty);
+		}
+	}
 }
 
-void pacman::Grid::LoadFromFile(unsigned colums, unsigned rows, unsigned cellSize, const std::string& filename)
+void pacman::Grid::LoadFromFile(const std::string& filename)
 {
-	m_Colums = colums;
-	m_Rows = rows;
-	m_CellSize = cellSize;
-
 	const std::string filePath{ dae::ResourceManager::GetInstance().GetDataPath() + filename };
 
 	std::ifstream file{ filePath };
@@ -34,10 +38,9 @@ void pacman::Grid::LoadFromFile(unsigned colums, unsigned rows, unsigned cellSiz
 		std::string line;
 		if (std::getline(file, line))
 		{
-			m_Cells.push_back({});
 			for (unsigned c{ 0 }; c < m_Colums; ++c)
 			{
-				m_Cells[r].push_back(static_cast<int>(line[c]) - 48);
+				m_Cells[r][c] = static_cast<int>(line[c]) - '0';
 			}
 		}
 	}

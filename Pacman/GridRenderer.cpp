@@ -220,9 +220,13 @@ void pacman::GridRenderer::OnNotify(unsigned event)
 {
 	switch (event)
 	{
+	case PEvents::PlayerStart:
 	case PEvents::GridItemsChanged:
 		UpdateMask(m_pDotMask, CellType::Dot);
 		break;
+	case PEvents::LevelLoaded:
+		UpdateMask(m_pDotMask, CellType::Dot);
+		UpdateMask(m_pWallMask, CellType::Wall);
 	default:
 		break;
 	}

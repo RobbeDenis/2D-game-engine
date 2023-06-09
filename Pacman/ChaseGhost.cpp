@@ -296,10 +296,16 @@ void pacman::ChaseGhost::UpdateRunDirection()
 
 void pacman::ChaseGhost::Kill()
 {
-	std::cout << "Kill\n";
+	Reset();
 }
 
 bool pacman::ChaseGhost::CanKill() const
 {
 	return GetState() == State::Run || GetState() == State::Blink;
+}
+
+void pacman::ChaseGhost::Reset()
+{
+	SetState(State::Start);
+	m_pAgent->Reset(m_SpawnPoint);
 }

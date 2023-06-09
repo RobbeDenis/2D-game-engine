@@ -27,7 +27,7 @@ namespace dae
 		void HandleKeyboardInputs();
 
 		using KeyboardCommandsMap = std::unordered_map<KeyboardInput, std::pair<std::shared_ptr<Command>, bool>, KeyboardInputHasher>;
-		using ControllerCommandsMap = std::unordered_map<ControllerInput, std::shared_ptr<Command>, ControllerInputHasher>; // Command is shared so that multiple inputs can execute the same command
+		using ControllerCommandsMap = std::unordered_map<ControllerInput, std::shared_ptr<Command>, ControllerInputHasher>;
 		ControllerCommandsMap m_ControllerCommands;
 		KeyboardCommandsMap m_KeyboardCommands;
 		std::vector<std::unique_ptr<Controller>> m_Controllers;

@@ -9,6 +9,7 @@ namespace pacman
 		RandomGhost(dae::GameObject* pGameObject);
 		void Loaded() override;
 
+		void Reset() override;
 		void Scare() override;
 		void Kill() override;
 		bool CanKill() const override;

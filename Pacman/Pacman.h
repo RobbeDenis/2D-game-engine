@@ -10,7 +10,9 @@ namespace pacman
 	public:
 		Pacman(dae::GameObject* pGameObject);
 		void Loaded() override;
-		void InitGridAgent(Grid* pGrid, const Coordinate& coordinate) override;
+
+		void Start() override;
+		void Reset() override;
 
 	private:
 		enum State
@@ -29,7 +31,6 @@ namespace pacman
 		void handlePickups();
 
 		dae::Collider* m_pCollider;
-		Coordinate m_SpawnPoint;
 		float m_MaxDeathTime;
 		float m_DeathTime;
 	};

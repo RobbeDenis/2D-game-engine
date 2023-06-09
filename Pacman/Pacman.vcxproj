@@ -25,6 +25,7 @@
     <ClCompile Include="..\Minigin\TestComp.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="ChaseGhost.cpp" />
+    <ClCompile Include="Gamemode.cpp" />
     <ClCompile Include="GameplayManager.cpp" />
     <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="Grid.cpp" />
@@ -36,6 +37,7 @@
     <ClCompile Include="Pacman.cpp" />
     <ClCompile Include="RandomGhost.cpp" />
     <ClCompile Include="ScoreDisplay.cpp" />
+    <ClCompile Include="SinglePlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Minigin\GameEvents.h" />
@@ -47,6 +49,7 @@
     <ClInclude Include="Character.h" />
     <ClInclude Include="ChaseGhost.h" />
     <ClInclude Include="CreateObjects.h" />
+    <ClInclude Include="Gamemode.h" />
     <ClInclude Include="GameplayManager.h" />
     <ClInclude Include="Ghost.h" />
     <ClInclude Include="Grid.h" />
@@ -60,11 +63,7 @@
     <ClInclude Include="PacmanSounds.h" />
     <ClInclude Include="RandomGhost.h" />
     <ClInclude Include="ScoreDisplay.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\Data\Level_1.txt" />
-    <Text Include="..\Data\Level_2.txt" />
-    <Text Include="..\Data\Level_3.txt" />
+    <ClInclude Include="SinglePlayer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

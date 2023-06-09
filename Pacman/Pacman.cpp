@@ -8,7 +8,6 @@
 pacman::Pacman::Pacman(dae::GameObject* pGameObject)
 	: Character(pGameObject)
 	, m_pCollider{ nullptr }
-	, m_SpawnPoint{ }
 	, m_MaxDeathTime{ 2 }
 	, m_DeathTime{ }
 {
@@ -118,8 +117,26 @@ void pacman::Pacman::handlePickups()
 	}
 }
 
-void pacman::Pacman::InitGridAgent(Grid* pGrid, const Coordinate& coordinate)
+void pacman::Pacman::Start()
 {
-	m_SpawnPoint = coordinate;
-	Character::InitGridAgent(pGrid, coordinate);
+	switch (m_pAgent->Pickup())
+	{
+	case CellType::Dot:
+		Notify(PEvents::PlayerStart);
+		break;
+	}
+}
+
+void pacman::Pacman::Reset()
+{
+	SetState(State::Walking);
+	m_pAgent->Reset(m_SpawnPoint);
+	m_Direction = { 0,0 };
+
+	switch (m_pAgent->Pickup())
+	{
+	case CellType::Dot:
+		Notify(PEvents::PlayerStart);
+		break;
+	}
 }

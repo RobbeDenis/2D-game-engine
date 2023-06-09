@@ -25,6 +25,9 @@
     <Filter Include="Grid">
       <UniqueIdentifier>{dd0ac51e-3025-412b-946e-a825ed30304f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Gamemodes">
+      <UniqueIdentifier>{f05917aa-b574-432f-901e-0b3170209651}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -77,6 +80,12 @@
     </ClCompile>
     <ClCompile Include="GameplayManager.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Gamemode.cpp">
+      <Filter>Gamemodes</Filter>
+    </ClCompile>
+    <ClCompile Include="SinglePlayer.cpp">
+      <Filter>Gamemodes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -146,16 +155,11 @@
     <ClInclude Include="CreateObjects.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\Data\Level_1.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="..\Data\Level_2.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="..\Data\Level_3.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
+    <ClInclude Include="Gamemode.h">
+      <Filter>Gamemodes</Filter>
+    </ClInclude>
+    <ClInclude Include="SinglePlayer.h">
+      <Filter>Gamemodes</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

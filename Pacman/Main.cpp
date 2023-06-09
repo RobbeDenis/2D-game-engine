@@ -33,6 +33,7 @@
 #include "LivesDisplay.h"
 
 #include "GameplayManager.h"
+#include "SinglePlayer.h"
 #include "CreateObjects.h"
 
 void load();
@@ -63,25 +64,25 @@ void load()
 
 	// Gameplay manager
 	go = scene->CreateGameObject();
-	auto gameplay = go->AddComponent<pacman::GameplayManager>();
+	auto gamemode = go->AddComponent<pacman::SinglePlayer>();
 
 	// Grid test
 	go = scene->CreateGameObject();
 	auto grid = go->AddComponent<pacman::Grid>();
-	grid->LoadFromFile(27, 29, 16, "Level_2.txt");
-	grid->PrintGrid();
 	auto gridRender = go->AddComponent<pacman::GridRenderer>();
 	gridRender->EnableDebugGrid(false);
 	gridRender->EnableDebugAgents(false);
+	gamemode->AddObserver(gridRender);
 	grid->AddObserver(gridRender);
 	go->SetLocalPosition(100, 60);
+	gamemode->AssignGrid(grid);
 
 	//ScoreDisplay
 	go = scene->CreateGameObject();
 	auto tr = go->AddComponent<dae::TextRenderer>();
 	tr->SetFont(dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 22));
 	tr->SetColor({ 255, 255, 255 });
-	tr->SetText("1UP");
+	tr->SetText("SCORE");
 	go->SetLocalPosition(75,10);
 	go = go->AddChild();
 	tr = go->AddComponent<dae::TextRenderer>();
@@ -100,24 +101,27 @@ void load()
 
 	// Player
 	auto pacmanObj{ CreatePacman(scene, "pacman.png", grid, { 13,23 }) };
-	auto pacman{ pacmanObj->GetComponent<pacman::Pacman>() };
-	pacman->AddObserver(gameplay);
-	pacman->AddObserver(score);
-	pacman->AddObserver(lives);
+	auto pman{ pacmanObj->GetComponent<pacman::Pacman>() };
+	pman->AddObserver(gamemode);
+	pman->AddObserver(score);
+	pman->AddObserver(lives);
+	gamemode->AddPlayer(pman);
 
 	// Ghosts
-	gameplay->AddGhost(CreateRandomGhost(scene, "red.png", grid, { 11,14 }));
-	gameplay->AddGhost(CreateChaseGhost(scene, "blue.png", grid, { 12,14 }, pacmanObj, { 1,1 }));
-	gameplay->AddGhost(CreateChaseGhost(scene, "orange.png", grid, { 14,14 }, pacmanObj, { 1,0 }));
-	gameplay->AddGhost(CreateChaseGhost(scene, "pink.png", grid, { 15,14 }, pacmanObj, { 0,1 }));
+	gamemode->AddGhost(CreateChaseGhost(scene, "red.png", grid, { 12,14 }, pacmanObj, { 0,0 }));
+	gamemode->AddGhost(CreateChaseGhost(scene, "blue.png", grid, { 12,14 }, pacmanObj, { 1,1 }));
+	gamemode->AddGhost(CreateChaseGhost(scene, "orange.png", grid, { 14,14 }, pacmanObj, { 1,0 }));
+	gamemode->AddGhost(CreateChaseGhost(scene, "pink.png", grid, { 15,14 }, pacmanObj, { 0,1 }));
 
 	// Input
 	{
 		using namespace dae;
 
-		input.AddKeyboardCommand({ SDL_SCANCODE_W, ButtonState::Pressed }, std::make_shared<MoveCharacter>(0, -1, pacman));
-		input.AddKeyboardCommand({ SDL_SCANCODE_A, ButtonState::Pressed }, std::make_shared<MoveCharacter>(-1, 0, pacman));
-		input.AddKeyboardCommand({ SDL_SCANCODE_S, ButtonState::Pressed }, std::make_shared<MoveCharacter>(0, 1, pacman));
-		input.AddKeyboardCommand({ SDL_SCANCODE_D, ButtonState::Pressed }, std::make_shared<MoveCharacter>(1, 0, pacman));
+		input.AddKeyboardCommand({ SDL_SCANCODE_W, ButtonState::Pressed }, std::make_shared<MoveCharacter>(0, -1, pman));
+		input.AddKeyboardCommand({ SDL_SCANCODE_A, ButtonState::Pressed }, std::make_shared<MoveCharacter>(-1, 0, pman));
+		input.AddKeyboardCommand({ SDL_SCANCODE_S, ButtonState::Pressed }, std::make_shared<MoveCharacter>(0, 1, pman));
+		input.AddKeyboardCommand({ SDL_SCANCODE_D, ButtonState::Pressed }, std::make_shared<MoveCharacter>(1, 0, pman));
+
+		input.AddKeyboardCommand({ SDL_SCANCODE_F1, ButtonState::Pressed }, std::make_shared<SkipLevel>(gamemode));
 	}
 }

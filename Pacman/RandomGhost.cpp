@@ -162,6 +162,12 @@ unsigned pacman::RandomGhost::GetRandomInt(unsigned min, unsigned max)
 	return dis(gen);
 }
 
+void pacman::RandomGhost::Reset()
+{
+	SetState(State::Start);
+	m_pAgent->Reset(m_SpawnPoint);
+}
+
 void pacman::RandomGhost::Scare()
 {
 	SetState(State::Run);
@@ -222,7 +228,7 @@ void pacman::RandomGhost::UpdateBlink()
 
 void pacman::RandomGhost::Kill()
 {
-	std::cout << "Kill\n";
+	Reset();
 }
 
 bool pacman::RandomGhost::CanKill() const

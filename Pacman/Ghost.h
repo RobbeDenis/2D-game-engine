@@ -10,6 +10,7 @@ namespace pacman
 		Ghost(dae::GameObject* pGameObject);
 		void Loaded() override;
 
+		virtual void Reset() {};
 		virtual void Scare() {};
 		virtual bool CanKill() const { return false; };
 		virtual void Kill() {};

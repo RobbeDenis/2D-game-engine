@@ -35,7 +35,7 @@ namespace pacman
 	public:
 		Grid(dae::GameObject* pGameObject);
 
-		void LoadFromFile(unsigned colums, unsigned rows, unsigned cellSize, const std::string& filename);
+		void LoadFromFile(const std::string& filename);
 		void Loaded() override;
 
 		GridAgent* CreateAgent(const Coordinate& coordinate);

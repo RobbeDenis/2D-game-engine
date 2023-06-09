@@ -28,5 +28,6 @@ void pacman::Character::Move(int x, int y)
 
 void pacman::Character::InitGridAgent(Grid* pGrid, const Coordinate& coordinate)
 {
+	m_SpawnPoint = coordinate;
 	m_pAgent = pGrid->CreateAgent(coordinate);
 }

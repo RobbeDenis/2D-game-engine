@@ -15,11 +15,13 @@ namespace pacman
 
 		virtual void Loaded() override;
 		virtual void Update() override;
+		virtual void Reset() {};
 
 		virtual void Move(int x, int y);
-		virtual void InitGridAgent(Grid* pGrid, const Coordinate& coordinate);
+		void InitGridAgent(Grid* pGrid, const Coordinate& coordinate);
 
 	protected:
+		Coordinate m_SpawnPoint;
 		glm::ivec2 m_Direction;
 		GridAgent* m_pAgent;
 	};

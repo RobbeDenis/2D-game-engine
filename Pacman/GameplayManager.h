@@ -16,7 +16,7 @@ namespace pacman
 
 		void AddGhost(Ghost* ghost);
 
-	private:
+	protected:
 		void PowerCollected();
 
 		std::vector<Ghost*> m_pGhosts;
