@@ -62,7 +62,9 @@
     <ClInclude Include="ScoreDisplay.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\Data\TestLevel.txt" />
+    <Text Include="..\Data\Level_1.txt" />
+    <Text Include="..\Data\Level_2.txt" />
+    <Text Include="..\Data\Level_3.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

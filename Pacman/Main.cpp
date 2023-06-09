@@ -68,13 +68,13 @@ void load()
 	// Grid test
 	go = scene->CreateGameObject();
 	auto grid = go->AddComponent<pacman::Grid>();
-	grid->LoadFromFile(27, 29, 16, "TestLevel.txt");
+	grid->LoadFromFile(27, 29, 16, "Level_2.txt");
 	grid->PrintGrid();
 	auto gridRender = go->AddComponent<pacman::GridRenderer>();
 	gridRender->EnableDebugGrid(false);
 	gridRender->EnableDebugAgents(false);
 	grid->AddObserver(gridRender);
-	go->SetLocalPosition(60, 60);
+	go->SetLocalPosition(100, 60);
 
 	//ScoreDisplay
 	go = scene->CreateGameObject();
@@ -99,7 +99,7 @@ void load()
 	go->SetLocalPosition(20, 400);
 
 	// Player
-	auto pacmanObj{ CreatePacman(scene, "pacman.png", grid, { 5,1 }) };
+	auto pacmanObj{ CreatePacman(scene, "pacman.png", grid, { 13,23 }) };
 	auto pacman{ pacmanObj->GetComponent<pacman::Pacman>() };
 	pacman->AddObserver(gameplay);
 	pacman->AddObserver(score);

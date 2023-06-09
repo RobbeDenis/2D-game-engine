@@ -148,7 +148,13 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\Data\TestLevel.txt">
+    <Text Include="..\Data\Level_1.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="..\Data\Level_2.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="..\Data\Level_3.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
