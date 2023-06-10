@@ -42,15 +42,14 @@ void dae::SceneManager::RenderImGui() const
 
 void dae::SceneManager::SetScene(unsigned int id)
 {
-	auto it = std::find_if(begin(m_pScenes), end(m_pScenes), [id] (auto& scene) 
+	for (int i{ 0 }; i < m_pScenes.size(); ++i)
+	{
+		if (m_pScenes[i]->GetId() == id)
 		{
-			return scene->GetId() == id;
-		});
-
-	if (it == end(m_pScenes))
-		return;
-
-	m_CurrentScene = it->get()->GetId();
+			m_CurrentScene = i;
+			break;
+		}
+	}
 
 	if (m_GameStarted)
 		Start();

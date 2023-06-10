@@ -75,6 +75,36 @@ dae::Scene* CreateMainMenu()
 	return scene;
 }
 
+dae::Scene* CreateLeaderboard()
+{
+	auto& sceneManager = dae::SceneManager::GetInstance();
+	auto& input = dae::InputManager::GetInstance();
+
+	dae::Scene* scene = sceneManager.CreateScene(SceneId::Leaderboard);
+	//dae::GameObject* go = scene->CreateGameObject();
+
+	{
+		using namespace dae;
+		using namespace commands;
+		using namespace xbox;
+
+		std::shared_ptr<KeyboardCommandsMap> kMap{ std::make_shared<KeyboardCommandsMap>() };
+		std::shared_ptr<ControllerCommandsMap> cMap{ std::make_shared<ControllerCommandsMap>() };
+
+		auto SetMainScene{ std::make_shared<SetScene>(SceneId::Mainmanu) };
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_SPACE, ButtonState::Pressed }, SetMainScene);
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_RETURN, ButtonState::Pressed }, SetMainScene);
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_RETURN2, ButtonState::Pressed }, SetMainScene);
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_KP_ENTER, ButtonState::Pressed }, SetMainScene);
+		input.AddControllerCommand(cMap, { XBoxButton::ButtonA, ButtonState::Pressed }, SetMainScene);
+
+		scene->SetKeyboardCommands(kMap);
+		scene->SetControllerCommands(cMap);
+	}
+
+	return scene;
+}
+
 dae::Scene* CreateSinglePlayer()
 {
 	auto& sceneManager = dae::SceneManager::GetInstance();
@@ -89,6 +119,7 @@ dae::Scene* CreateSinglePlayer()
 	auto gamemode = go->AddComponent<pacman::SinglePlayer>();
 	auto grid = CreateGrid(scene, gamemode, 100, 60);
 	auto score = CreateScoreDisplay(scene, { 255,255,255 }, 75, 10);
+	CreateHighscore(scene, { 255,255,255 }, 220, 10);
 	auto lives = CreateLivesDisplay(scene, "pacman.png", gamemode, 20, 400);
 
 	auto pacmanObj{ CreatePacman(scene, "pacman.png", grid, { 13,23 }) };

@@ -12,6 +12,7 @@
 #include "ScoreDisplay.h"
 #include "LivesDisplay.h"
 #include "LivesRender.h"
+#include "Highscore.h"
 
 dae::GameObject* CreatePacman(dae::Scene* const scene, const std::string& texture, pacman::Grid* grid, const pacman::Coordinate& c)
 {
@@ -77,6 +78,24 @@ pacman::ScoreDisplay* CreateScoreDisplay(dae::Scene* const scene, const SDL_Colo
 	tr->SetFont(dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 19));
 	tr->SetColor(color);
 	auto score = go->AddComponent<pacman::ScoreDisplay>();
+	go->SetLocalPosition(20, 19);
+
+	return score;
+}
+
+pacman::Highscore* CreateHighscore(dae::Scene* const scene, const SDL_Color& color, int x, int y)
+{
+	auto go{ scene->CreateGameObject() };
+	auto tr = go->AddComponent<dae::TextRenderer>();
+	tr->SetFont(dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 22));
+	tr->SetColor(color);
+	tr->SetText("HIGH SCORE");
+	go->SetLocalPosition(x, y);
+	go = go->AddChild();
+	tr = go->AddComponent<dae::TextRenderer>();
+	tr->SetFont(dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 19));
+	tr->SetColor(color);
+	auto score = go->AddComponent<pacman::Highscore>();
 	go->SetLocalPosition(20, 19);
 
 	return score;

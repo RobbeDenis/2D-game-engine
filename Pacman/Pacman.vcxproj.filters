@@ -87,6 +87,9 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Highscore.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Minigin\GameEvents.h">
@@ -163,6 +166,9 @@
     </ClInclude>
     <ClInclude Include="SceneIds.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Highscore.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include "PacmanEvents.h"
 #include <iostream>
+#include "Game.h"
+#include "SceneIds.h"
 
 
 pacman::SinglePlayer::SinglePlayer(dae::GameObject* pGameObject)
@@ -14,7 +16,7 @@ pacman::SinglePlayer::SinglePlayer(dae::GameObject* pGameObject)
 
 void pacman::SinglePlayer::Loaded()
 {
-	//LoadLevel(m_Level);
+	
 }
 
 void pacman::SinglePlayer::Start()
@@ -55,7 +57,7 @@ void pacman::SinglePlayer::OnNotify(unsigned event)
 		SkipLevel();
 		break;
 	case PEvents::PlayerOutOffLives:
-		std::cout << "GAMEOVER\n";
+		Game::GetInstance().SetScene(SceneId::Leaderboard);
 		break;
 	default:
 		break;
