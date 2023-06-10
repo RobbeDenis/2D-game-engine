@@ -7,5 +7,6 @@ enum SceneId
 	Coop = 2,
 	Versus = 3,
 	Controls = 4,
-	Leaderboard = 5
+	Leaderboard = 5,
+	InsertName = 7
 };

@@ -4,6 +4,7 @@
 #include "Gamemode.h"
 #include "Selector.h"
 #include "Game.h"
+#include "TypeName.h"
 
 namespace commands
 {
@@ -115,5 +116,54 @@ namespace commands
 
 	private:
 		pacman::Pacman* Player;
+	};
+
+	class ChangeNameIndex : public dae::Command
+	{
+	public:
+		explicit ChangeNameIndex(pacman::TypeName* name, int dir)
+			: Name{ name }
+			, Direction{ dir } {}
+
+		void Execute() override
+		{
+			Name->MoveIndex(Direction);
+		}
+
+	private:
+		pacman::TypeName* Name;
+		int Direction;
+	};
+
+	class ChangeNameCharacter : public dae::Command
+	{
+	public:
+		explicit ChangeNameCharacter(pacman::TypeName* name, char offset)
+			: Name{ name }
+			, Offset{ offset } {}
+
+		void Execute() override
+		{
+			Name->ChangeCharacter(Offset);
+		}
+
+	private:
+		pacman::TypeName* Name;
+		char Offset;
+	};
+
+	class ConfirmName : public dae::Command
+	{
+	public:
+		explicit ConfirmName(pacman::TypeName* name)
+			: Name{ name } {}
+
+		void Execute() override
+		{
+			Name->ConfirmName();
+		}
+
+	private:
+		pacman::TypeName* Name;
 	};
 }

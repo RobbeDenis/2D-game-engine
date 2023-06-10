@@ -29,7 +29,12 @@ void pacman::Game::SetScene(unsigned id)
 
 void pacman::Game::EndGamemode()
 {
+	SetScene(SceneId::InsertName);
+}
+
+void pacman::Game::EnterName(const std::string& name)
+{
 	m_pLeaderboard->SetGamemodeId(m_pScore->GetGameObject()->GetScene()->GetId());
-	m_pLeaderboard->AddScore(m_pScore->GetScore());
+	m_pLeaderboard->AddScore(m_pScore->GetScore(), name);
 	SetScene(SceneId::Leaderboard);
 }

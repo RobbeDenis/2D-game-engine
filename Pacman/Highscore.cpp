@@ -1,6 +1,7 @@
 #include "Highscore.h"
 #include <GameObject.h>
 #include "Scene.h"
+#include "Leaderboard.h"
 
 pacman::Highscore::Highscore(dae::GameObject* pGameObject)
 	: Component(pGameObject)
@@ -20,6 +21,7 @@ void pacman::Highscore::Start()
 
 void pacman::Highscore::UpdateHighScore()
 {
-	std::cout << "id: " << GetGameObject()->GetScene()->GetId() << " highscore: " << "\n";
-	m_pText->SetText("15310");
+	const unsigned id{ GetGameObject()->GetScene()->GetId() };
+	std::cout << "id: " << id << " highscore: " << "\n";
+	m_pText->SetText(std::to_string(Leaderboard::GetHighscore(id)));
 }

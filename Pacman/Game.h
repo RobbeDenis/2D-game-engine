@@ -1,7 +1,7 @@
 #pragma once
 #include <Singleton.h>
 #include <InputManager.h>
-
+#include <string>
 
 namespace pacman
 {
@@ -17,6 +17,7 @@ namespace pacman
 		void SetLeaderboard(Leaderboard* board);
 		void SetScene(unsigned id);
 		void EndGamemode();
+		void EnterName(const std::string& name);
 
 	private:
 		ScoreDisplay* m_pScore;

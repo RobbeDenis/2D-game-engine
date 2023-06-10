@@ -25,5 +25,6 @@ void load()
 
 	CreateMainMenu();
 	CreateSinglePlayer();
+	CreateInsertName();
 	CreateLeaderboard();
 }

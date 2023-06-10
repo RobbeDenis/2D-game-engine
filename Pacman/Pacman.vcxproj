@@ -40,6 +40,7 @@
     <ClCompile Include="ScoreDisplay.cpp" />
     <ClCompile Include="Selector.cpp" />
     <ClCompile Include="SinglePlayer.cpp" />
+    <ClCompile Include="TypeName.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Minigin\GameEvents.h" />
@@ -69,6 +70,7 @@
     <ClInclude Include="ScoreDisplay.h" />
     <ClInclude Include="Selector.h" />
     <ClInclude Include="SinglePlayer.h" />
+    <ClInclude Include="TypeName.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

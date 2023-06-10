@@ -5,3 +5,4 @@
 dae::Scene* CreateSinglePlayer();
 dae::Scene* CreateMainMenu();
 dae::Scene* CreateLeaderboard();
+dae::Scene* CreateInsertName();
