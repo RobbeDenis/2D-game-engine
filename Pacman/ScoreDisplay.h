@@ -12,6 +12,7 @@ namespace pacman
 		ScoreDisplay(dae::GameObject* gameObject);
 
 		void Loaded() override;
+		void Start() override;
 
 		void OnNotify(Component*, unsigned) override { };
 		void OnNotify(unsigned event) override;

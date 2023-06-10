@@ -14,6 +14,11 @@ pacman::SinglePlayer::SinglePlayer(dae::GameObject* pGameObject)
 
 void pacman::SinglePlayer::Loaded()
 {
+	//LoadLevel(m_Level);
+}
+
+void pacman::SinglePlayer::Start()
+{
 	LoadLevel(m_Level);
 }
 

@@ -2,6 +2,7 @@
 
 #include <InputManager.h>
 #include <ResourceManager.h>
+#include <XBox360Controller.h>
 
 #include "SinglePlayer.h"
 #include "CreateObjects.h"
@@ -40,22 +41,35 @@ dae::Scene* CreateMainMenu()
 	{
 		using namespace dae;
 		using namespace commands;
+		using namespace xbox;
 
 		std::shared_ptr<KeyboardCommandsMap> kMap{ std::make_shared<KeyboardCommandsMap>() };
+		std::shared_ptr<ControllerCommandsMap> cMap{ std::make_shared<ControllerCommandsMap>() };
 
 		auto up{ std::make_shared<MoveSelector>(selector, -1) };
 		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_W, ButtonState::Pressed }, up);
 		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_UP, ButtonState::Pressed }, up);
+		input.AddControllerCommand(cMap, { XBoxButton::ButtonUp, ButtonState::Pressed }, up);
 
 		auto down{ std::make_shared<MoveSelector>(selector, 1) };
 		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_S, ButtonState::Pressed }, down);
 		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_DOWN, ButtonState::Pressed }, down);
+		input.AddControllerCommand(cMap, { XBoxButton::ButtonDown, ButtonState::Pressed }, down);
 
 		auto confirm{ std::make_shared<ConfirmSelector>(selector) };
 		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_SPACE, ButtonState::Pressed }, confirm);
 		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_RETURN, ButtonState::Pressed }, confirm);
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_RETURN2, ButtonState::Pressed }, confirm);
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_KP_ENTER, ButtonState::Pressed }, confirm);
+		input.AddControllerCommand(cMap, { XBoxButton::ButtonA, ButtonState::Pressed }, confirm);
+
+		auto quitApp{ std::make_shared<QuitApplication>() };
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_ESCAPE, ButtonState::Released }, quitApp);
+		input.AddControllerCommand(cMap, { XBoxButton::Start, ButtonState::Released }, quitApp);
+		input.AddControllerCommand(cMap, { XBoxButton::Back, ButtonState::Released }, quitApp);
 
 		scene->SetKeyboardCommands(kMap);
+		scene->SetControllerCommands(cMap);
 	}
 
 	return scene;
@@ -92,18 +106,40 @@ dae::Scene* CreateSinglePlayer()
 	{
 		using namespace dae;
 		using namespace commands;
+		using namespace xbox;
 
 		std::shared_ptr<KeyboardCommandsMap> kMap{ std::make_shared<KeyboardCommandsMap>() };
+		std::shared_ptr<ControllerCommandsMap> cMap{ std::make_shared<ControllerCommandsMap>() };
 
-		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_W, ButtonState::Pressed }, std::make_shared<MoveCharacter>(0, -1, player));
-		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_A, ButtonState::Pressed }, std::make_shared<MoveCharacter>(-1, 0, player));
-		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_S, ButtonState::Pressed }, std::make_shared<MoveCharacter>(0, 1, player));
-		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_D, ButtonState::Pressed }, std::make_shared<MoveCharacter>(1, 0, player));
+		auto up{ std::make_shared<MoveCharacter>(0, -1, player) };
+		auto down{ std::make_shared<MoveCharacter>(0, 1, player) };
+		auto left{ std::make_shared<MoveCharacter>(-1, 0, player) };
+		auto right{ std::make_shared<MoveCharacter>(1, 0, player) };
+
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_W, ButtonState::Pressed }, up);
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_S, ButtonState::Pressed }, down);
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_A, ButtonState::Pressed }, left);
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_D, ButtonState::Pressed }, right);
+
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_UP, ButtonState::Pressed }, up);
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_DOWN, ButtonState::Pressed }, down);
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_LEFT, ButtonState::Pressed }, left);
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_RIGHT, ButtonState::Pressed }, right);
+
+		input.AddControllerCommand(cMap, { XBoxButton::ButtonUp, ButtonState::Pressed }, up);
+		input.AddControllerCommand(cMap, { XBoxButton::ButtonDown, ButtonState::Pressed }, down);
+		input.AddControllerCommand(cMap, { XBoxButton::ButtonLeft, ButtonState::Pressed }, left);
+		input.AddControllerCommand(cMap, { XBoxButton::ButtonRight, ButtonState::Pressed }, right);
 
 		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_F1, ButtonState::Pressed }, std::make_shared<SkipLevel>(gamemode));
-		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_ESCAPE, ButtonState::Pressed }, std::make_shared<SetScene>(SceneId::Mainmanu));
+
+		auto SetMainScene{ std::make_shared<SetScene>(SceneId::Mainmanu) };
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_ESCAPE, ButtonState::Released }, SetMainScene);
+		input.AddControllerCommand(cMap, { XBoxButton::Back, ButtonState::Released }, SetMainScene);
+		input.AddControllerCommand(cMap, { XBoxButton::Start, ButtonState::Released }, SetMainScene);
 
 		scene->SetKeyboardCommands(kMap);
+		scene->SetControllerCommands(cMap);
 	}
 
 	return scene;

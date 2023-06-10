@@ -10,6 +10,7 @@ namespace pacman
         SinglePlayer(dae::GameObject* pGameObject);
 
         void Loaded() override;
+        void Start() override;
         void SkipLevel() override;
         void AddPlayer(Character* player);
         void OnNotify(unsigned event) override;

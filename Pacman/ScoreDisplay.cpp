@@ -18,6 +18,12 @@ void pacman::ScoreDisplay::Loaded()
 	m_pText = GetGameObject()->GetComponent<dae::TextRenderer>();
 }
 
+void pacman::ScoreDisplay::Start()
+{
+	m_Score = 0;
+	UpdateScore();
+}
+
 void pacman::ScoreDisplay::OnNotify(unsigned event)
 {
 	switch (event)

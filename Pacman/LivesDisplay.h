@@ -11,6 +11,8 @@ namespace pacman
 		LivesDisplay(dae::GameObject* gameObject);
 
 		void Loaded() override;
+		void Start() override;
+		void SetMaxLives(int lives);
 		int GetLives() const;
 
 		void OnNotify(Component*, unsigned) override {};
@@ -20,5 +22,6 @@ namespace pacman
 		void PacmanDied();
 
 		int m_Lives;
+		int m_MaxLives;
 	};
 }

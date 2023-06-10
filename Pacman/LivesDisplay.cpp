@@ -5,7 +5,8 @@
 pacman::LivesDisplay::LivesDisplay(dae::GameObject* pGameObject)
 	: Component(pGameObject)
 	, Observer()
-	, m_Lives{ 3 }
+	, m_Lives{ 0 }
+	, m_MaxLives{ 3 }
 {
 
 }
@@ -13,6 +14,16 @@ pacman::LivesDisplay::LivesDisplay(dae::GameObject* pGameObject)
 void pacman::LivesDisplay::Loaded()
 {
 
+}
+
+void pacman::LivesDisplay::Start()
+{
+	m_Lives = m_MaxLives;
+}
+
+void pacman::LivesDisplay::SetMaxLives(int lives)
+{
+	m_MaxLives = lives;
 }
 
 void pacman::LivesDisplay::OnNotify(unsigned event)

@@ -88,4 +88,16 @@ namespace commands
 	private:
 		unsigned m_Id;
 	};
+
+	class QuitApplication : public dae::Command
+	{
+	public:
+		QuitApplication() = default;
+
+		void Execute() override
+		{
+			SDL_Event quitEvent{ SDL_QUIT };
+			SDL_PushEvent(&quitEvent);
+		}
+	};
 }

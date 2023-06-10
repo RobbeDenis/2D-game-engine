@@ -5,6 +5,7 @@
 #endif
 
 #include <Minigin.h>
+#include <InputManager.h>
 
 #include "CreateScenes.h"
 
@@ -19,6 +20,9 @@ int main(int, char* [])
 
 void load()
 {
+	auto& input = dae::InputManager::GetInstance();
+	input.AddXBoxController(0);
+
 	CreateMainMenu();
 	CreateSinglePlayer();
 }
