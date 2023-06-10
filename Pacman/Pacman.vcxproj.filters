@@ -183,4 +183,15 @@
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Data\Level_0.lvl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Data\Level_1.lvl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Data\Level_2.lvl">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

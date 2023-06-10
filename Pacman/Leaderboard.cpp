@@ -12,8 +12,9 @@ pacman::Leaderboard::Leaderboard(dae::GameObject* gameObject)
 	: Component(gameObject)
 	, m_GamemodeId{ SceneId::Singleplayer }
 	, m_MaxRenders{ 10 }
+	, m_pName{ nullptr }
 {
-	const int offsetY{ 30 };
+	const int offsetY{ 35 };
 	for (unsigned i{ 0 }; i < m_MaxRenders; ++i)
 	{
 		auto go = GetGameObject()->AddChild();
@@ -27,6 +28,10 @@ pacman::Leaderboard::Leaderboard(dae::GameObject* gameObject)
 		else if (i == 2)
 			m_pTextRenders[i]->SetColor({ 205,127,50 });
 	}
+
+	auto go = GetGameObject()->AddChild();
+	m_pName = go->AddComponent<dae::TextRenderer>();
+	go->SetLocalPosition(0, -60);
 }
 
 void pacman::Leaderboard::Loaded()
@@ -34,12 +39,14 @@ void pacman::Leaderboard::Loaded()
 	Game::GetInstance().SetLeaderboard(this);
 	LoadScores();
 	UpdateRenders();
+	UpdateName();
 }
 
 void pacman::Leaderboard::Start()
 {
 	LoadScores();
 	UpdateRenders();
+	UpdateName();
 }
 
 void pacman::Leaderboard::SetGamemodeId(unsigned id)
@@ -137,5 +144,24 @@ void pacman::Leaderboard::UpdateRenders()
 			break;
 
 		m_pTextRenders[i]->SetText(std::to_string(i + 1) + ". " + m_CurrentScores[i].second + ": " + std::to_string(m_CurrentScores[i].first));
+	}
+}
+
+void pacman::Leaderboard::UpdateName()
+{
+	switch (m_GamemodeId)
+	{
+	case Singleplayer:
+		m_pName->SetText("Singleplayer");
+		break;
+	case Coop:
+		m_pName->SetText("Co-op");
+		break;
+	case Versus:
+		m_pName->SetText("Versus");
+		break;
+	default:
+		m_pName->SetText(" ");
+		break;
 	}
 }

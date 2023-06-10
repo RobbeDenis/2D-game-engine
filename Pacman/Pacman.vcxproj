@@ -72,6 +72,11 @@
     <ClInclude Include="SinglePlayer.h" />
     <ClInclude Include="TypeName.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Data\Level_0.lvl" />
+    <None Include="..\Data\Level_1.lvl" />
+    <None Include="..\Data\Level_2.lvl" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

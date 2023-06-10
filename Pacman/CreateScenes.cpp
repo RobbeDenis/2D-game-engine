@@ -98,6 +98,7 @@ dae::Scene* CreateLeaderboard()
 
 		auto SetMainScene{ std::make_shared<SetScene>(SceneId::Mainmanu) };
 		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_SPACE, ButtonState::Released }, SetMainScene);
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_ESCAPE, ButtonState::Released }, SetMainScene);
 		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_RETURN, ButtonState::Released }, SetMainScene);
 		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_RETURN2, ButtonState::Released }, SetMainScene);
 		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_KP_ENTER, ButtonState::Released }, SetMainScene);

@@ -24,9 +24,11 @@ namespace pacman
 	private:
 		void LoadScores();
 		void UpdateRenders();
+		void UpdateName();
 
 		std::vector<std::pair<unsigned, std::string>> m_CurrentScores;
 		std::vector<dae::TextRenderer*> m_pTextRenders;
+		dae::TextRenderer* m_pName;
 		unsigned m_MaxRenders;
 		unsigned m_GamemodeId;
 
