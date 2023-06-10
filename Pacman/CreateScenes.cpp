@@ -9,6 +9,7 @@
 #include "PacmanCommands.h"
 #include "Selector.h"
 #include "SceneIds.h"
+#include "Leaderboard.h"
 
 dae::Scene* CreateMainMenu()
 {
@@ -81,7 +82,9 @@ dae::Scene* CreateLeaderboard()
 	auto& input = dae::InputManager::GetInstance();
 
 	dae::Scene* scene = sceneManager.CreateScene(SceneId::Leaderboard);
-	//dae::GameObject* go = scene->CreateGameObject();
+	dae::GameObject* go = scene->CreateGameObject();
+
+	go->AddComponent<pacman::Leaderboard>();
 
 	{
 		using namespace dae;
@@ -162,12 +165,15 @@ dae::Scene* CreateSinglePlayer()
 		input.AddControllerCommand(cMap, { XBoxButton::ButtonLeft, ButtonState::Pressed }, left);
 		input.AddControllerCommand(cMap, { XBoxButton::ButtonRight, ButtonState::Pressed }, right);
 
-		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_F1, ButtonState::Pressed }, std::make_shared<SkipLevel>(gamemode));
 
 		auto SetMainScene{ std::make_shared<SetScene>(SceneId::Mainmanu) };
 		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_ESCAPE, ButtonState::Released }, SetMainScene);
 		input.AddControllerCommand(cMap, { XBoxButton::Back, ButtonState::Released }, SetMainScene);
 		input.AddControllerCommand(cMap, { XBoxButton::Start, ButtonState::Released }, SetMainScene);
+
+		// Debug
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_F1, ButtonState::Pressed }, std::make_shared<SkipLevel>(gamemode));
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_KP_1, ButtonState::Pressed }, std::make_shared<KillPacman>(player));
 
 		scene->SetKeyboardCommands(kMap);
 		scene->SetControllerCommands(cMap);

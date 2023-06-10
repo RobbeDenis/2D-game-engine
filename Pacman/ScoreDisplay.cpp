@@ -2,6 +2,7 @@
 #include <GameObject.h>
 #include <algorithm>
 #include "PacmanEvents.h"
+#include "Game.h"
 
 pacman::ScoreDisplay::ScoreDisplay(dae::GameObject* gameObject)
 	: Component(gameObject)
@@ -22,6 +23,7 @@ void pacman::ScoreDisplay::Start()
 {
 	m_Score = 0;
 	UpdateScore();
+	Game::GetInstance().SetCurrentScore(this);
 }
 
 void pacman::ScoreDisplay::OnNotify(unsigned event)

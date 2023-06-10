@@ -13,6 +13,7 @@ namespace pacman
 
 		void Start() override;
 		void Reset() override;
+		void Kill();
 
 	private:
 		enum State

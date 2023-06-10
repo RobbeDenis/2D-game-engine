@@ -16,6 +16,9 @@ namespace pacman
 
 		void OnNotify(Component*, unsigned) override { };
 		void OnNotify(unsigned event) override;
+
+		unsigned GetScore() const { return m_Score; }
+
 	private:
 		void UpdateScore();
 

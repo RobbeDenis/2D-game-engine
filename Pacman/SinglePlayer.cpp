@@ -57,7 +57,7 @@ void pacman::SinglePlayer::OnNotify(unsigned event)
 		SkipLevel();
 		break;
 	case PEvents::PlayerOutOffLives:
-		Game::GetInstance().SetScene(SceneId::Leaderboard);
+		Game::GetInstance().EndGamemode();
 		break;
 	default:
 		break;

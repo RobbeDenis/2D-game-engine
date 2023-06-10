@@ -96,8 +96,24 @@ namespace commands
 
 		void Execute() override
 		{
+			std::cout << "Command quit application\n";
 			SDL_Event quitEvent{ SDL_QUIT };
 			SDL_PushEvent(&quitEvent);
 		}
+	};
+
+	class KillPacman : public dae::Command
+	{
+	public:
+		explicit KillPacman(pacman::Pacman* p)
+			: Player{ p } {}
+
+		void Execute() override
+		{
+			Player->Kill();
+		}
+
+	private:
+		pacman::Pacman* Player;
 	};
 }

@@ -61,8 +61,8 @@ void pacman::Pacman::UpdateWalking()
 
 			if (ghost->CanDie())
 				ghost->Kill();
-			else if(ghost->CanKill())
-				SetState(State::Dead);
+			else if (ghost->CanKill())
+				Kill();
 		}
 	}
 }
@@ -136,4 +136,9 @@ void pacman::Pacman::Reset()
 		Notify(PEvents::PlayerStart);
 		break;
 	}
+}
+
+void pacman::Pacman::Kill()
+{
+	SetState(State::Dead);
 }

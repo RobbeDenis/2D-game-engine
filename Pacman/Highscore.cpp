@@ -1,5 +1,6 @@
 #include "Highscore.h"
 #include <GameObject.h>
+#include "Scene.h"
 
 pacman::Highscore::Highscore(dae::GameObject* pGameObject)
 	: Component(pGameObject)
@@ -19,5 +20,6 @@ void pacman::Highscore::Start()
 
 void pacman::Highscore::UpdateHighScore()
 {
+	std::cout << "id: " << GetGameObject()->GetScene()->GetId() << " highscore: " << "\n";
 	m_pText->SetText("15310");
 }

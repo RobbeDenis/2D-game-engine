@@ -32,6 +32,7 @@
     <ClCompile Include="GridAgent.cpp" />
     <ClCompile Include="GridRenderer.cpp" />
     <ClCompile Include="Highscore.cpp" />
+    <ClCompile Include="Leaderboard.cpp" />
     <ClCompile Include="LivesDisplay.cpp" />
     <ClCompile Include="LivesRender.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -57,6 +58,7 @@
     <ClInclude Include="GridAgent.h" />
     <ClInclude Include="GridRenderer.h" />
     <ClInclude Include="Highscore.h" />
+    <ClInclude Include="Leaderboard.h" />
     <ClInclude Include="LivesDisplay.h" />
     <ClInclude Include="LivesRender.h" />
     <ClInclude Include="Pacman.h" />
