@@ -37,7 +37,7 @@ void pacman::Gamemode::AssignGrid(Grid* grid)
 
 void pacman::Gamemode::LoadLevel(unsigned level)
 {
-	std::string fileName{ "Level_" + std::to_string(level) + ".tism" };
+	std::string fileName{ "Level_" + std::to_string(level) + ".lvl" };
 	m_pGrid->LoadFromFile(fileName);
 }
 
