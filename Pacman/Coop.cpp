@@ -1,25 +1,22 @@
-#include "SinglePlayer.h"
-#include "Character.h"
+#include "Coop.h"
 #include "Ghost.h"
-#include <stdexcept>
+#include "Character.h"
 #include "PacmanEvents.h"
-#include <iostream>
 #include "Game.h"
-#include "SceneIds.h"
 
-
-pacman::SinglePlayer::SinglePlayer(dae::GameObject* pGameObject)
+pacman::Coop::Coop(dae::GameObject* pGameObject)
 	: Gamemode(pGameObject)
-	, m_pPlayer{ nullptr }
+	, m_pPlayer1{ nullptr }
+	, m_pPlayer2{ nullptr }
 {
 }
 
-void pacman::SinglePlayer::Start()
+void pacman::Coop::Start()
 {
 	LoadLevel(m_Level);
 }
 
-void pacman::SinglePlayer::SkipLevel()
+void pacman::Coop::SkipLevel()
 {
 	const unsigned nrOffLevels{ 3 };
 	++m_Level;
@@ -29,20 +26,13 @@ void pacman::SinglePlayer::SkipLevel()
 	for (auto& ghost : m_pGhosts)
 		ghost->Reset();
 
-	m_pPlayer->Reset();
+	m_pPlayer1->Reset();
+	//m_pPlayer2->Reset();
 
 	Notify(PEvents::LevelLoaded);
 }
 
-void pacman::SinglePlayer::AddPlayer(Character* player)
-{
-	if (player == nullptr)
-		throw std::runtime_error("player is nullptr");
-
-	m_pPlayer = player;
-}
-
-void pacman::SinglePlayer::OnNotify(unsigned event)
+void pacman::Coop::OnNotify(unsigned event)
 {
 	Gamemode::OnNotify(event);
 
@@ -57,4 +47,14 @@ void pacman::SinglePlayer::OnNotify(unsigned event)
 	default:
 		break;
 	}
+}
+
+void pacman::Coop::AddPlayer1(Character* p)
+{
+	m_pPlayer1 = p;
+}
+
+void pacman::Coop::AddPlayer2(Character* p)
+{
+	m_pPlayer2 = p;
 }

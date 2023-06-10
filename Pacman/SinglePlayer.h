@@ -9,7 +9,6 @@ namespace pacman
     public:
         SinglePlayer(dae::GameObject* pGameObject);
 
-        void Loaded() override;
         void Start() override;
         void SkipLevel() override;
         void AddPlayer(Character* player);

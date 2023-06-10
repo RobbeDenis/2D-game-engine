@@ -27,4 +27,5 @@ void load()
 	CreateSinglePlayer();
 	CreateInsertName();
 	CreateLeaderboard();
+	CreateCoop();
 }

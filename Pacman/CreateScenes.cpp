@@ -11,6 +11,7 @@
 #include "SceneIds.h"
 #include "Leaderboard.h"
 #include "TypeName.h"
+#include "Coop.h"
 
 dae::Scene* CreateMainMenu()
 {
@@ -244,6 +245,80 @@ dae::Scene* CreateCoop()
 
 	dae::Scene* scene = sceneManager.CreateScene(SceneId::Coop);
 	dae::GameObject* go;
+
+	CreateFPS(scene);
+
+	go = scene->CreateGameObject();
+	auto gamemode = go->AddComponent<pacman::Coop>();
+	auto grid = CreateGrid(scene, gamemode, 100, 60);
+	auto score = CreateScoreDisplay(scene, { 255,255,255 }, 75, 10);
+	CreateHighscore(scene, { 255,255,255 }, 220, 10);
+	auto lives = CreateLivesDisplay(scene, "pacman.png", gamemode, 20, 400);
+
+	auto pacmanObj1{ CreatePacman(scene, "pacman.png", grid, { 6,22 }) };
+	auto player1{ pacmanObj1->GetComponent<pacman::Pacman>() };
+	player1->AddObserver(gamemode);
+	player1->AddObserver(score);
+	player1->AddObserver(lives);
+	gamemode->AddPlayer1(player1);
+
+	auto pacmanObj2{ CreatePacman(scene, "mspacman.png", grid, { 20,22 }) };
+	auto player2{ pacmanObj2->GetComponent<pacman::Pacman>() };
+	player2->AddObserver(gamemode);
+	player2->AddObserver(score);
+	player2->AddObserver(lives);
+	gamemode->AddPlayer2(player2);
+
+	gamemode->AddGhost(CreateGhost(scene, "red.png", grid, { 12,14 }, pacmanObj1, { 0,0 }));
+	gamemode->AddGhost(CreateGhost(scene, "blue.png", grid, { 12,14 }, pacmanObj1, { 1,1 }));
+	gamemode->AddGhost(CreateGhost(scene, "orange.png", grid, { 14,14 }, pacmanObj2, { 1,0 }));
+	gamemode->AddGhost(CreateGhost(scene, "pink.png", grid, { 15,14 }, pacmanObj2, { 0,1 }));
+
+	{
+		using namespace dae;
+		using namespace commands;
+		using namespace xbox;
+
+		std::shared_ptr<KeyboardCommandsMap> kMap{ std::make_shared<KeyboardCommandsMap>() };
+		std::shared_ptr<ControllerCommandsMap> cMap{ std::make_shared<ControllerCommandsMap>() };
+
+		auto up{ std::make_shared<MoveCharacter>(0, -1, player1) };
+		auto down{ std::make_shared<MoveCharacter>(0, 1, player1) };
+		auto left{ std::make_shared<MoveCharacter>(-1, 0, player1) };
+		auto right{ std::make_shared<MoveCharacter>(1, 0, player1) };
+
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_W, ButtonState::Pressed }, up);
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_S, ButtonState::Pressed }, down);
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_A, ButtonState::Pressed }, left);
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_D, ButtonState::Pressed }, right);
+
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_UP, ButtonState::Pressed }, up);
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_DOWN, ButtonState::Pressed }, down);
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_LEFT, ButtonState::Pressed }, left);
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_RIGHT, ButtonState::Pressed }, right);
+
+		auto up2{ std::make_shared<MoveCharacter>(0, -1, player2) };
+		auto down2{ std::make_shared<MoveCharacter>(0, 1, player2) };
+		auto left2{ std::make_shared<MoveCharacter>(-1, 0, player2) };
+		auto right2{ std::make_shared<MoveCharacter>(1, 0, player2) };
+
+		input.AddControllerCommand(cMap, { XBoxButton::ButtonUp, ButtonState::Pressed }, up2);
+		input.AddControllerCommand(cMap, { XBoxButton::ButtonDown, ButtonState::Pressed }, down2);
+		input.AddControllerCommand(cMap, { XBoxButton::ButtonLeft, ButtonState::Pressed }, left2);
+		input.AddControllerCommand(cMap, { XBoxButton::ButtonRight, ButtonState::Pressed }, right2);
+
+
+		auto SetMainScene{ std::make_shared<SetScene>(SceneId::Mainmanu) };
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_ESCAPE, ButtonState::Released }, SetMainScene);
+		input.AddControllerCommand(cMap, { XBoxButton::Back, ButtonState::Released }, SetMainScene);
+		input.AddControllerCommand(cMap, { XBoxButton::Start, ButtonState::Released }, SetMainScene);
+
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_F1, ButtonState::Pressed }, std::make_shared<SkipLevel>(gamemode));
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_KP_1, ButtonState::Pressed }, std::make_shared<KillPacman>(player1));
+
+		scene->SetKeyboardCommands(kMap);
+		scene->SetControllerCommands(cMap);
+	}
 
 	return scene;
 }

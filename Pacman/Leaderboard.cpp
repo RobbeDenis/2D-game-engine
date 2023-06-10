@@ -138,12 +138,12 @@ void pacman::Leaderboard::LoadScores()
 
 void pacman::Leaderboard::UpdateRenders()
 {
-	for (unsigned i{ 0 }; i < m_CurrentScores.size(); ++i)
+	for (unsigned i{ 0 }; i < m_MaxRenders; ++i)
 	{
-		if (i >= m_MaxRenders)
-			break;
-
-		m_pTextRenders[i]->SetText(std::to_string(i + 1) + ". " + m_CurrentScores[i].second + ": " + std::to_string(m_CurrentScores[i].first));
+		if (i < m_CurrentScores.size())
+			m_pTextRenders[i]->SetText(std::to_string(i + 1) + ". " + m_CurrentScores[i].second + ": " + std::to_string(m_CurrentScores[i].first));
+		else
+			m_pTextRenders[i]->SetText(" ");
 	}
 }
 

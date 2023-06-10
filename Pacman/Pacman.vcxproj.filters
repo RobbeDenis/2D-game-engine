@@ -96,6 +96,9 @@
     <ClCompile Include="TypeName.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Coop.cpp">
+      <Filter>Gamemodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Minigin\GameEvents.h">
@@ -181,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="TypeName.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop.h">
+      <Filter>Gamemodes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
