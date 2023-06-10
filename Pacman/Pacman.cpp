@@ -121,12 +121,7 @@ void pacman::Pacman::handlePickups()
 
 void pacman::Pacman::Start()
 {
-	switch (m_pAgent->Pickup())
-	{
-	case CellType::Dot:
-		Notify(PEvents::PlayerStart);
-		break;
-	}
+	Reset();
 }
 
 void pacman::Pacman::Reset()

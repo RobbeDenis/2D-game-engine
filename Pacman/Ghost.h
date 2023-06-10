@@ -8,16 +8,18 @@ namespace pacman
 	{
 		enum State
 		{
-			Start = 0,
-			Chase = 1,
-			Run = 2,
-			Dead = 3,
-			Blink = 4
+			eStart = 0,
+			eChase = 1,
+			eRun = 2,
+			eDead = 3,
+			eBlink = 4
 		};
 
 	public:
 		Ghost(dae::GameObject* pGameObject);
+
 		void Loaded() override;
+		void Start() override;
 
 		void Reset();
 		void Scare();

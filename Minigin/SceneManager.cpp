@@ -42,31 +42,23 @@ void dae::SceneManager::RenderImGui() const
 
 void dae::SceneManager::SetScene(unsigned int id)
 {
-	if (id >= static_cast<unsigned int>(m_pScenes.size()))
-		throw std::runtime_error("Scene Id is out of range");
+	auto it = std::find_if(begin(m_pScenes), end(m_pScenes), [id] (auto& scene) 
+		{
+			return scene->GetId() == id;
+		});
 
-	m_CurrentScene = id;
+	if (it == end(m_pScenes))
+		return;
+
+	m_CurrentScene = it->get()->GetId();
 
 	if (m_GameStarted)
 		Start();
 }
 
-void dae::SceneManager::SetScene(const std::string& name)
+dae::Scene* dae::SceneManager::CreateScene(unsigned id)
 {
-	auto it = find_if(begin(m_pScenes), end(m_pScenes), [&](std::unique_ptr<Scene>& scene)
-		{
-			return scene->GetName() == name;
-		});
-
-	if(it == end(m_pScenes))
-		throw std::runtime_error("Scene with given name was not found");
-
-	SetScene(it->get()->GetId());
-}
-
-dae::Scene* dae::SceneManager::CreateScene(const std::string& name)
-{
-	std::unique_ptr<Scene> scene = std::make_unique<Scene>(name, static_cast<unsigned int>(m_pScenes.size()));
+	std::unique_ptr<Scene> scene = std::make_unique<Scene>(id);
 	Scene* raw = scene.get();
 	m_pScenes.push_back(std::move(scene));
 	return raw;

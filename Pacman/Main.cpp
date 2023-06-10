@@ -20,5 +20,5 @@ int main(int, char* [])
 void load()
 {
 	CreateMainMenu();
-	//CreateSinglePlayer();
+	CreateSinglePlayer();
 }

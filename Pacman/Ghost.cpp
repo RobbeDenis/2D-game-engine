@@ -37,38 +37,44 @@ void pacman::Ghost::Loaded()
 	m_pCollider->SetOffset(2, 2);
 	m_pCollider->SetTag("ghost");
 
-	AddState(State::Start,
+	AddState(State::eStart,
 		{},
 		std::bind(&Ghost::UpdateStart, this),
 		{});
 
-	AddState(State::Chase,
+	AddState(State::eChase,
 		std::bind(&Ghost::EnterChase, this),
 		std::bind(&Ghost::UpdateChase, this),
 		{});
 
-	AddState(State::Run,
+	AddState(State::eRun,
 		std::bind(&Ghost::EnterRun, this),
 		std::bind(&Ghost::UpdateRun, this),
 		{});
 
-	AddState(State::Blink,
+	AddState(State::eBlink,
 		std::bind(&Ghost::EnterBlink, this),
 		std::bind(&Ghost::UpdateBlink, this),
 		{});
 
-	AddState(State::Dead,
+	AddState(State::eDead,
 		{},
 		std::bind(&Ghost::UpdateDead, this),
 		{});
 
-	SetState(State::Start);
+	SetState(State::eStart);
+}
+
+void pacman::Ghost::Start()
+{
+	Character::Start();
+	Reset();
 }
 
 void pacman::Ghost::UpdateStart()
 {
 	UpdateDirection();
-	SetState(State::Chase);
+	SetState(State::eChase);
 }
 
 void pacman::Ghost::EnterChase()
@@ -179,7 +185,7 @@ void pacman::Ghost::SetChaseAxis(const glm::ivec2& axis)
 
 void pacman::Ghost::Scare()
 {
-	SetState(State::Run);
+	SetState(State::eRun);
 }
 
 void pacman::Ghost::EnterRun()
@@ -197,7 +203,7 @@ void pacman::Ghost::UpdateRun()
 	m_RunTime += elapsed;
 	if (m_RunTime >= m_MaxRunTime)
 	{
-		SetState(State::Blink);
+		SetState(State::eBlink);
 	}
 
 	UpdateRunDirection();
@@ -221,7 +227,7 @@ void pacman::Ghost::UpdateBlink()
 	{
 		m_PrevCoordinate = { 0,0 };
 		UpdateDirection();
-		SetState(State::Chase);
+		SetState(State::eChase);
 	}
 
 	UpdateRunDirection();
@@ -316,17 +322,17 @@ void pacman::Ghost::Kill()
 
 bool pacman::Ghost::CanDie() const
 {
-	return GetState() == State::Run || GetState() == State::Blink;
+	return GetState() == State::eRun || GetState() == State::eBlink;
 }
 
 bool pacman::Ghost::CanKill() const
 {
-	return GetState() == State::Chase;
+	return GetState() == State::eChase;
 }
 
 void pacman::Ghost::Reset()
 {
-	SetState(State::Start);
+	SetState(State::eStart);
 	m_pAgent->Reset(m_SpawnPoint);
 	UpdatePosition();
 }

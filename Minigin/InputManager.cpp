@@ -44,21 +44,43 @@ bool dae::InputManager::IsDown(unsigned button, unsigned controllerIdx) const
 	return m_Controllers[controllerIdx]->IsDown(button);
 }
 
-void dae::InputManager::AddKeyboardCommand(const KeyboardInput& input, const std::shared_ptr<Command>& command)
+void dae::InputManager::SetKeyboardCommand(std::shared_ptr<KeyboardCommandsMap> map)
+{
+	if (map.get() == nullptr)
+	{
+		m_pKeyboardCommands.reset();
+		return;
+	}
+
+	m_pKeyboardCommands = std::move(map);
+}
+
+void dae::InputManager::SetControllerCommand(std::shared_ptr<ControllerCommandsMap> map)
+{
+	if (map.get() == nullptr)
+	{
+		m_pControllerCommands.reset();
+		return;
+	}
+
+	m_pControllerCommands = std::move(map);
+}
+
+void dae::InputManager::AddKeyboardCommand(const std::shared_ptr<KeyboardCommandsMap>& map, const KeyboardInput& input, const std::shared_ptr<Command>& command)
 {
 	if (command.get() == nullptr)
 		throw std::runtime_error("Given command was nullptr");
 
 	std::pair<std::shared_ptr<Command>, bool> pair = { command, false };
-	m_KeyboardCommands.emplace(input, std::move(pair));
+	map->emplace(input, std::move(pair));
 }
 
-void dae::InputManager::AddControllerCommand(const ControllerInput& input, const std::shared_ptr<Command>& command)
+void dae::InputManager::AddControllerCommand(const std::shared_ptr<ControllerCommandsMap>& map, const ControllerInput& input, const std::shared_ptr<Command>& command)
 {
 	if (command.get() == nullptr)
 		throw std::runtime_error("Given command was nullptr");
 
-	m_ControllerCommands.emplace(input, command);
+	map->emplace(input, command);
 }
 
 void dae::InputManager::AddXBoxController(int controllerIndex)
@@ -68,11 +90,14 @@ void dae::InputManager::AddXBoxController(int controllerIndex)
 
 void dae::InputManager::HandleControllerInputs()
 {
+	if (m_pControllerCommands.get() == nullptr)
+		return;
+
 	for (const std::unique_ptr<Controller>& controller : m_Controllers)
 	{
 		controller->ProcessInput();
 
-		for (const auto& command : m_ControllerCommands)
+		for (const auto& command : *m_pControllerCommands)
 		{
 			switch (command.first.State)
 			{
@@ -97,9 +122,12 @@ void dae::InputManager::HandleControllerInputs()
 
 void dae::InputManager::HandleKeyboardInputs()
 {
+	if (m_pKeyboardCommands.get() == nullptr)
+		return;
+
 	const Uint8* state = SDL_GetKeyboardState(NULL);
 
-	for (auto& command : m_KeyboardCommands)
+	for (auto& command : *m_pKeyboardCommands)
 	{
 		bool currentState = state[command.first.Key];
 

@@ -18,9 +18,7 @@ namespace dae
 		void RenderImGui() const;
 
 		void SetScene(unsigned int id);
-		void SetScene(const std::string& name);
-
-		Scene* CreateScene(const std::string& name);
+		Scene* CreateScene(unsigned id);
 
 	private:
 		friend class Singleton<SceneManager>;

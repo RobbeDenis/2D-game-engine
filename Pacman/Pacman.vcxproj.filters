@@ -81,6 +81,12 @@
     <ClCompile Include="CreateScenes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Selector.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Minigin\GameEvents.h">
@@ -147,6 +153,15 @@
       <Filter>Gamemodes</Filter>
     </ClInclude>
     <ClInclude Include="CreateScenes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Selector.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneIds.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

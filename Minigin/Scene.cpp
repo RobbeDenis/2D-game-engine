@@ -4,9 +4,8 @@
 
 using namespace dae;
 
-Scene::Scene(const std::string& name, unsigned int id)
-	: m_Name{name}
-	, m_Id{id}
+Scene::Scene(unsigned int id)
+	: m_Id{id}
 {
 }
 
@@ -30,6 +29,28 @@ GameObject* dae::Scene::CreateGameObject(const std::string& name)
 	raw->SetScene(this);
 	m_pObjects.push_back(std::move(object));
 	return raw;
+}
+
+void dae::Scene::SetKeyboardCommands(std::shared_ptr<dae::KeyboardCommandsMap>& map)
+{
+	if (map.get() == nullptr)
+	{
+		m_pKInputs.reset();
+		return;
+	}
+
+	m_pKInputs = std::move(map);
+}
+
+void dae::Scene::SetControllerCommands(std::shared_ptr<dae::ControllerCommandsMap>& map)
+{
+	if (map.get() == nullptr)
+	{
+		m_pCInputs.reset();
+		return;
+	}
+
+	m_pCInputs = std::move(map);
 }
 
 void dae::Scene::AddCollider(Collider* pCollider)
@@ -102,6 +123,10 @@ void dae::Scene::Loaded()
 
 void dae::Scene::Start()
 {
+	auto& input{ InputManager::GetInstance() };
+	input.SetKeyboardCommand(m_pKInputs);
+	input.SetControllerCommand(m_pCInputs);
+
 	for (auto& object : m_pObjects)
 	{
 		object->Start();

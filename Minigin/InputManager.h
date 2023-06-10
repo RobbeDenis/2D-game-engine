@@ -9,6 +9,9 @@
 
 namespace dae
 {
+	using KeyboardCommandsMap = std::unordered_map<KeyboardInput, std::pair<std::shared_ptr<Command>, bool>, KeyboardInputHasher>;
+	using ControllerCommandsMap = std::unordered_map<ControllerInput, std::shared_ptr<Command>, ControllerInputHasher>;
+
 	class InputManager final : public Singleton<InputManager>
 	{
 	public:
@@ -18,18 +21,21 @@ namespace dae
 		bool IsReleased(unsigned button, unsigned controllerIdx = 0) const;
 		bool IsDown(unsigned button, unsigned controllerIdx = 0) const;
 
-		void AddKeyboardCommand(const KeyboardInput& input, const std::shared_ptr<Command>& command);
-		void AddControllerCommand(const ControllerInput& input, const std::shared_ptr<Command>& command);
+		void SetKeyboardCommand(std::shared_ptr<KeyboardCommandsMap> map);
+		void SetControllerCommand(std::shared_ptr<ControllerCommandsMap> map);
+
+		void AddKeyboardCommand(const std::shared_ptr<KeyboardCommandsMap>& map, const KeyboardInput& input, const std::shared_ptr<Command>& command);
+		void AddControllerCommand(const std::shared_ptr<ControllerCommandsMap>& map, const ControllerInput& input, const std::shared_ptr<Command>& command);
+
 		void AddXBoxController(int controllerIndex);
 
 	private:
 		void HandleControllerInputs();
 		void HandleKeyboardInputs();
 
-		using KeyboardCommandsMap = std::unordered_map<KeyboardInput, std::pair<std::shared_ptr<Command>, bool>, KeyboardInputHasher>;
-		using ControllerCommandsMap = std::unordered_map<ControllerInput, std::shared_ptr<Command>, ControllerInputHasher>;
-		ControllerCommandsMap m_ControllerCommands;
-		KeyboardCommandsMap m_KeyboardCommands;
+		std::shared_ptr<ControllerCommandsMap> m_pControllerCommands;
+		std::shared_ptr<KeyboardCommandsMap> m_pKeyboardCommands;
+
 		std::vector<std::unique_ptr<Controller>> m_Controllers;
 	};
 }

@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include "GameObject.h"
+#include "InputManager.h"
 
 namespace dae
 {
@@ -12,7 +13,7 @@ namespace dae
 	{
 		friend void GameObject::DetachChild(GameObject* child);
 	public:
-		explicit Scene(const std::string& name, unsigned int id);
+		explicit Scene(unsigned int id);
 		~Scene();
 
 		void Loaded();
@@ -25,6 +26,8 @@ namespace dae
 		GameObject* CreateGameObject();
 		GameObject* CreateGameObject(const std::string& name);
 
+		void SetKeyboardCommands(std::shared_ptr<dae::KeyboardCommandsMap>& map);
+		void SetControllerCommands(std::shared_ptr<dae::ControllerCommandsMap>& map);
 		void AddCollider(Collider* pCollider);
 		void RemoveCollider(Collider* pCollider);
 		void AddRenderComponent(RenderComponent* pRenderComponent);
@@ -33,7 +36,6 @@ namespace dae
 		void RemoveImGuiComponent(RenderComponent* pRenderComponent);
 		void RemoveAll();
 
-		const std::string& GetName() const { return m_Name;	};
 		unsigned int GetId() const { return m_Id;	};
 
 		Scene(const Scene& other) = delete;
@@ -48,11 +50,12 @@ namespace dae
 		std::vector<Collider*>& GetColliders();
 
 		unsigned int m_Id;
-		std::string m_Name;
 		std::vector<std::unique_ptr<GameObject>> m_pObjects;
 		std::vector<RenderComponent*> m_pRenderComponents;
 		std::vector<RenderComponent*> m_pImGuiComponents;
 		std::vector<Collider*> m_pColliders;
+		std::shared_ptr<dae::KeyboardCommandsMap> m_pKInputs;
+		std::shared_ptr<dae::ControllerCommandsMap> m_pCInputs;
 	};
 
 }
