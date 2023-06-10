@@ -19,6 +19,7 @@ pacman::GridRenderer::GridRenderer(dae::GameObject* pGameObject)
 	, m_pDotMask{ nullptr }
 	, m_pDotTarget{ nullptr }
 	, m_pPowerTexture{ nullptr }
+	, m_InfoPos{ 460, 40 }
 {
 	m_pTexture = dae::ResourceManager::GetInstance().LoadTexture("BlankLevel.png");
 	m_pPowerTexture = dae::ResourceManager::GetInstance().LoadTexture("power.png");
@@ -65,6 +66,7 @@ void pacman::GridRenderer::Render() const
 	renderer.RenderMaskedTexture(*m_pTexture, m_pWallMask, m_pWallTarget, pos.x, pos.y, m_Width, m_Height);
 	renderer.RenderMaskedTexture(*m_pDotTexture, m_pDotMask, m_pDotTarget, pos.x, pos.y, m_Width, m_Height);
 	RenderItems();
+	RenderFruitInfo();
 
 	if (m_DebugGridEnabled)
 	{
@@ -103,6 +105,32 @@ void pacman::GridRenderer::Render() const
 			renderer.RenderLine(x + cellSize, y, x + cellSize, y + cellSize, color);
 			renderer.RenderLine(x, y + cellSize, x + cellSize, y + cellSize, color);
 		}
+	}
+}
+
+void pacman::GridRenderer::RenderFruitInfo() const
+{
+	auto& renderer = dae::Renderer::GetInstance();
+
+	switch (m_pGrid->GetFruitType())
+	{
+	case CellType::Cherry:
+	{
+		renderer.RenderTexture(*m_pCherryTexture, static_cast<float>(m_InfoPos.x), static_cast<float>(m_InfoPos.y));
+		break;
+	}
+	case CellType::Strawberry:
+	{
+		renderer.RenderTexture(*m_pStrawberryTexture, static_cast<float>(m_InfoPos.x), static_cast<float>(m_InfoPos.y));
+		break;
+	}
+	case CellType::Melon:
+	{
+		renderer.RenderTexture(*m_pMelonTexture, static_cast<float>(m_InfoPos.x), static_cast<float>(m_InfoPos.y));
+		break;
+	}
+	default:
+		break;
 	}
 }
 

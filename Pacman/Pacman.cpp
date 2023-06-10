@@ -60,9 +60,14 @@ void pacman::Pacman::UpdateWalking()
 			Ghost* ghost = c->GetGameObject()->GetComponent<pacman::Ghost>();
 
 			if (ghost->CanDie())
+			{
 				ghost->Kill();
+				Notify(PEvents::GhostKilled);
+			}
 			else if (ghost->CanKill())
+			{
 				Kill();
+			}
 		}
 	}
 }

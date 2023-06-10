@@ -14,6 +14,9 @@ pacman::Grid::Grid(dae::GameObject* pGameObject)
 	, m_CellSize{ 16 }
 	, m_Cells{ }
 	, m_Offset{ 1 }
+	, m_Fruit{ CellType::Cherry }
+	, m_DotsLeftForSpawn{ 20 }
+	, m_FruitCoord{ 1,1 }
 {
 	for (unsigned r{ 0 }; r < m_Rows; ++r)
 	{
@@ -33,6 +36,7 @@ void pacman::Grid::LoadFromFile(const std::string& filename)
 	if (!file.is_open())
 		throw std::runtime_error{ filename + " was not abled to be opened" };
 
+	int nrOffDots{ 0 };
 	for (unsigned r{ 0 }; r < m_Rows; ++r)
 	{
 		std::string line;
@@ -40,10 +44,24 @@ void pacman::Grid::LoadFromFile(const std::string& filename)
 		{
 			for (unsigned c{ 0 }; c < m_Colums; ++c)
 			{
-				m_Cells[r][c] = static_cast<int>(line[c]) - '0';
+				const unsigned type{ static_cast<unsigned>(line[c]) - '0' };
+				m_Cells[r][c] = type;
+
+				if (type == CellType::Dot || type == CellType::Power)
+				{
+					++nrOffDots;
+				}
+				else if (type >= CellType::Cherry)
+				{
+					m_Cells[r][c] = CellType::Empty;
+					m_Fruit = type;
+					m_FruitCoord = { r,c };
+				}
 			}
 		}
 	}
+
+	m_DotsLeftForSpawn = nrOffDots / 2;
 
 	file.close();
 }
@@ -173,17 +191,28 @@ unsigned pacman::Grid::Pickup(const Coordinate& c)
 	return type;
 }
 
-bool pacman::Grid::CheckForWinCondition() const
+bool pacman::Grid::CheckForWinCondition()
 {
+	int aDots{ 0 };
 	for (auto& col : m_Cells)
 	{
 		for (unsigned type : col)
 		{
-			if (type > Wall)
-				return false;
+			if (type == CellType::Dot || type == CellType::Power)
+				++aDots;
 		}
 	}
-	return true;
+
+	if (aDots == m_DotsLeftForSpawn)
+		SpawnFruit();
+
+	return aDots == 0;
+}
+
+void pacman::Grid::SpawnFruit()
+{
+	m_Cells[m_FruitCoord.x][m_FruitCoord.y] = m_Fruit;
+	Notify(PEvents::GridItemsChanged);
 }
 
 unsigned pacman::Grid::GetCellData(unsigned r, unsigned c) const 

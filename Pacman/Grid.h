@@ -50,15 +50,20 @@ namespace pacman
 		unsigned GetRows() const { return m_Rows; }
 		unsigned GetCellSize() const { return m_CellSize; }
 		const auto& GetAgents() const { return m_pAgents; }
+		unsigned GetFruitType() const { return m_Fruit; }
 
 		void PrintGrid() const;
 
 	private:
 		bool CanTurn(const glm::ivec2& pos, const glm::ivec2& sumDir);
-		bool CheckForWinCondition() const;
+		bool CheckForWinCondition();
+		void SpawnFruit();
 
 		std::vector<std::vector<unsigned>> m_Cells;
 		std::vector<std::unique_ptr<GridAgent>> m_pAgents;
+		Coordinate m_FruitCoord;
+		int m_DotsLeftForSpawn;
+		unsigned m_Fruit;
 		unsigned m_Colums;
 		unsigned m_Rows;
 		unsigned m_CellSize;

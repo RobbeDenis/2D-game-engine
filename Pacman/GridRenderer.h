@@ -24,6 +24,7 @@ namespace pacman
 		void OnNotify(unsigned event);
 
 	private:
+		void RenderFruitInfo() const;
 		void RenderItems() const;
 		void UpdateMask(SDL_Texture* pMask, unsigned type);
 		void FillCell(unsigned char* pixels,int pitch, int gridX, int gridY, unsigned char value);
@@ -40,6 +41,7 @@ namespace pacman
 		SDL_Texture* m_pDotTarget;
 		SDL_Texture* m_pWallMask;
 		SDL_Texture* m_pWallTarget;
+		glm::ivec2 m_InfoPos;
 		bool m_DebugGridEnabled;
 		bool m_DebugAgentsEnabled;
 	};

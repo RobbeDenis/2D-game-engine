@@ -236,3 +236,14 @@ dae::Scene* CreateSinglePlayer()
 
 	return scene;
 }
+
+dae::Scene* CreateCoop()
+{
+	auto& sceneManager = dae::SceneManager::GetInstance();
+	auto& input = dae::InputManager::GetInstance();
+
+	dae::Scene* scene = sceneManager.CreateScene(SceneId::Coop);
+	dae::GameObject* go;
+
+	return scene;
+}
