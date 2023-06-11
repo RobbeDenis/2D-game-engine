@@ -93,7 +93,7 @@ void dae::InputManager::HandleControllerInputs()
 	if (m_pControllerCommands.get() == nullptr)
 		return;
 
-	for (int i{0}; i < m_Controllers.size(); ++i)
+	for (unsigned i{0}; i < m_Controllers.size(); ++i)
 	{
 		m_Controllers[i]->ProcessInput();
 
