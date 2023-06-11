@@ -20,8 +20,7 @@ namespace pacman
 		{
 			Walking = 0,
 			Dead = 1,
-			Energized = 2,
-			Disabled = 3
+			Disabled = 2
 		};
 
 		void UpdateWalking();

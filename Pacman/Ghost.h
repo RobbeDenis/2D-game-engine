@@ -27,11 +27,18 @@ namespace pacman
 
 		void SetTarget(dae::GameObject* pTarget);
 		void SetChaseAxis(const glm::ivec2& axis);
+		void SetControlled();
 
 		bool CanDie() const;
 		bool CanKill() const;
 
 	private:
+
+		void EnterCWalking();
+		void EnterCRun();
+		void UpdateCWalking();
+		void UpdateCRunning();
+		void UpdateCBlinking();
 
 		void UpdateStart();
 		void UpdateDead();
@@ -56,5 +63,6 @@ namespace pacman
 		float m_RunTime;
 		float m_MaxBlinkTime;
 		float m_BlinkTime;
+		bool m_IsControlledFromOutside;
 	};
 }

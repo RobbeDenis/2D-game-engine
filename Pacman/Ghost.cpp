@@ -42,20 +42,40 @@ void pacman::Ghost::Loaded()
 		std::bind(&Ghost::UpdateStart, this),
 		{});
 
-	AddState(State::eChase,
-		std::bind(&Ghost::EnterChase, this),
-		std::bind(&Ghost::UpdateChase, this),
-		{});
+	if (m_IsControlledFromOutside)
+	{
+		AddState(State::eChase,
+			std::bind(&Ghost::EnterCWalking, this),
+			std::bind(&Ghost::UpdateCWalking, this),
+			{});
 
-	AddState(State::eRun,
-		std::bind(&Ghost::EnterRun, this),
-		std::bind(&Ghost::UpdateRun, this),
-		{});
+		AddState(State::eRun,
+			std::bind(&Ghost::EnterCRun, this),
+			std::bind(&Ghost::UpdateCRunning, this),
+			{});
 
-	AddState(State::eBlink,
-		std::bind(&Ghost::EnterBlink, this),
-		std::bind(&Ghost::UpdateBlink, this),
-		{});
+		AddState(State::eBlink,
+			std::bind(&Ghost::EnterBlink, this),
+			std::bind(&Ghost::UpdateCBlinking, this),
+			{});
+	}
+	else
+	{
+		AddState(State::eChase,
+			std::bind(&Ghost::EnterChase, this),
+			std::bind(&Ghost::UpdateChase, this),
+			{});
+
+		AddState(State::eRun,
+			std::bind(&Ghost::EnterRun, this),
+			std::bind(&Ghost::UpdateRun, this),
+			{});
+
+		AddState(State::eBlink,
+			std::bind(&Ghost::EnterBlink, this),
+			std::bind(&Ghost::UpdateBlink, this),
+			{});
+	}
 
 	AddState(State::eDead,
 		{},
@@ -77,9 +97,15 @@ void pacman::Ghost::UpdateStart()
 	SetState(State::eChase);
 }
 
+void pacman::Ghost::EnterCRun()
+{
+	m_Direction -= m_Direction;
+	m_RunTime = 0;
+}
+
 void pacman::Ghost::EnterChase()
 {
-	std::cout << "Chase\n";
+	
 }
 
 void pacman::Ghost::UpdateChase()
@@ -93,6 +119,144 @@ void pacman::Ghost::UpdateChase()
 
 void pacman::Ghost::UpdateDead()
 {
+}
+
+void pacman::Ghost::EnterRun()
+{
+	m_Direction -= m_Direction;
+	m_PrevCoordinate = { 0,0 };
+	m_RunTime = 0;
+}
+
+void pacman::Ghost::UpdateRun()
+{
+	const float elapsed{ dae::ETime::GetInstance().GetDeltaTime() };
+
+	m_RunTime += elapsed;
+	if (m_RunTime >= m_MaxRunTime)
+	{
+		SetState(State::eBlink);
+	}
+
+	UpdateRunDirection();
+	m_pAgent->MoveDirection(m_Direction);
+	const glm::ivec2 newPos{ m_pAgent->GetGridPosition() };
+	GetGameObject()->SetLocalPosition(newPos.x, newPos.y);
+}
+
+void pacman::Ghost::EnterBlink()
+{
+	m_BlinkTime = 0;
+}
+
+void pacman::Ghost::UpdateBlink()
+{
+	const float elapsed{ dae::ETime::GetInstance().GetDeltaTime() };
+
+	m_BlinkTime += elapsed;
+	if (m_BlinkTime >= m_MaxBlinkTime)
+	{
+		m_PrevCoordinate = { 0,0 };
+		UpdateDirection();
+		SetState(State::eChase);
+	}
+
+	UpdateRunDirection();
+	m_pAgent->MoveDirection(m_Direction);
+	UpdatePosition();
+}
+
+void pacman::Ghost::EnterCWalking()
+{
+}
+
+void pacman::Ghost::UpdateCWalking()
+{
+	m_pAgent->MoveDirection(m_Direction);
+	const glm::ivec2 newPos{ m_pAgent->GetGridPosition() };
+	GetGameObject()->SetLocalPosition(newPos.x, newPos.y);
+}
+
+void pacman::Ghost::UpdateCRunning()
+{
+	const float elapsed{ dae::ETime::GetInstance().GetDeltaTime() };
+
+	m_RunTime += elapsed;
+	if (m_RunTime >= m_MaxRunTime)
+	{
+		SetState(State::eBlink);
+	}
+
+	m_pAgent->MoveDirection(m_Direction);
+	const glm::ivec2 newPos{ m_pAgent->GetGridPosition() };
+	GetGameObject()->SetLocalPosition(newPos.x, newPos.y);
+}
+
+void pacman::Ghost::UpdateCBlinking()
+{
+	const float elapsed{ dae::ETime::GetInstance().GetDeltaTime() };
+
+	m_BlinkTime += elapsed;
+	if (m_BlinkTime >= m_MaxBlinkTime)
+	{
+		SetState(State::eChase);
+	}
+
+	m_pAgent->MoveDirection(m_Direction);
+	const glm::ivec2 newPos{ m_pAgent->GetGridPosition() };
+	GetGameObject()->SetLocalPosition(newPos.x, newPos.y);
+}
+
+void pacman::Ghost::UpdatePosition()
+{
+	const glm::ivec2 newPos{ m_pAgent->GetGridPosition() };
+	GetGameObject()->SetLocalPosition(newPos.x, newPos.y);
+}
+
+void pacman::Ghost::Scare()
+{
+	SetState(State::eRun);
+}
+
+void pacman::Ghost::Reset()
+{
+	SetState(State::eStart);
+	m_pAgent->Reset(m_SpawnPoint);
+	UpdatePosition();
+}
+
+void pacman::Ghost::SetTarget(dae::GameObject* pTarget)
+{
+	if (pTarget == nullptr)
+		throw std::runtime_error("Target is nullptr");
+
+	m_pTarget = pTarget;
+}
+
+void pacman::Ghost::SetChaseAxis(const glm::ivec2& axis)
+{
+	m_ChaseAxis.x = axis.x;
+	m_ChaseAxis.y = -axis.y;
+}
+
+void pacman::Ghost::Kill()
+{
+	Reset();
+}
+
+void pacman::Ghost::SetControlled()
+{
+	m_IsControlledFromOutside = true;
+}
+
+bool pacman::Ghost::CanDie() const
+{
+	return GetState() == State::eRun || GetState() == State::eBlink;
+}
+
+bool pacman::Ghost::CanKill() const
+{
+	return GetState() == State::eChase;
 }
 
 void pacman::Ghost::UpdateDirection()
@@ -169,72 +333,6 @@ void pacman::Ghost::UpdateDirection()
 	m_PrevCoordinate = m_pAgent->GetCoordinate();
 }
 
-void pacman::Ghost::SetTarget(dae::GameObject* pTarget)
-{
-	if (pTarget == nullptr)
-		throw std::runtime_error("Target is nullptr");
-
-	m_pTarget = pTarget;
-}
-
-void pacman::Ghost::SetChaseAxis(const glm::ivec2& axis)
-{
-	m_ChaseAxis.x = axis.x;
-	m_ChaseAxis.y = -axis.y;
-}
-
-void pacman::Ghost::Scare()
-{
-	SetState(State::eRun);
-}
-
-void pacman::Ghost::EnterRun()
-{
-	std::cout << "Running\n";
-	m_Direction -= m_Direction;
-	m_PrevCoordinate = { 0,0 };
-	m_RunTime = 0;
-}
-
-void pacman::Ghost::UpdateRun()
-{
-	const float elapsed{ dae::ETime::GetInstance().GetDeltaTime() };
-
-	m_RunTime += elapsed;
-	if (m_RunTime >= m_MaxRunTime)
-	{
-		SetState(State::eBlink);
-	}
-
-	UpdateRunDirection();
-	m_pAgent->MoveDirection(m_Direction);
-	const glm::ivec2 newPos{ m_pAgent->GetGridPosition() };
-	GetGameObject()->SetLocalPosition(newPos.x, newPos.y);
-}
-
-void pacman::Ghost::EnterBlink()
-{
-	std::cout << "Blinking\n";
-	m_BlinkTime = 0;
-}
-
-void pacman::Ghost::UpdateBlink()
-{
-	const float elapsed{ dae::ETime::GetInstance().GetDeltaTime() };
-
-	m_BlinkTime += elapsed;
-	if (m_BlinkTime >= m_MaxBlinkTime)
-	{
-		m_PrevCoordinate = { 0,0 };
-		UpdateDirection();
-		SetState(State::eChase);
-	}
-
-	UpdateRunDirection();
-	m_pAgent->MoveDirection(m_Direction);
-	UpdatePosition();
-}
-
 void pacman::Ghost::UpdateRunDirection()
 {
 	if (!m_pTarget)
@@ -307,32 +405,4 @@ void pacman::Ghost::UpdateRunDirection()
 	}
 
 	m_PrevCoordinate = m_pAgent->GetCoordinate();
-}
-
-void pacman::Ghost::UpdatePosition()
-{
-	const glm::ivec2 newPos{ m_pAgent->GetGridPosition() };
-	GetGameObject()->SetLocalPosition(newPos.x, newPos.y);
-}
-
-void pacman::Ghost::Kill()
-{
-	Reset();
-}
-
-bool pacman::Ghost::CanDie() const
-{
-	return GetState() == State::eRun || GetState() == State::eBlink;
-}
-
-bool pacman::Ghost::CanKill() const
-{
-	return GetState() == State::eChase;
-}
-
-void pacman::Ghost::Reset()
-{
-	SetState(State::eStart);
-	m_pAgent->Reset(m_SpawnPoint);
-	UpdatePosition();
 }

@@ -322,6 +322,7 @@ dae::Scene* CreateCoop()
 
 		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_F1, ButtonState::Pressed }, std::make_shared<SkipLevel>(gamemode));
 		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_KP_1, ButtonState::Pressed }, std::make_shared<KillPacman>(player1));
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_KP_2, ButtonState::Pressed }, std::make_shared<KillPacman>(player2));
 
 		scene->SetKeyboardCommands(kMap);
 		scene->SetControllerCommands(cMap);
@@ -341,7 +342,7 @@ dae::Scene* CreateVersus()
 	CreateFPS(scene);
 
 	go = scene->CreateGameObject();
-	auto gamemode = go->AddComponent<pacman::Versus>();
+	auto gamemode = go->AddComponent<pacman::SinglePlayer>();
 	auto grid = CreateGrid(scene, gamemode, 100, 60);
 	auto score = CreateScoreDisplay(scene, { 255,255,255 }, 75, 10);
 	CreateHighscore(scene, { 255,255,255 }, 220, 10);
@@ -354,7 +355,10 @@ dae::Scene* CreateVersus()
 	player->AddObserver(lives);
 	gamemode->AddPlayer(player);
 
-	gamemode->AddGhost(CreateGhost(scene, "red.png", grid, { 12,14 }, pacmanObj, { 0,0 }));
+	auto playerGhost{ CreateGhost(scene, "red.png", grid, { 12,14 }, pacmanObj, { 0,0 }) };
+	playerGhost->SetControlled();
+
+	gamemode->AddGhost(playerGhost);
 	gamemode->AddGhost(CreateGhost(scene, "blue.png", grid, { 12,14 }, pacmanObj, { 1,1 }));
 	gamemode->AddGhost(CreateGhost(scene, "orange.png", grid, { 14,14 }, pacmanObj, { 1,0 }));
 	gamemode->AddGhost(CreateGhost(scene, "pink.png", grid, { 15,14 }, pacmanObj, { 0,1 }));
@@ -372,20 +376,30 @@ dae::Scene* CreateVersus()
 		auto left{ std::make_shared<MoveCharacter>(-1, 0, player) };
 		auto right{ std::make_shared<MoveCharacter>(1, 0, player) };
 
+		input.AddControllerCommand(cMap, { XBoxButton::ButtonUp, ButtonState::Pressed, 1 }, up);
+		input.AddControllerCommand(cMap, { XBoxButton::ButtonDown, ButtonState::Pressed, 1 }, down);
+		input.AddControllerCommand(cMap, { XBoxButton::ButtonLeft, ButtonState::Pressed, 1 }, left);
+		input.AddControllerCommand(cMap, { XBoxButton::ButtonRight, ButtonState::Pressed, 1 }, right);
+
 		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_W, ButtonState::Pressed }, up);
 		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_S, ButtonState::Pressed }, down);
 		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_A, ButtonState::Pressed }, left);
 		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_D, ButtonState::Pressed }, right);
 
-		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_UP, ButtonState::Pressed }, up);
-		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_DOWN, ButtonState::Pressed }, down);
-		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_LEFT, ButtonState::Pressed }, left);
-		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_RIGHT, ButtonState::Pressed }, right);
+		auto up2{ std::make_shared<MoveCharacter>(0, -1, playerGhost) };
+		auto down2{ std::make_shared<MoveCharacter>(0, 1, playerGhost) };
+		auto left2{ std::make_shared<MoveCharacter>(-1, 0, playerGhost) };
+		auto right2{ std::make_shared<MoveCharacter>(1, 0, playerGhost) };
 
-		input.AddControllerCommand(cMap, { XBoxButton::ButtonUp, ButtonState::Pressed }, up);
-		input.AddControllerCommand(cMap, { XBoxButton::ButtonDown, ButtonState::Pressed }, down);
-		input.AddControllerCommand(cMap, { XBoxButton::ButtonLeft, ButtonState::Pressed }, left);
-		input.AddControllerCommand(cMap, { XBoxButton::ButtonRight, ButtonState::Pressed }, right);
+		input.AddControllerCommand(cMap, { XBoxButton::ButtonUp, ButtonState::Pressed }, up2);
+		input.AddControllerCommand(cMap, { XBoxButton::ButtonDown, ButtonState::Pressed }, down2);
+		input.AddControllerCommand(cMap, { XBoxButton::ButtonLeft, ButtonState::Pressed }, left2);
+		input.AddControllerCommand(cMap, { XBoxButton::ButtonRight, ButtonState::Pressed }, right2);
+
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_UP, ButtonState::Pressed }, up2);
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_DOWN, ButtonState::Pressed }, down2);
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_LEFT, ButtonState::Pressed }, left2);
+		input.AddKeyboardCommand(kMap, { SDL_SCANCODE_RIGHT, ButtonState::Pressed }, right2);
 
 
 		auto SetMainScene{ std::make_shared<SetScene>(SceneId::Mainmanu) };

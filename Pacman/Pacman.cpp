@@ -29,6 +29,8 @@ void pacman::Pacman::Loaded()
 		std::bind(&Pacman::UpdateDead, this),
 		std::bind(&Pacman::ExitDead, this));
 
+	AddState(State::Disabled, {}, {}, {});
+
 	SetState(State::Walking);
 
 	m_pCollider = GetGameObject()->GetComponent<dae::Collider>();
