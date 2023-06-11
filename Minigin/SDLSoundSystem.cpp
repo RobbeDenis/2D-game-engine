@@ -113,14 +113,12 @@ public:
 				sample->volume = static_cast<Uint8>(vol);
 				m_Head = (m_Head + 1) % s_MaxPending;
 
-				//lock.unlock();
-
+				lock.unlock();
+				
 				if (Mix_PlayChannel(-1, sample, 0) == -1)
 					throw std::runtime_error{ SDL_GetError() };
 
 			}
-
-			lock.unlock();
 		}
 	}
 

@@ -14,6 +14,8 @@ namespace pacman
 		Gamemode(dae::GameObject* pGameObject);
 		virtual ~Gamemode() = default;
 
+		void Start() override;
+
 		virtual void OnNotify(Component*, unsigned) override {};
 		virtual void OnNotify(unsigned event) override;
 

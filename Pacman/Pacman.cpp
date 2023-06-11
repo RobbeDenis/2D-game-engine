@@ -4,6 +4,8 @@
 #include <GameObject.h>
 #include <ETime.h>
 #include "Ghost.h"
+#include <SoundSystemLocator.h>
+#include "PacmanSounds.h"
 
 pacman::Pacman::Pacman(dae::GameObject* pGameObject)
 	: Character(pGameObject)
@@ -12,6 +14,7 @@ pacman::Pacman::Pacman(dae::GameObject* pGameObject)
 	, m_DeathTime{ }
 	, m_Lives{ 3 }
 	, m_pAnimator{ nullptr }
+	, m_PlaySound{ true }
 {
 
 }
@@ -43,7 +46,7 @@ void pacman::Pacman::Loaded()
 	m_pCollider->SetDimensions(12, 12);
 	m_pCollider->SetOffset(2, 2);
 
-	m_pAgent->SetMovementSpeed(150.f);
+	m_pAgent->SetMovementSpeed(110.f);
 }
 
 void pacman::Pacman::SetupAnimations()
@@ -123,6 +126,7 @@ void pacman::Pacman::HandleWalkingAnim()
 void pacman::Pacman::EnterDead()
 {
 	m_pAnimator->SetAnimation(AnimId::Die);
+	dae::SoundSystemLocator::GetSoundSystem().Play(PacmanSounds::PacmanDeath, 0.8f);
 
 	Notify(PEvents::PacmanDied);
 	--m_Lives;
@@ -154,6 +158,10 @@ void pacman::Pacman::handlePickups()
 	switch (m_pAgent->Pickup())
 	{
 	case CellType::Dot:
+
+		if(m_PlaySound)
+			dae::SoundSystemLocator::GetSoundSystem().Play(PacmanSounds::Chomp, 0.4f);
+
 		Notify(PEvents::CDot);
 		break;
 	case CellType::Power:
@@ -191,4 +199,9 @@ void pacman::Pacman::Reset()
 void pacman::Pacman::Kill()
 {
 	SetState(State::Dead);
+}
+
+void pacman::Pacman::SetPlaySound(bool play)
+{
+	m_PlaySound = play;
 }

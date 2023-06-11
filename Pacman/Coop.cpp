@@ -14,6 +14,7 @@ pacman::Coop::Coop(dae::GameObject* pGameObject)
 
 void pacman::Coop::Start()
 {
+	Gamemode::Start();
 	LoadLevel(m_Level);
 	m_PlayersKilled = 0;
 }

@@ -22,6 +22,5 @@ void pacman::Highscore::Start()
 void pacman::Highscore::UpdateHighScore()
 {
 	const unsigned id{ GetGameObject()->GetScene()->GetId() };
-	std::cout << "id: " << id << " highscore: " << "\n";
 	m_pText->SetText(std::to_string(Leaderboard::GetHighscore(id)));
 }

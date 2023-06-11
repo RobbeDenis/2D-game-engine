@@ -280,6 +280,7 @@ dae::Scene* CreateCoop()
 
 	auto pacmanObj2{ CreatePacman(scene, "ss_mspacman.png", grid, { 20,22 }) };
 	auto player2{ pacmanObj2->GetComponent<pacman::Pacman>() };
+	player2->SetPlaySound(false);
 	player2->AddObserver(gamemode);
 	player2->AddObserver(score);
 	player2->AddObserver(lives2);

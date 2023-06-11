@@ -15,6 +15,7 @@ namespace pacman
 		void Start() override;
 		void Reset() override;
 		void Kill();
+		void SetPlaySound(bool play);
 
 	private:
 		enum State
@@ -39,6 +40,7 @@ namespace pacman
 		float m_MaxDeathTime;
 		float m_DeathTime;
 		int m_Lives;
+		bool m_PlaySound;
 
 	private:
 		enum AnimId

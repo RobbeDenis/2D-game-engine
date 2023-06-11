@@ -5,6 +5,8 @@
 #include "Selector.h"
 #include "Game.h"
 #include "TypeName.h"
+#include <SDLSoundSystem.h>
+#include "PacmanSounds.h"
 
 namespace commands
 {
@@ -51,6 +53,7 @@ namespace commands
 
 		void Execute() override
 		{
+			dae::SoundSystemLocator::GetSoundSystem().Play(PacmanSounds::Click2, 0.9f);
 			m_pSelector->Move(m_Direction);
 		}
 
@@ -67,6 +70,7 @@ namespace commands
 
 		void Execute() override
 		{
+			dae::SoundSystemLocator::GetSoundSystem().Play(PacmanSounds::Press, 0.6f);
 			m_pSelector->Select();
 		}
 
@@ -82,7 +86,7 @@ namespace commands
 
 		void Execute() override
 		{
-			std::cout << "Command scene set " << m_Id << "\n";
+			dae::SoundSystemLocator::GetSoundSystem().Play(PacmanSounds::Press, 0.6f);
 			pacman::Game::GetInstance().SetScene(m_Id);
 		}
 
@@ -127,6 +131,7 @@ namespace commands
 
 		void Execute() override
 		{
+			dae::SoundSystemLocator::GetSoundSystem().Play(PacmanSounds::Click1, 0.9f);
 			Name->MoveIndex(Direction);
 		}
 
@@ -144,6 +149,7 @@ namespace commands
 
 		void Execute() override
 		{
+			dae::SoundSystemLocator::GetSoundSystem().Play(PacmanSounds::Click2, 0.9f);
 			Name->ChangeCharacter(Offset);
 		}
 
@@ -160,6 +166,7 @@ namespace commands
 
 		void Execute() override
 		{
+			dae::SoundSystemLocator::GetSoundSystem().Play(PacmanSounds::Press, 0.6f);
 			Name->ConfirmName();
 		}
 

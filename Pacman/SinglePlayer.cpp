@@ -16,6 +16,7 @@ pacman::SinglePlayer::SinglePlayer(dae::GameObject* pGameObject)
 
 void pacman::SinglePlayer::Start()
 {
+	Gamemode::Start();
 	LoadLevel(m_Level);
 }
 

@@ -93,6 +93,8 @@ void pacman::Ghost::Loaded()
 		{});
 
 	SetState(State::eStart);
+
+	m_pAgent->SetMovementSpeed(110.f);
 }
 
 void pacman::Ghost::SetupAnimations()
@@ -131,7 +133,6 @@ void pacman::Ghost::EnterCRun()
 
 void pacman::Ghost::EnterChase()
 {
-	
 }
 
 void pacman::Ghost::UpdateChase()
@@ -150,6 +151,7 @@ void pacman::Ghost::UpdateDead()
 
 void pacman::Ghost::EnterRun()
 {
+	m_pAgent->SetMovementSpeed(60.f);
 	m_Direction -= m_Direction;
 	m_PrevCoordinate = { 0,0 };
 	m_RunTime = 0;

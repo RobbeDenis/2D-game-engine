@@ -1,6 +1,8 @@
 #include "Gamemode.h"
 #include "Ghost.h"
 #include "PacmanEvents.h"
+#include <SDLSoundSystem.h>
+#include "PacmanSounds.h"
 
 pacman::Gamemode::Gamemode(dae::GameObject* pGameObject)
 	: Component(pGameObject)
@@ -8,6 +10,11 @@ pacman::Gamemode::Gamemode(dae::GameObject* pGameObject)
 	, m_pGrid{ }
 	, m_Level{ }
 {
+}
+
+void pacman::Gamemode::Start()
+{
+	dae::SoundSystemLocator::GetSoundSystem().Play(PacmanSounds::GameStart, 0.6f);
 }
 
 void pacman::Gamemode::OnNotify(unsigned event)
