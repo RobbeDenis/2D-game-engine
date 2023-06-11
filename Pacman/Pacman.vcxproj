@@ -42,7 +42,6 @@
     <ClCompile Include="Selector.cpp" />
     <ClCompile Include="SinglePlayer.cpp" />
     <ClCompile Include="TypeName.cpp" />
-    <ClCompile Include="Versus.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Minigin\GameEvents.h" />
@@ -74,7 +73,6 @@
     <ClInclude Include="Selector.h" />
     <ClInclude Include="SinglePlayer.h" />
     <ClInclude Include="TypeName.h" />
-    <ClInclude Include="Versus.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Data\Level_0.lvl" />
