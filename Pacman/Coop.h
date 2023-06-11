@@ -20,5 +20,6 @@ namespace pacman
     private:
         Character* m_pPlayer1;
         Character* m_pPlayer2;
+        unsigned m_PlayersKilled;
 	};
 }

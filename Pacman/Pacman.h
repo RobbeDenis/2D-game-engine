@@ -20,7 +20,8 @@ namespace pacman
 		{
 			Walking = 0,
 			Dead = 1,
-			Energized = 2
+			Energized = 2,
+			Disabled = 3
 		};
 
 		void UpdateWalking();
@@ -34,5 +35,6 @@ namespace pacman
 		dae::Collider* m_pCollider;
 		float m_MaxDeathTime;
 		float m_DeathTime;
+		int m_Lives;
 	};
 }

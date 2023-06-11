@@ -22,10 +22,12 @@ void load()
 {
 	auto& input = dae::InputManager::GetInstance();
 	input.AddXBoxController(0);
+	input.AddXBoxController(1);
 
 	CreateMainMenu();
 	CreateSinglePlayer();
+	CreateCoop();
+	CreateVersus();
 	CreateInsertName();
 	CreateLeaderboard();
-	CreateCoop();
 }

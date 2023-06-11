@@ -33,6 +33,8 @@ namespace xbox
 		bool IsReleased(unsigned button) const override;
 		bool IsDown(unsigned button) const override;
 
+		int GetIndex() const override;
+
 	private:
 		class XBox360ControllerImpl;
 		XBox360ControllerImpl* m_pImpl;

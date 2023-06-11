@@ -8,12 +8,14 @@ pacman::Coop::Coop(dae::GameObject* pGameObject)
 	: Gamemode(pGameObject)
 	, m_pPlayer1{ nullptr }
 	, m_pPlayer2{ nullptr }
+	, m_PlayersKilled{ 0 }
 {
 }
 
 void pacman::Coop::Start()
 {
 	LoadLevel(m_Level);
+	m_PlayersKilled = 0;
 }
 
 void pacman::Coop::SkipLevel()
@@ -27,7 +29,7 @@ void pacman::Coop::SkipLevel()
 		ghost->Reset();
 
 	m_pPlayer1->Reset();
-	//m_pPlayer2->Reset();
+	m_pPlayer2->Reset();
 
 	Notify(PEvents::LevelLoaded);
 }
@@ -42,7 +44,9 @@ void pacman::Coop::OnNotify(unsigned event)
 		SkipLevel();
 		break;
 	case PEvents::PlayerOutOffLives:
-		Game::GetInstance().EndGamemode();
+		++m_PlayersKilled;
+		if(m_PlayersKilled >= 2)
+			Game::GetInstance().EndGamemode();
 		break;
 	default:
 		break;

@@ -30,6 +30,8 @@ public:
 	bool IsReleased(unsigned button) const { return m_ButtonsReleasedThisFrame & button; };
 	bool IsDown(unsigned button) const { return m_CurrentState.Gamepad.wButtons & button; };
 
+	int GetIndex() const { return m_ControllerIndex; }
+
 private:
 	XINPUT_STATE m_CurrentState{};
 	XINPUT_STATE m_PrevState{};
@@ -67,3 +69,8 @@ bool xbox::XBox360Controller::IsDown(unsigned button) const
 {
 	return m_pImpl->IsDown(button);
 };
+
+int xbox::XBox360Controller::GetIndex() const
+{
+	return m_pImpl->GetIndex();
+}

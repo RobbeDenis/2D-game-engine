@@ -93,26 +93,29 @@ void dae::InputManager::HandleControllerInputs()
 	if (m_pControllerCommands.get() == nullptr)
 		return;
 
-	for (const std::unique_ptr<Controller>& controller : m_Controllers)
+	for (int i{0}; i < m_Controllers.size(); ++i)
 	{
-		controller->ProcessInput();
+		m_Controllers[i]->ProcessInput();
 
 		for (const auto& command : *m_pControllerCommands)
 		{
+			if (command.first.Index != m_Controllers[i]->GetIndex())
+				continue;
+
 			switch (command.first.State)
 			{
 			case ButtonState::Pressed:
-				if (controller->IsPressed(command.first.Button))
+				if (m_Controllers[i]->IsPressed(command.first.Button))
 					command.second->Execute();
 				break;
 
 			case ButtonState::Released:
-				if (controller->IsReleased(command.first.Button))
+				if (m_Controllers[i]->IsReleased(command.first.Button))
 					command.second->Execute();
 				break;
 
 			case ButtonState::Down:
-				if (controller->IsDown(command.first.Button))
+				if (m_Controllers[i]->IsDown(command.first.Button))
 					command.second->Execute();
 				break;
 			}

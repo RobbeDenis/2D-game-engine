@@ -10,6 +10,7 @@ pacman::Pacman::Pacman(dae::GameObject* pGameObject)
 	, m_pCollider{ nullptr }
 	, m_MaxDeathTime{ 2 }
 	, m_DeathTime{ }
+	, m_Lives{ 3 }
 {
 
 }
@@ -80,6 +81,7 @@ void pacman::Pacman::ExitWalking()
 void pacman::Pacman::EnterDead()
 {
 	Notify(PEvents::PacmanDied);
+	--m_Lives;
 }
 
 void pacman::Pacman::UpdateDead()
@@ -89,7 +91,10 @@ void pacman::Pacman::UpdateDead()
 
 	if (m_DeathTime >= m_MaxDeathTime)
 	{
-		SetState(State::Walking);
+		if (m_Lives < 0)
+			SetState(State::Disabled);
+		else
+			SetState(State::Walking);
 	}
 }
 
@@ -134,6 +139,7 @@ void pacman::Pacman::Reset()
 	SetState(State::Walking);
 	m_pAgent->Reset(m_SpawnPoint);
 	m_Direction = { 0,0 };
+	m_Lives = 3;
 
 	switch (m_pAgent->Pickup())
 	{

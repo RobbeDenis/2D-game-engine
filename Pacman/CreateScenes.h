@@ -2,8 +2,9 @@
 
 #include <Scene.h>
 
+dae::Scene* CreateMainMenu();
 dae::Scene* CreateSinglePlayer();
 dae::Scene* CreateCoop();
-dae::Scene* CreateMainMenu();
+dae::Scene* CreateVersus();
 dae::Scene* CreateLeaderboard();
 dae::Scene* CreateInsertName();
