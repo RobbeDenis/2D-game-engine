@@ -45,6 +45,7 @@ dae::Minigin::Minigin(const std::string &dataPath, int width, int height)
 {
 	PrintSDLVersion();
 	
+
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
 	{
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
@@ -79,7 +80,6 @@ dae::Minigin::~Minigin()
 void dae::Minigin::Run(const std::function<void()>& load)
 {
 	load();
-
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();

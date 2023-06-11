@@ -25,7 +25,6 @@ int main(int, char* [])
 void load()
 {
 	auto& input = dae::InputManager::GetInstance();
-
 	input.AddXBoxController(0);
 	input.AddXBoxController(1);
 
@@ -36,6 +35,7 @@ void load()
 #endif
 
 	auto& ss{ dae::SoundSystemLocator::GetSoundSystem() };
+
 	ss.RegisterSound(PacmanSounds::Chomp, "pacman_chomp.wav");
 	ss.RegisterSound(PacmanSounds::EatFruit, "pacman_eatfruit.wav");
 	ss.RegisterSound(PacmanSounds::EatGhost, "pacman_eatghost.wav");
@@ -46,10 +46,12 @@ void load()
 	ss.RegisterSound(PacmanSounds::Click1, "cick-001.wav");
 	ss.RegisterSound(PacmanSounds::Click2, "cick-002.wav");
 
+
 	CreateMainMenu();
 	CreateSinglePlayer();
 	CreateCoop();
 	CreateVersus();
 	CreateInsertName();
+	CreateControls(); 
 	CreateLeaderboard();
 }

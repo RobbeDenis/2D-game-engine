@@ -11,6 +11,8 @@ namespace dae
 
 		void Play(const sound_id id, const float volume) override;
 		void RegisterSound(const sound_id id, const std::string& file) override;
+		void Mute() override;
+		void Unmute() override;
 
 	private:
 		class SDLSoundSystemImpl;

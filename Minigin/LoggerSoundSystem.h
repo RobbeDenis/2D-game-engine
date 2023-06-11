@@ -21,6 +21,16 @@ namespace dae
 			_ss->RegisterSound(id, file);
 		}
 
+		void Mute() override 
+		{
+			_ss->Mute();
+		};
+
+		void Unmute() override
+		{
+			_ss->Unmute();
+		};
+
 	private:
 		std::unique_ptr<SoundSystem> _ss;
 

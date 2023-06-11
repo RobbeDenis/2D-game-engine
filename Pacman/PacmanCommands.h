@@ -173,4 +173,23 @@ namespace commands
 	private:
 		pacman::TypeName* Name;
 	};
+
+	class ToggleMute : public dae::Command
+	{
+	public:
+		explicit ToggleMute()
+			: Mute{false}
+		{}
+
+		void Execute() override
+		{
+			Mute = !Mute;
+			if(Mute)
+				dae::SoundSystemLocator::GetSoundSystem().Mute();
+			else
+				dae::SoundSystemLocator::GetSoundSystem().Unmute();
+		}
+	private:
+		bool Mute;
+	};
 }

@@ -5,6 +5,7 @@
 #include <glm/common.hpp>
 #include <thread>
 #include <mutex>
+#include <iostream>
 
 
 class dae::SDLSoundSystem::SDLSoundSystemImpl
@@ -21,6 +22,7 @@ public:
 		, m_ExitFlag{ false }
 		, m_QueueMutex{ }
 		, m_ConditionVariable{ }
+		, m_Muted{ false }
 	{
 		Mix_Init(0);
 
@@ -44,9 +46,20 @@ public:
 		Mix_Quit();
 	}
 
+	void Mute()
+	{
+		m_Muted = true;
+	};
+
+	void Unmute()
+	{
+		m_Muted = false;
+	};
+
 	void RegisterSound(const sound_id id, const std::string& file)
 	{
 		std::unique_lock<std::mutex> lock(m_QueueMutex);
+
 
 		Mix_Chunk* sample;
 		const std::string path = m_Path + file;
@@ -111,13 +124,16 @@ public:
 				float vol = m_Pending[m_Head].volume * max;
 				vol = glm::clamp(vol, min, max);
 				sample->volume = static_cast<Uint8>(vol);
+
+				if (m_Muted)
+					sample->volume = 0;
+
 				m_Head = (m_Head + 1) % s_MaxPending;
 
 				lock.unlock();
 				
 				if (Mix_PlayChannel(-1, sample, 0) == -1)
 					throw std::runtime_error{ SDL_GetError() };
-
 			}
 		}
 	}
@@ -134,6 +150,7 @@ private:
 	std::map<sound_id, Mix_Chunk*> m_pSamples;
 	unsigned m_Head;
 	unsigned m_Tail;
+	bool m_Muted;
 	
 	std::atomic<bool> m_ExitFlag;
 	std::condition_variable m_ConditionVariable;
@@ -158,4 +175,14 @@ void dae::SDLSoundSystem::Play(const sound_id id, const float volume)
 void dae::SDLSoundSystem::RegisterSound(const sound_id id, const std::string& file)
 {
 	m_pImpl->RegisterSound(id, file);
+}
+
+void dae::SDLSoundSystem::Mute()
+{
+	m_pImpl->Mute();
+}
+
+void dae::SDLSoundSystem::Unmute()
+{
+	m_pImpl->Unmute();
 }

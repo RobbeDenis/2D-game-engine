@@ -11,6 +11,8 @@ namespace dae
 	public:
 		virtual ~SoundSystem() = default;
 		virtual void Play(const sound_id id, const float volume) = 0;
+		virtual void Mute() = 0;
+		virtual void Unmute() = 0;
 		virtual void RegisterSound(const sound_id id, const std::string& file) = 0;
 	};
 
@@ -18,6 +20,8 @@ namespace dae
 	{
 		void Play(const sound_id, const float) override {};
 		void RegisterSound(const sound_id, const std::string&) override {};
+		void Mute() override {};
+		void Unmute() override {};
 	};
 
 	class SoundSystemLocator final

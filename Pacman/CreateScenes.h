@@ -8,3 +8,4 @@ dae::Scene* CreateCoop();
 dae::Scene* CreateVersus();
 dae::Scene* CreateLeaderboard();
 dae::Scene* CreateInsertName();
+dae::Scene* CreateControls();
