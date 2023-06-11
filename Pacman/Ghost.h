@@ -1,6 +1,7 @@
 #pragma once
 #include "Character.h"
 #include <Collider.h>
+#include <Animator.h>
 
 namespace pacman
 {
@@ -12,7 +13,8 @@ namespace pacman
 			eChase = 1,
 			eRun = 2,
 			eDead = 3,
-			eBlink = 4
+			eBlink = 4,
+			eRest = 5
 		};
 
 	public:
@@ -33,6 +35,8 @@ namespace pacman
 		bool CanKill() const;
 
 	private:
+		void SetupAnimations();
+		void HandleChaseAnim();
 
 		void EnterCWalking();
 		void EnterCRun();
@@ -49,6 +53,8 @@ namespace pacman
 		void UpdateRun();
 		void EnterBlink();
 		void UpdateBlink();
+		void EnterRest();
+		void UpdateRest();
 
 		void UpdateDirection();
 		void UpdateRunDirection();
@@ -58,11 +64,24 @@ namespace pacman
 		glm::ivec2 m_ChaseAxis;
 		Coordinate m_PrevCoordinate;
 		dae::Collider* m_pCollider;
+		dae::Animator* m_pAnimator;
 		dae::GameObject* m_pTarget;
 		float m_MaxRunTime;
 		float m_RunTime;
 		float m_MaxBlinkTime;
 		float m_BlinkTime;
+		float m_MaxRestTime;
+		float m_RestTime;
 		bool m_IsControlledFromOutside;
+
+	private:
+		enum AnimId
+		{
+			WalkX = 0,
+			WalkY = 1,
+			Flee = 2,
+			Blinking = 3,
+			Resting = 4
+		};
 	};
 }

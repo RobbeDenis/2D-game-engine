@@ -22,6 +22,7 @@ void pacman::ScoreDisplay::Loaded()
 void pacman::ScoreDisplay::Start()
 {
 	m_Score = 0;
+	m_GhostKilled = 0;
 	UpdateScore();
 	Game::GetInstance().SetCurrentScore(this);
 }

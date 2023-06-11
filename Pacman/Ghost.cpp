@@ -13,6 +13,9 @@ pacman::Ghost::Ghost(dae::GameObject* pGameObject)
 	, m_RunTime{ 0 }
 	, m_MaxBlinkTime{ 2.f }
 	, m_BlinkTime{ 0 }
+	, m_pAnimator{ nullptr }
+	, m_RestTime{ 0 }
+	, m_MaxRestTime{ 3.f }
 {
 }
 
@@ -28,6 +31,8 @@ unsigned pacman::Ghost::GetRandomInt(unsigned min, unsigned max)
 void pacman::Ghost::Loaded()
 {
 	Character::Loaded();
+
+	SetupAnimations();
 
 	m_pCollider = GetGameObject()->GetComponent<dae::Collider>();
 	if (!m_pCollider)
@@ -82,12 +87,32 @@ void pacman::Ghost::Loaded()
 		std::bind(&Ghost::UpdateDead, this),
 		{});
 
+	AddState(State::eRest,
+		std::bind(&Ghost::EnterRest, this),
+		std::bind(&Ghost::UpdateRest, this),
+		{});
+
 	SetState(State::eStart);
+}
+
+void pacman::Ghost::SetupAnimations()
+{
+	m_pAnimator = GetGameObject()->GetComponent<dae::Animator>();
+
+	const float animWalkSpeed{ 0.1f };
+	const float animFleeSpeed{ 0.18f };
+
+	m_pAnimator->AddAnimation(AnimId::WalkX, 2, { 0,0 }, 16, 16, animWalkSpeed, true, SDL_FLIP_HORIZONTAL);
+	m_pAnimator->AddAnimation(AnimId::WalkY, 2, { 0,16 }, 16, 16, animWalkSpeed, true, SDL_FLIP_VERTICAL);
+	m_pAnimator->AddAnimation(AnimId::Flee, 2, { 0,32 }, 16, 16, animFleeSpeed, true);
+	m_pAnimator->AddAnimation(AnimId::Blinking, 2, { 0,48 }, 16, 16, animFleeSpeed, true);
+	m_pAnimator->AddAnimation(AnimId::Resting, 2, { 0,64 }, 16, 16, animFleeSpeed, true);
 }
 
 void pacman::Ghost::Start()
 {
 	Character::Start();
+	m_pAnimator->SetDst({ 0, 0, 16, 16 });
 	Reset();
 }
 
@@ -101,6 +126,7 @@ void pacman::Ghost::EnterCRun()
 {
 	m_Direction -= m_Direction;
 	m_RunTime = 0;
+	m_pAnimator->SetAnimation(AnimId::Flee);
 }
 
 void pacman::Ghost::EnterChase()
@@ -115,6 +141,7 @@ void pacman::Ghost::UpdateChase()
 	m_pAgent->MoveDirection(m_Direction);
 	const glm::ivec2 newPos{ m_pAgent->GetGridPosition() };
 	GetGameObject()->SetLocalPosition(newPos.x, newPos.y);
+	HandleChaseAnim();
 }
 
 void pacman::Ghost::UpdateDead()
@@ -126,6 +153,7 @@ void pacman::Ghost::EnterRun()
 	m_Direction -= m_Direction;
 	m_PrevCoordinate = { 0,0 };
 	m_RunTime = 0;
+	m_pAnimator->SetAnimation(AnimId::Flee);
 }
 
 void pacman::Ghost::UpdateRun()
@@ -147,6 +175,7 @@ void pacman::Ghost::UpdateRun()
 void pacman::Ghost::EnterBlink()
 {
 	m_BlinkTime = 0;
+	m_pAnimator->SetAnimation(AnimId::Blinking);
 }
 
 void pacman::Ghost::UpdateBlink()
@@ -166,6 +195,25 @@ void pacman::Ghost::UpdateBlink()
 	UpdatePosition();
 }
 
+void pacman::Ghost::EnterRest()
+{
+	m_RestTime = 0.f;
+	m_pAnimator->SetAnimation(AnimId::Resting);
+}
+
+void pacman::Ghost::UpdateRest()
+{
+	const float elapsed{ dae::ETime::GetInstance().GetDeltaTime() };
+
+	m_RestTime += elapsed;
+	if (m_RestTime >= m_MaxRestTime)
+	{
+		m_PrevCoordinate = { 0,0 };
+		UpdateDirection();
+		SetState(State::eChase);
+	}
+}
+
 void pacman::Ghost::EnterCWalking()
 {
 }
@@ -175,6 +223,7 @@ void pacman::Ghost::UpdateCWalking()
 	m_pAgent->MoveDirection(m_Direction);
 	const glm::ivec2 newPos{ m_pAgent->GetGridPosition() };
 	GetGameObject()->SetLocalPosition(newPos.x, newPos.y);
+	HandleChaseAnim();
 }
 
 void pacman::Ghost::UpdateCRunning()
@@ -241,7 +290,9 @@ void pacman::Ghost::SetChaseAxis(const glm::ivec2& axis)
 
 void pacman::Ghost::Kill()
 {
-	Reset();
+	m_pAgent->Reset(m_SpawnPoint);
+	UpdatePosition();
+	SetState(State::eRest);
 }
 
 void pacman::Ghost::SetControlled()
@@ -257,6 +308,30 @@ bool pacman::Ghost::CanDie() const
 bool pacman::Ghost::CanKill() const
 {
 	return GetState() == State::eChase;
+}
+
+void pacman::Ghost::HandleChaseAnim()
+{
+	const glm::ivec2 dir{ m_pAgent->GetDirection() };
+
+	if (dir.y == 0)
+	{
+		if (dir.x > 0)
+			m_pAnimator->Mirror(true);
+		else
+			m_pAnimator->Mirror(false);
+
+		m_pAnimator->SetAnimation(AnimId::WalkX);
+	}
+	else
+	{
+		if (dir.y > 0)
+			m_pAnimator->Mirror(true);
+		else
+			m_pAnimator->Mirror(false);
+
+		m_pAnimator->SetAnimation(AnimId::WalkY);
+	}
 }
 
 void pacman::Ghost::UpdateDirection()

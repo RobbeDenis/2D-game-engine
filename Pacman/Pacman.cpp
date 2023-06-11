@@ -25,7 +25,7 @@ void pacman::Pacman::Loaded()
 	AddState(State::Walking,
 		{},
 		std::bind(&Pacman::UpdateWalking, this),
-		std::bind(&Pacman::ExitWalking, this));
+		{});
 
 	AddState(State::Dead,
 		std::bind(&Pacman::EnterDead, this),
@@ -50,11 +50,11 @@ void pacman::Pacman::SetupAnimations()
 {
 	m_pAnimator = GetGameObject()->GetComponent<dae::Animator>();
 
-	const float animWalkSpeed{ 0.1f };
+	const float animSpeed{ 0.1f };
 
-	m_pAnimator->AddAnimation(AnimId::WalkX, 3, { 0,0 }, 16, 16, animWalkSpeed, true, SDL_FLIP_HORIZONTAL);
-	m_pAnimator->AddAnimation(AnimId::WalkY, 3, { 0,16 }, 16, 16, animWalkSpeed, true, SDL_FLIP_VERTICAL);
-	m_pAnimator->AddAnimation(AnimId::Die, 15, { 0,32 }, 16, 16, animWalkSpeed, false);
+	m_pAnimator->AddAnimation(AnimId::WalkX, 3, { 0,0 }, 16, 16, animSpeed, true, SDL_FLIP_HORIZONTAL);
+	m_pAnimator->AddAnimation(AnimId::WalkY, 3, { 0,16 }, 16, 16, animSpeed, true, SDL_FLIP_VERTICAL);
+	m_pAnimator->AddAnimation(AnimId::Die, 15, { 0,32 }, 16, 16, animSpeed, false);
 }
 
 void pacman::Pacman::Start()
@@ -118,11 +118,6 @@ void pacman::Pacman::HandleWalkingAnim()
 
 		m_pAnimator->SetAnimation(AnimId::WalkY);
 	}
-}
-
-void pacman::Pacman::ExitWalking()
-{
-	std::cout << "Exit Walking\n";
 }
 
 void pacman::Pacman::EnterDead()

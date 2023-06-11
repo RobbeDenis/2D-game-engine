@@ -28,7 +28,6 @@ namespace pacman
 
 		void UpdateWalking();
 		void HandleWalkingAnim();
-		void ExitWalking();
 		void EnterDead();
 		void UpdateDead();
 		void ExitDead();

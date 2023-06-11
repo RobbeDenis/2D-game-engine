@@ -38,6 +38,7 @@ pacman::Ghost* CreateGhost(dae::Scene* const scene, const std::string& texture, 
 	ghost->SetTarget(target);
 	ghost->SetChaseAxis(chaseAxis);
 	go->AddComponent<dae::Collider>();
+	go->AddComponent<dae::Animator>();
 
 	return ghost;
 }

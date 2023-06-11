@@ -204,10 +204,10 @@ dae::Scene* CreateSinglePlayer()
 	player->AddObserver(lives);
 	gamemode->AddPlayer(player);
 
-	gamemode->AddGhost(CreateGhost(scene, "red.png", grid, { 12,14 }, pacmanObj, { 0,0 }));
-	gamemode->AddGhost(CreateGhost(scene, "blue.png", grid, { 12,14 }, pacmanObj, { 1,1 }));
-	gamemode->AddGhost(CreateGhost(scene, "orange.png", grid, { 14,14 }, pacmanObj, { 1,0 }));
-	gamemode->AddGhost(CreateGhost(scene, "pink.png", grid, { 15,14 }, pacmanObj, { 0,1 }));
+	gamemode->AddGhost(CreateGhost(scene, "ss_red.png", grid, { 12,14 }, pacmanObj, { 0,0 }));
+	gamemode->AddGhost(CreateGhost(scene, "ss_blue.png", grid, { 12,14 }, pacmanObj, { 1,1 }));
+	gamemode->AddGhost(CreateGhost(scene, "ss_orange.png", grid, { 14,14 }, pacmanObj, { 1,0 }));
+	gamemode->AddGhost(CreateGhost(scene, "ss_pink.png", grid, { 15,14 }, pacmanObj, { 0,1 }));
 
 	{
 		using namespace dae;
@@ -285,10 +285,10 @@ dae::Scene* CreateCoop()
 	player2->AddObserver(lives2);
 	gamemode->AddPlayer2(player2);
 
-	gamemode->AddGhost(CreateGhost(scene, "red.png", grid, { 12,14 }, pacmanObj1, { 0,0 }));
-	gamemode->AddGhost(CreateGhost(scene, "blue.png", grid, { 12,14 }, pacmanObj1, { 1,1 }));
-	gamemode->AddGhost(CreateGhost(scene, "orange.png", grid, { 14,14 }, pacmanObj2, { 1,0 }));
-	gamemode->AddGhost(CreateGhost(scene, "pink.png", grid, { 15,14 }, pacmanObj2, { 0,1 }));
+	gamemode->AddGhost(CreateGhost(scene, "ss_red.png", grid, { 12,14 }, pacmanObj1, { 0,0 }));
+	gamemode->AddGhost(CreateGhost(scene, "ss_blue.png", grid, { 12,14 }, pacmanObj1, { 1,1 }));
+	gamemode->AddGhost(CreateGhost(scene, "ss_orange.png", grid, { 14,14 }, pacmanObj2, { 1,0 }));
+	gamemode->AddGhost(CreateGhost(scene, "ss_pink.png", grid, { 15,14 }, pacmanObj2, { 0,1 }));
 
 	{
 		using namespace dae;
@@ -371,13 +371,13 @@ dae::Scene* CreateVersus()
 	player->AddObserver(lives);
 	gamemode->AddPlayer(player);
 
-	auto playerGhost{ CreateGhost(scene, "red.png", grid, { 12,14 }, pacmanObj, { 0,0 }) };
+	auto playerGhost{ CreateGhost(scene, "ss_red.png", grid, { 12,14 }, pacmanObj, { 0,0 }) };
 	playerGhost->SetControlled();
 
 	gamemode->AddGhost(playerGhost);
-	gamemode->AddGhost(CreateGhost(scene, "blue.png", grid, { 12,14 }, pacmanObj, { 1,1 }));
-	gamemode->AddGhost(CreateGhost(scene, "orange.png", grid, { 14,14 }, pacmanObj, { 1,0 }));
-	gamemode->AddGhost(CreateGhost(scene, "pink.png", grid, { 15,14 }, pacmanObj, { 0,1 }));
+	gamemode->AddGhost(CreateGhost(scene, "ss_blue.png", grid, { 12,14 }, pacmanObj, { 1,1 }));
+	gamemode->AddGhost(CreateGhost(scene, "ss_orange.png", grid, { 14,14 }, pacmanObj, { 1,0 }));
+	gamemode->AddGhost(CreateGhost(scene, "ss_pink.png", grid, { 15,14 }, pacmanObj, { 0,1 }));
 
 	{
 		using namespace dae;
