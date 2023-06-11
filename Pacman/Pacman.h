@@ -2,6 +2,7 @@
 #include "Character.h"
 #include <Subject.h>
 #include <Collider.h>
+#include <Animator.h>
 
 namespace pacman
 {
@@ -23,7 +24,10 @@ namespace pacman
 			Disabled = 2
 		};
 
+		void SetupAnimations();
+
 		void UpdateWalking();
+		void HandleWalkingAnim();
 		void ExitWalking();
 		void EnterDead();
 		void UpdateDead();
@@ -32,8 +36,17 @@ namespace pacman
 		void handlePickups();
 
 		dae::Collider* m_pCollider;
+		dae::Animator* m_pAnimator;
 		float m_MaxDeathTime;
 		float m_DeathTime;
 		int m_Lives;
+
+	private:
+		enum AnimId
+		{
+			WalkX = 0,
+			WalkY = 1, 
+			Die = 2
+		};
 	};
 }

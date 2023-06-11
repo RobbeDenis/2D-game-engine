@@ -11,6 +11,7 @@ pacman::Pacman::Pacman(dae::GameObject* pGameObject)
 	, m_MaxDeathTime{ 2 }
 	, m_DeathTime{ }
 	, m_Lives{ 3 }
+	, m_pAnimator{ nullptr }
 {
 
 }
@@ -18,6 +19,8 @@ pacman::Pacman::Pacman(dae::GameObject* pGameObject)
 void pacman::Pacman::Loaded()
 {
 	Character::Loaded();
+
+	SetupAnimations();
 
 	AddState(State::Walking,
 		{},
@@ -43,6 +46,23 @@ void pacman::Pacman::Loaded()
 	m_pAgent->SetMovementSpeed(150.f);
 }
 
+void pacman::Pacman::SetupAnimations()
+{
+	m_pAnimator = GetGameObject()->GetComponent<dae::Animator>();
+
+	const float animWalkSpeed{ 0.1f };
+
+	m_pAnimator->AddAnimation(AnimId::WalkX, 3, { 0,0 }, 16, 16, animWalkSpeed, true, SDL_FLIP_HORIZONTAL);
+	m_pAnimator->AddAnimation(AnimId::WalkY, 3, { 0,16 }, 16, 16, animWalkSpeed, true, SDL_FLIP_VERTICAL);
+	m_pAnimator->AddAnimation(AnimId::Die, 15, { 0,32 }, 16, 16, animWalkSpeed, false);
+}
+
+void pacman::Pacman::Start()
+{
+	Reset();
+	m_pAnimator->SetDst({ 0, 0, 16, 16 });
+}
+
 void pacman::Pacman::UpdateWalking()
 {
 	m_pAgent->MoveDirection(m_Direction);
@@ -50,6 +70,7 @@ void pacman::Pacman::UpdateWalking()
 	GetGameObject()->SetLocalPosition(newPos.x, newPos.y);
 
 	handlePickups();
+	HandleWalkingAnim();
 
 	const auto& colliders{ m_pCollider->GetColliders() };
 
@@ -75,6 +96,30 @@ void pacman::Pacman::UpdateWalking()
 	}
 }
 
+void pacman::Pacman::HandleWalkingAnim()
+{
+	const glm::ivec2 dir{ m_pAgent->GetDirection() };
+
+	if(dir.y == 0)
+	{
+		if (dir.x > 0)
+			m_pAnimator->Mirror(true);
+		else
+			m_pAnimator->Mirror(false);
+
+		m_pAnimator->SetAnimation(AnimId::WalkX);
+	}
+	else
+	{
+		if (dir.y > 0)
+			m_pAnimator->Mirror(true);
+		else
+			m_pAnimator->Mirror(false);
+
+		m_pAnimator->SetAnimation(AnimId::WalkY);
+	}
+}
+
 void pacman::Pacman::ExitWalking()
 {
 	std::cout << "Exit Walking\n";
@@ -82,6 +127,8 @@ void pacman::Pacman::ExitWalking()
 
 void pacman::Pacman::EnterDead()
 {
+	m_pAnimator->SetAnimation(AnimId::Die);
+
 	Notify(PEvents::PacmanDied);
 	--m_Lives;
 }
@@ -129,11 +176,6 @@ void pacman::Pacman::handlePickups()
 	default:
 		break;
 	}
-}
-
-void pacman::Pacman::Start()
-{
-	Reset();
 }
 
 void pacman::Pacman::Reset()

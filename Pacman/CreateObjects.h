@@ -13,6 +13,7 @@
 #include "LivesDisplay.h"
 #include "LivesRender.h"
 #include "Highscore.h"
+#include <Animator.h>
 
 dae::GameObject* CreatePacman(dae::Scene* const scene, const std::string& texture, pacman::Grid* grid, const pacman::Coordinate& c)
 {
@@ -22,6 +23,7 @@ dae::GameObject* CreatePacman(dae::Scene* const scene, const std::string& textur
 	auto pacman{ go->AddComponent<pacman::Pacman>() };
 	pacman->InitGridAgent(grid, c);
 	go->AddComponent<dae::Collider>();
+	go->AddComponent<dae::Animator>();
 
 	return go;
 }

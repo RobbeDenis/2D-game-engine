@@ -197,7 +197,7 @@ dae::Scene* CreateSinglePlayer()
 	CreateHighscore(scene, { 255,255,255 }, 220, 10);
 	auto lives = CreateLivesDisplay(scene, "pacman.png", gamemode, 20, 400);
 
-	auto pacmanObj{ CreatePacman(scene, "pacman.png", grid, { 13,23 }) };
+	auto pacmanObj{ CreatePacman(scene, "ss_pacman.png", grid, { 13,23 }) };
 	auto player{ pacmanObj->GetComponent<pacman::Pacman>() };
 	player->AddObserver(gamemode);
 	player->AddObserver(score);
@@ -271,14 +271,14 @@ dae::Scene* CreateCoop()
 	auto lives1 = CreateLivesDisplay(scene, "pacman.png", gamemode, 20, 400);
 	auto lives2 = CreateLivesDisplay(scene, "mspacman.png", gamemode, 555, 400);
 
-	auto pacmanObj1{ CreatePacman(scene, "pacman.png", grid, { 6,22 }) };
+	auto pacmanObj1{ CreatePacman(scene, "ss_pacman.png", grid, { 6,22 }) };
 	auto player1{ pacmanObj1->GetComponent<pacman::Pacman>() };
 	player1->AddObserver(gamemode);
 	player1->AddObserver(score);
 	player1->AddObserver(lives1);
 	gamemode->AddPlayer1(player1);
 
-	auto pacmanObj2{ CreatePacman(scene, "mspacman.png", grid, { 20,22 }) };
+	auto pacmanObj2{ CreatePacman(scene, "ss_mspacman.png", grid, { 20,22 }) };
 	auto player2{ pacmanObj2->GetComponent<pacman::Pacman>() };
 	player2->AddObserver(gamemode);
 	player2->AddObserver(score);
@@ -364,7 +364,7 @@ dae::Scene* CreateVersus()
 	CreateHighscore(scene, { 255,255,255 }, 220, 10);
 	auto lives = CreateLivesDisplay(scene, "pacman.png", gamemode, 20, 400);
 
-	auto pacmanObj{ CreatePacman(scene, "pacman.png", grid, { 13,23 }) };
+	auto pacmanObj{ CreatePacman(scene, "ss_pacman.png", grid, { 13,23 }) };
 	auto player{ pacmanObj->GetComponent<pacman::Pacman>() };
 	player->AddObserver(gamemode);
 	player->AddObserver(score);
