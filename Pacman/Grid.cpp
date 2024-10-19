@@ -5,6 +5,7 @@
 #include <ResourceManager.h>
 #include "GridAgent.h"
 #include <ETime.h>
+#include <algorithm> 
 #include "PacmanEvents.h"
 
 pacman::Grid::Grid(dae::GameObject* pGameObject)
